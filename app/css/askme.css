@@ -11,5 +11,18 @@ header > img {
 
 header > nav {
 	float: right;
-	padding: 20px 0;
+	padding: 15px 0;
+}
+
+main {
+	padding: 10px;
+}
+
+table > thead {
+	font-size: large;
+	font-weight: bold;
+}
+
+table > tbody {
+	cursor: pointer;
 }

@@ -14,18 +14,7 @@
 		<title>AskMe</title>
 	</head>
 	<body>
-		<header>
-			<img src="app/images/logo.jpeg" />
-			<nav>
-				<ul class="nav nav-pills">
-					<li class="nav-item">
-						<a class="nav-link active" href="#">Topics</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">About</a>
-					</li>
-				</ul>
-			</nav>
+		<header ng-include src="'app/components/header/header.html'">
 		</header>
 		<main ng-view>
 		</main>
@@ -41,6 +30,6 @@
 		<!-- Our (App) scripts. -->
 		<script src="app/components/app.js"></script>
 		<script src="app/components/topiclist/topiclist-controller.js"></script>
-		<script src="app/components/topicform/topicform-controller.js"></script>
+		<script src="app/components/cardlist/cardlist-controller.js"></script>
 	</body>
 </html>
