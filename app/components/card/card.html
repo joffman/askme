@@ -1,0 +1,24 @@
+<section id="card-section">
+	<h2>Card #{{card.id}}</h2>
+	<form id="card-form">
+		<div class="form-group">
+			<label for="card-title">Title</label>
+			<input type="text" id="card-title" class="form-control" ng-model="card.title" />
+		</div>
+
+		<div class="form-group">
+			<label for="card-question">Question</label>
+			<textarea id="card-question" class="form-control" ng-model="card.question" />
+			<!--<input type="text" id="card-question" class="form-control" ng-model="card.question" />-->
+		</div>
+
+		<div class="form-group">
+			<label for="card-answer">Answer</label>
+			<textarea id="card-answer" class="form-control" ng-model="card.answer" />
+		</div>
+
+		<!-- Topic select menu -->
+
+		<button class="btn btn-primary form-control">Submit</button>
+	</form>
+</section>

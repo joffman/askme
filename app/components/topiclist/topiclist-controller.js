@@ -36,7 +36,7 @@ angular.module("topiclist.controllers", [])
 		});
 	};
 
-	$scope.onTopicClick = function(topic_id) {
+	$scope.onTopicClicked = function(topic_id) {
 		window.location = `#/topics/${topic_id}/cards`;
 	};
 

@@ -36,4 +36,8 @@ angular.module("cardlist.controllers", [])
 		});
 	};
 
+	$scope.onCardClicked = function(card_id) {
+		window.location = `#/topics/${$routeParams.topicId}/cards/${card_id}`;
+	};
+
 }]);
