@@ -1,0 +1,17 @@
+<section id="topic-list">
+	<h2>Topics</h2>
+	<table>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Number Cards</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="topic in topics">
+				<td>{{topic.name}}</td>
+				<td>{{topic.card_count}}</td>
+			</tr>
+		</tbody>
+	</table>
+</section>

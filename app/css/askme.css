@@ -1,0 +1,15 @@
+header {
+	overflow: auto;
+	border-bottom: 1px solid gray;
+}
+
+header > img {
+	width: 70px;
+	height: 70px;
+	float: left;
+}
+
+header > nav {
+	float: right;
+	padding: 20px 0;
+}
