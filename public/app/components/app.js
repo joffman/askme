@@ -1,4 +1,4 @@
-var askMeApp = angular.module("askMeApp", [ "ngRoute", "topiclist.controllers", "cardlist.controllers", "card.controllers" ]);
+var askMeApp = angular.module("askMeApp", [ "ngRoute", "ngResource", "topiclist.controllers", "cardlist.controllers", "card.controllers" ]);
 
 // Configure routes.
 askMeApp.config(function($routeProvider) {

@@ -1,6 +1,7 @@
 header {
 	overflow: auto;
 	border-bottom: 1px solid gray;
+	background-color: #ddd;
 }
 
 header > img {

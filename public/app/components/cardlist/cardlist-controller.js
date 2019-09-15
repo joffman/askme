@@ -37,7 +37,11 @@ angular.module("cardlist.controllers", [])
 	};
 
 	$scope.onCardClicked = function(card_id) {
-		window.location = `#/topics/${$routeParams.topicId}/cards/${card_id}`;
+		window.location = `#!/topics/${$routeParams.topicId}/cards/${card_id}`;
+	};
+
+	$scope.onAddCardClicked = function() {
+		window.location = `#!/topics/${$routeParams.topicId}/cards/0`;
 	};
 
 }]);
