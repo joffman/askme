@@ -5,4 +5,8 @@ angular.module("card.services", [])
 	function addCard(card) {
 		return cardResource.save().$promise;
 	}
+
+	return {
+		addCard: addCard
+	};
 }]);

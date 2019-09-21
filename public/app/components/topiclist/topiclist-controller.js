@@ -1,43 +1,69 @@
-angular.module("topiclist.controllers", [])
-.controller("topicListController", ["$scope", function($scope) {
+angular.module("topiclist.controllers", ["topiclist.services"])
+.controller("topicListController", ["$scope", "topiclistSvc", function($scope, topiclistSvc) {
 
-	// Data. todo: Get this from backend.
-	$scope.topics = [
-	{
-		id: 1,
-		name: "C++",
-		card_count: 5
-	},
-	{
-		id: 2,
-		name: "Web Development",
-		card_count: 12
+	//////////////////////////////////////////////////
+	// General functions.
+	//////////////////////////////////////////////////
+
+	function handleApiError(error) {
+		alert("Error! Look at console for details.");
+		console.log("Error:", error);
 	}
-	];
+
+	function fetchTopics() {
+		topiclistSvc.queryTopics().then(function(resp_data) {
+			$scope.topics = resp_data.topics;
+		})
+		["catch"](function(error) {
+			handleApiError(error);
+		});
+	}
+
+	function init() {
+		fetchTopics();
+	}
+
+
+	//////////////////////////////////////////////////
+	// Scope functions.
+	//////////////////////////////////////////////////
 
 	$scope.add = function() {
-		// todo: Send new topic-data to backend and receive id.
+		// Create new topic.
 		var new_topic = {
-			id: 0,
-			name: $scope.new_topic_name,
-			card_count: 0
+			topic_name: $scope.new_topic_name,
 		};
+		topiclistSvc.addTopic(new_topic).then(function(resp_data) {
+		})
+		["catch"](function(error) {
+			handleApiError(error);
+		});
 
-		$scope.topics.push(new_topic);
+		// Fetch updated topics.
+		fetchTopics();
 
 		// Clear input.
 		$scope.new_topic_name = "";
 	};
 
 	$scope.remove = function(topic_id) {
-		// todo: send request to backend.
-		$scope.topics = $scope.topics.filter(function(elem, index, arr) {
-			return elem.id != topic_id;
+		topiclistSvc.removeTopic(topic_id).then(function(resp_data) {
+			fetchTopics();
+		})
+		["catch"](function(error) {
+			handleApiError(error);
 		});
 	};
 
 	$scope.onTopicClicked = function(topic_id) {
 		window.location = `#!/topics/${topic_id}/cards`;
 	};
+
+
+	//////////////////////////////////////////////////
+	// Initialization.
+	//////////////////////////////////////////////////
+
+	init();
 
 }]);

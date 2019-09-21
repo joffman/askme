@@ -23,7 +23,3 @@ table > thead {
 	font-size: large;
 	font-weight: bold;
 }
-
-table > tbody {
-	cursor: pointer;
-}

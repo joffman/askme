@@ -9,9 +9,9 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="topic in topics" ng-click="onTopicClicked(topic.id)">
-				<td>{{topic.name}}</td>
-				<td>{{topic.card_count}}</td>
+			<tr ng-repeat="topic in topics">
+				<td><a href="#!/topics/{{topic.id}}/cards">{{topic.name}}</a></td>
+				<td>{{topic.num_cards}}</td>
 				<td><button type="button" class="btn btn-danger"
 						ng-click="remove(topic.id)">Remove</button></td>
 			</tr>
