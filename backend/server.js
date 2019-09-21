@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path");
 
+const Database = require("./database.js");
+
 const app = express();
 
 
@@ -9,20 +11,25 @@ const app = express();
 // TODO: Get this from database.
 //////////////////////////////////////////////////
 
-var topics_data = [
-{
-	id: 1,
-	name: "C++",
-	num_cards: 6
-},
-{
-	id: 2,
-	name: "Web Development",
-	num_cards: 7
-}];
+//var topics_data = [
+//{
+//	id: 1,
+//	name: "C++",
+//	num_cards: 6
+//},
+//{
+//	id: 2,
+//	name: "Web Development",
+//	num_cards: 7
+//}];
+//
+//var id = 3;
 
-var id = 3;
 
+//////////////////////////////////////////////////
+// Set up global variables.
+//////////////////////////////////////////////////
+var database = new Database();
 
 //////////////////////////////////////////////////
 // Set up middleware.
@@ -37,7 +44,15 @@ app.use(express.static(path.join(__dirname, "/../public")));
 //////////////////////////////////////////////////
 
 app.get("/api1/topics", function(req, res) {
-	res.json({success: true, topics: topics_data});
+	// Get topics from database and add number of cards to it.
+	database.getTopics(function(err, topics_data) {
+		if (err) {	// todo: Send json.
+			res.statusCode = 500;
+			res.send("Database error");
+		} else {
+			res.json({success: true, topics: topics_data});
+		}
+	});
 });
 
 app.post("/api1/topics", function(req, res) {

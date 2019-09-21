@@ -11,7 +11,14 @@ angular.module("topiclist.services", [])
 	}
 
 	function addTopic(topic_data) {
-		return topiclistResource.save(topic_data).$promise;
+		// TODO: Better validation.
+		var topic = {};
+		if ("name" in topic_data) {
+			topic.name = topic_data.name;
+			return topiclistResource.save(topic).$promise;
+		} else {	// todo: error handling
+			throw { error: "addTopic: Invalid topic-data" };
+		}
 	}
 
 	return {

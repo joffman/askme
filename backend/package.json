@@ -4,7 +4,8 @@
   "description": "Web application for learning flash cards",
   "main": "server.js",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "sqlite3": "^4.1.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.2"
