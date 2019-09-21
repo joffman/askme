@@ -1,11 +1,11 @@
 <img src="app/images/logo.jpeg" />
-<nav>
+<nav ng-controller="headerNavCtrl">
 	<ul class="nav nav-pills">
 		<li class="nav-item">
-			<a class="nav-link active" href="#!/topics">Topics</a>
+			<a class="nav-link" href="#!/topics" ng-click="onNavItemClick($event)">Topics</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link" href="#!/about">About</a>
+			<a class="nav-link" href="#!/about" ng-click="onNavItemClick($event)">About</a>
 		</li>
 	</ul>
 </nav>
