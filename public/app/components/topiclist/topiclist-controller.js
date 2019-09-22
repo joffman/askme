@@ -5,9 +5,8 @@ angular.module("topiclist.controllers", ["topiclist.services"])
 	// General functions.
 	//////////////////////////////////////////////////
 
-	function handleApiError(error) {
-		alert("Error! Look at console for details.");
-		console.log("Error:", error);
+	function handleApiError(err) {
+		alert("Error: " + err.message);
 	}
 
 	function fetchTopics() {

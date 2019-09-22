@@ -26,9 +26,12 @@ app.use(express.static(path.join(__dirname, "/../public")));
 app.get("/api1/topics", function(req, res) {
 	// Get topics from database and add number of cards to it.
 	database.getTopics(function(err, topics_data) {
-		if (err) {	// todo: Send json.
+		if (err) {
 			res.statusCode = 500;
-			res.send("Database error");
+			res.json({
+				success: false, 
+				error_msg: err.message
+			});
 		} else {
 			res.json({success: true, topics: topics_data});
 		}
@@ -74,9 +77,69 @@ app.delete("/api1/topics/:id", function(req, res) {
 			});
 		}
 	});
-//	topics_data = topics_data.filter(function(elem, index, arr) {
-//		return elem.id != req.params.id;
-//	});
+});
+
+
+//////////////////////////////////////////////////
+// Set up cards api routes.
+//////////////////////////////////////////////////
+
+app.get("/api1/cards", function(req, res) {
+	if (("topic_id" in req.query)) {
+		// Get cards from database.
+		database.getCards(req.query.topic_id, function(err, cards_data) {
+			if (err) {
+				res.statusCode = 500;
+				res.json({
+					success: false, 
+					error_msg: err.message
+				});
+			} else {
+				res.json({success: true, cards: cards_data});
+			}
+		});
+	} else {
+		res.statusCode = 400;
+		res.json({
+			success: false,
+			error_msg: "topic_id parameter is missing"
+		});
+	}
+});
+
+app.post("/api1/cards", function(req, res) {
+	//const card = { name: req.body.name };
+	const card = req.body;
+	database.addCard(card, function(err, card_id) {
+		if (err) {
+			console.log("Error:", err);
+			res.json({
+				success: false,
+				error_msg: err.message
+			});
+		} else {
+			res.json({success: true, id: card_id});
+		}
+	});
+});
+
+app.delete("/api1/cards/:id", function(req, res) {
+	database.deleteCard(req.params.id, function(err, card_id) {
+		if (err) {
+			res.statusCode = 500;
+			res.json({
+				success: false,
+				error_msg: err.message
+			});
+		} else if (card_id) {
+			res.json({success: true});
+		} else {
+			res.json({
+				success: false,
+				error_msg: `Card with id ${id} does not exist.`
+			});
+		}
+	});
 });
 
 

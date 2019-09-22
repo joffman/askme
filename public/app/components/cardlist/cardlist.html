@@ -8,8 +8,8 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="card in cards" ng-click="onCardClicked(card.id)">
-				<td>{{card.title}}</td>
+			<tr ng-repeat="card in cards">
+				<td><a href="#!/topics/{{topicId}}/cards/{{card.id}}">{{card.title}}</a></td>
 				<td><button type="button" class="btn btn-danger"
 						ng-click="remove(card.id)">Remove</button></td>
 			</tr>

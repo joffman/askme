@@ -25,6 +25,7 @@ class Database {
 	}
 
 	addTopic(topic, callback) {
+		// TODO: Can't we just let the database do the validation?
 		if ("name" in topic) {
 			const sql = "INSERT INTO topic (name) VALUES (?)";
 			this.db.run(sql, [topic.name], function(err) {
@@ -57,6 +58,48 @@ class Database {
 		});	
 	}
 
+
+	getCards(topic_id, callback) {
+		const sql = "SELECT id, title FROM card WHERE topic_id = ?";
+		this.db.all(sql, [topic_id], function(err, rows) {
+			if (err) {
+				callback(err, null);
+			} else {
+				callback(null, rows);
+			}
+		});
+	}
+
+	addCard(card, callback) {
+		// The database does the validation.
+		const sql = "INSERT INTO card (title, question, answer, topic_id) VALUES (?, ?, ?, ?)";
+		this.db.run(sql, [card.title, card.question, card.answer, card.topic_id],
+				function(err) {
+			if (err) {
+				callback(err, null);
+			} else {
+				callback(null, this.lastID);
+			}
+		});
+	}
+
+	deleteCard(card_id, callback) {
+		const sql = "DELETE FROM card WHERE id = ?";
+		this.db.run(sql, [card_id], function(err) {
+			if (err) {
+				callback(err, null);
+			} else {
+				if (this.changes === 0) {
+					callback(null, null);
+				} else if (this.changes === 1) {
+					callback(null, card_id);
+				} else {
+					console.log("Strange number of changes when deleting card:", this.changes);
+					callback({message: "number of changes is not equal to 1"}, null);
+				}
+			}
+		});	
+	}
 	// todo: where to call db.close()?
 }
 

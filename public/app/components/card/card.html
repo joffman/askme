@@ -22,7 +22,11 @@
 			<textarea id="card-answer" class="form-control" ng-model="card.answer" />
 		</div>
 
-		<!-- Topic select menu -->
+		<!-- todo: Use topic select menu instead with names. -->
+		<div class="form-group">
+			<label for="card-topic-id">Topic-ID</label>
+			<textarea id="card-topic-id" class="form-control" ng-model="card.topic_id" />
+		</div>
 
 		<button class="btn btn-primary form-control"
 			ng-click="onSubmit()">Submit</button>
