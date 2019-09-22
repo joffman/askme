@@ -7,26 +7,6 @@ const app = express();
 
 
 //////////////////////////////////////////////////
-// Model.
-// TODO: Get this from database.
-//////////////////////////////////////////////////
-
-//var topics_data = [
-//{
-//	id: 1,
-//	name: "C++",
-//	num_cards: 6
-//},
-//{
-//	id: 2,
-//	name: "Web Development",
-//	num_cards: 7
-//}];
-//
-//var id = 3;
-
-
-//////////////////////////////////////////////////
 // Set up global variables.
 //////////////////////////////////////////////////
 var database = new Database();
@@ -56,23 +36,47 @@ app.get("/api1/topics", function(req, res) {
 });
 
 app.post("/api1/topics", function(req, res) {
-	if ("topic_name" in req.body) {
-		topics_data.push({
-			id: id++,
-			name: req.body.topic_name,
-			num_cards: 0
+	if ("name" in req.body) {
+		const topic = { name: req.body.name };
+		database.addTopic(topic, function(err, topic_id) {
+			if (err) {
+				console.log("Error:", err);
+				res.json({
+					success: false,
+					error_msg: err.message
+				});
+			} else {
+				res.json({success: true, id: topic_id});
+			}
 		});
-		res.json({success: true});
 	} else {
-		res.json({success: false});
+		res.json({
+			success: false,
+			error_msg: "name missing in request-body"
+		});
 	}
 });
 
 app.delete("/api1/topics/:id", function(req, res) {
-	topics_data = topics_data.filter(function(elem, index, arr) {
-		return elem.id != req.params.id;
+	database.deleteTopic(req.params.id, function(err, topic_id) {
+		if (err) {
+			res.statusCode = 500;
+			res.json({
+				success: false,
+				error_msg: err.message
+			});
+		} else if (topic_id) {
+			res.json({success: true});
+		} else {
+			res.json({
+				success: false,
+				error_msg: `Topic with id ${id} does not exist.`
+			});
+		}
 	});
-	res.json({success: true});
+//	topics_data = topics_data.filter(function(elem, index, arr) {
+//		return elem.id != req.params.id;
+//	});
 });
 
 

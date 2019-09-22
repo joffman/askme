@@ -1,3 +1,4 @@
 backend/node_modules
 backend/askme.db
 backend/package-lock.json
+*.swp

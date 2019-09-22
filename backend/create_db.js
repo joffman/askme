@@ -3,6 +3,8 @@ const sqlite3 = require("sqlite3");
 var db = new sqlite3.Database("askme.db");
 
 db.serialize(function() {
+	db.run("PRAGMA foreign_keys = ON");
+
 	db.run("CREATE TABLE IF NOT EXISTS topic (\n"
 			+ "\tid INTEGER PRIMARY KEY,\n"
 			+ "\tname TEXT UNIQUE NOT NULL\n"

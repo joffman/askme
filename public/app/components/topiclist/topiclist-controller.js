@@ -31,7 +31,7 @@ angular.module("topiclist.controllers", ["topiclist.services"])
 	$scope.add = function() {
 		// Create new topic.
 		var new_topic = {
-			topic_name: $scope.new_topic_name,
+			name: $scope.new_topic_name,
 		};
 		topiclistSvc.addTopic(new_topic).then(function(resp_data) {
 		})
