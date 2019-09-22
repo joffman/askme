@@ -11,6 +11,11 @@ class Database {
 		});
 	}
 
+
+	//////////////////////////////////////////////////
+	// Topics API.
+	//////////////////////////////////////////////////
+
 	getTopics(callback) {
 		const sql = "SELECT id, name, "
 			+ "(SELECT COUNT(*) FROM card WHERE card.topic_id = topic.id) num_cards "
@@ -59,6 +64,10 @@ class Database {
 	}
 
 
+	//////////////////////////////////////////////////
+	// Cards API.
+	//////////////////////////////////////////////////
+
 	getCards(topic_id, callback) {
 		const sql = "SELECT id, title FROM card WHERE topic_id = ?";
 		this.db.all(sql, [topic_id], function(err, rows) {
@@ -66,6 +75,17 @@ class Database {
 				callback(err, null);
 			} else {
 				callback(null, rows);
+			}
+		});
+	}
+
+	getCard(card_id, callback) {
+		const sql = "SELECT * FROM card WHERE id = ?";
+		this.db.get(sql, [card_id], function(err, row) {
+			if (err) {
+				callback(err, null);
+			} else {
+				callback(null, row);
 			}
 		});
 	}
@@ -79,6 +99,21 @@ class Database {
 				callback(err, null);
 			} else {
 				callback(null, this.lastID);
+			}
+		});
+	}
+
+	updateCard(card_id, card, callback) {
+		// The database does the validation.
+		const sql = "UPDATE card SET title=?, question=?, answer=?, topic_id=? "
+			+ "WHERE id=?";
+		this.db.run(sql,
+				[card.title, card.question, card.answer, card.topic_id, card_id],
+				function(err) {
+			if (err) {
+				callback(err);
+			} else {
+				callback(null);
 			}
 		});
 	}

@@ -107,8 +107,21 @@ app.get("/api1/cards", function(req, res) {
 	}
 });
 
+app.get("/api1/cards/:id", function(req, res) {
+	database.getCard(req.params.id, function(err, card_data) {
+		if (err) {
+			res.statusCode = 500;
+			res.json({
+				success: false, 
+				error_msg: err.message
+			});
+		} else {
+			res.json({success: true, card: card_data});
+		}
+	});
+});
+
 app.post("/api1/cards", function(req, res) {
-	//const card = { name: req.body.name };
 	const card = req.body;
 	database.addCard(card, function(err, card_id) {
 		if (err) {
@@ -119,6 +132,21 @@ app.post("/api1/cards", function(req, res) {
 			});
 		} else {
 			res.json({success: true, id: card_id});
+		}
+	});
+});
+
+app.put("/api1/cards/:id", function(req, res) {
+	const card = req.body;
+	database.updateCard(req.params.id, card, function(err, card_id) {
+		if (err) {
+			console.log("Error:", err);
+			res.json({
+				success: false,
+				error_msg: err.message
+			});
+		} else {
+			res.json({success: true});
 		}
 	});
 });
