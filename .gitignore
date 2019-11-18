@@ -1,4 +1,8 @@
 backend/node_modules
 backend/askme.db
 backend/package-lock.json
+
+public/uploads/cards/*
+!public/uploads/cards/.gitkeep
+
 *.swp

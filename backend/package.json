@@ -5,6 +5,7 @@
   "main": "server.js",
   "dependencies": {
     "express": "^4.17.1",
+    "formidable": "^1.2.1",
     "sqlite3": "^4.1.0"
   },
   "devDependencies": {

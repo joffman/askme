@@ -1,0 +1,22 @@
+<section id="attachments-section">
+	<!-- Question Image -->
+	<!-- TODO: Allow for multiple files. -->
+	<div class="button" ngf-select="upload($file, 'Q')">Upload on file select</div>
+
+	<!--
+	<input type="file" ngf-select ng-model="questionPic" name="questionFile"    
+		accept="image/*" ngf-max-size="2MB" ngf-model-invalid="errorFile" />
+	<span ng-show="cardForm.questionFile.$error.maxSize">File too large 
+		{{errorFile.size / 1000000|number:1}}MB: max 2M</span>
+	<img ngf-thumbnail="questionPic">
+	<button ng-click="questionPic = null" ng-show="questionPic">Remove</button>
+	<span class="progress" ng-show="questionPic.progress >= 0">
+		<div style="width:{{questionPic.progress}}%" 
+	   ng-bind="questionPic.progress + '%'"></div>
+	</span>
+	<span ng-show="questionPic.result">Upload Successful</span>
+	<span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+	-->
+
+	<!-- Answer Image -->
+</section>

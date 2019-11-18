@@ -17,7 +17,7 @@ angular.module("topiclist.services", [])
 			topic.name = topic_data.name;
 			return topiclistResource.save(topic).$promise;
 		} else {	// todo: error handling
-			throw { error: "addTopic: Invalid topic-data" };
+			throw { message: "addTopic: Invalid topic-data" };
 		}
 	}
 

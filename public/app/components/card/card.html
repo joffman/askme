@@ -5,7 +5,7 @@
 	<div ng-if="card.id != 0">
 		<h2>Card #{{card.id}}</h2>
 	</div>
-	<form id="card-form">
+	<form id="card-form" name="cardForm" novalidate>
 		<!-- TODO: Use ngRequired for card-title. -->
 		<div class="form-group">
 			<label for="card-title">Title</label>
@@ -15,7 +15,6 @@
 		<div class="form-group">
 			<label for="card-question">Question</label>
 			<textarea id="card-question" class="form-control" ng-model="card.question" />
-			<!--<input type="text" id="card-question" class="form-control" ng-model="card.question" />-->
 		</div>
 
 		<div class="form-group">
@@ -23,13 +22,25 @@
 			<textarea id="card-answer" class="form-control" ng-model="card.answer" />
 		</div>
 
-		<!-- TODO: Use topic select menu instead with names. -->
 		<div class="form-group">
-			<label for="card-topic-id">Topic-ID</label>
-			<textarea id="card-topic-id" class="form-control" ng-model="card.topic_id" />
+			<label for="card-topic">Topic</label>
+			<select id="card-topic" name="cardTopic" class="form-control"
+				ng-model="card.topic_id" ng-options="t.id as t.name for t in topics"
+				required>
+			</select>	<!-- FIXME: This doesn't work for a new card. -->
 		</div>
 
-		<button class="btn btn-primary form-control"
-			ng-click="onSubmit()">Submit</button>
+		<!-- Buttons -->
+		<div class="form-group">
+			<button class="btn btn-primary form-control"
+		   ng-click="onSubmit()" ng-disabled="cardForm.$invalid">Submit</button>
+		</div>
+
+		<div class="form-group">
+			<button class="btn btn-primary form-control"
+		   ng-disabled="card.id == 0" ng-click="openAttachments()">
+				Manage attachments
+			</button>
+		</div>
 	</form>
 </section>

@@ -33,13 +33,10 @@ angular.module("topiclist.controllers", ["topiclist.services"])
 			name: $scope.new_topic_name,
 		};
 		topiclistSvc.addTopic(new_topic).then(function(resp_data) {
-		})
-		["catch"](function(error) {
+			fetchTopics();
+		}).catch((error) => {
 			handleApiError(error);
 		});
-
-		// Fetch updated topics.
-		fetchTopics();
 
 		// Clear input.
 		$scope.new_topic_name = "";
@@ -56,6 +53,7 @@ angular.module("topiclist.controllers", ["topiclist.services"])
 
 	$scope.onTopicClicked = function(topic_id) {
 		window.location = `#!/topics/${topic_id}/cards`;
+		// TODO: we probably want to use $location.path("/...");
 	};
 
 

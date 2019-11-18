@@ -1,4 +1,5 @@
-var askMeApp = angular.module("askMeApp", [ "ngRoute", "ngResource", "topiclist.controllers", "cardlist.controllers", "card.controllers" ]);
+var askMeApp = angular.module("askMeApp", [ "ngRoute", "ngResource", "topiclist.controllers",
+		"cardlist.controllers", "card.controllers", "attachments.controllers" ]);
 
 // Configure routes.
 askMeApp.config(function($routeProvider) {
@@ -13,6 +14,10 @@ askMeApp.config(function($routeProvider) {
 	.when("/topics/:topicId/cards/:cardId", {
 		templateUrl: "app/components/card/card.html",
 		controller: "cardController"
+	})
+	.when("/topics/:topicId/cards/:cardId/attachments", {
+		templateUrl: "app/components/attachments/attachments.html",
+		controller: "attachmentsController"
 	})
 	.when("/about", {
 		templateUrl: "app/components/about/about.html"

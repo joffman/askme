@@ -47,6 +47,7 @@ angular.module("cardlist.controllers", ["cardlist.services"])
 
 	$scope.onAddCardClicked = function() {
 		window.location = `#!/topics/${$routeParams.topicId}/cards/0`;
+		// TODO: we probably want to use $location.path("/...");
 	};
 
 

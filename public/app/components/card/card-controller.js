@@ -1,7 +1,8 @@
-angular.module("card.controllers", ["card.services"])
-.controller("cardController", ["$scope", "$routeParams", "cardSvc",
-		function($scope, $routeParams, cardSvc) {
+angular.module("card.controllers", ["card.services", "topiclist.services", "ngFileUpload"])
+.controller("cardController", ["$scope", "$location", "$routeParams", "cardSvc", "topiclistSvc", "Upload",
+		function($scope, $location, $routeParams, cardSvc, topiclistSvc, Upload) {
 
+	// Set $scope.card.
 	if ($routeParams.cardId == 0) {	// new card
 		$scope.card = {
 			id: 0,
@@ -16,13 +17,28 @@ angular.module("card.controllers", ["card.services"])
 		});
 	}
 
+	// Fetch topics.
+	topiclistSvc.queryTopics().then(function(resp_data) {
+		$scope.topics = resp_data.topics;
+	})
+	["catch"](function(error) {
+		handleApiError(error);
+	});
+
 
 	//////////////////////////////////////////////////
-	// General functions.
+	// Private functions.
 	//////////////////////////////////////////////////
 
 	function handleApiError(err) {
 		alert("Error: " + err.message);
+	}
+
+	function uploadImage(card_id, img_file) {
+		return Upload.upload({
+			url: "uploads/cards/" + card_id,
+			data: {questionImage: img_file}
+		});
 	}
 
 
@@ -30,31 +46,27 @@ angular.module("card.controllers", ["card.services"])
 	// Scope functions.
 	//////////////////////////////////////////////////
 
+	$scope.openAttachments = function() {
+		$location.url(`/topics/${$routeParams.topicId}/cards/${$routeParams.cardId}/attachments`);
+	};
+
 	$scope.onSubmit = function() {
-		if ($scope.card.id === 0) {
-			cardSvc.addCard($scope.card).then(function(resp_data) {
-				if (resp_data.success) {
-					// Redirect to cards of topic.
-					window.location = `#!/topics/${$scope.card.topic_id}/cards`;
-				} else {
-					throw {message: resp_data.error_msg};
-				}
-			})["catch"](function(err) {
+
+		if ($scope.card.id === 0) {	// new card
+			cardSvc.addCard($scope.card).then(function(response) {
+				alert("Successfully added card.");
+				$scope.card.id = response.id;
+			}).catch(function(err) {
 				handleApiError(err);
 			});
-
-		} else {
-			cardSvc.updateCard($scope.card).then(function(resp_data) {
-				if (resp_data.success) {
-					// Redirect to cards of topic.
-					window.location = `#!/topics/${$scope.card.topic_id}/cards`;
-				} else {
-					throw {message: resp_data.error_msg};
-				}
-			})["catch"](function(err) {
+		} else {	// existing card
+			cardSvc.updateCard($scope.card).then(function(response) {
+				alert("Successfully updated card.");
+			}).catch(function(err) {
 				handleApiError(err);
 			});
 		}
 	};
 
-}]);
+		}
+]);
