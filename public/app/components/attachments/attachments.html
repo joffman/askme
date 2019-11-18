@@ -1,7 +1,35 @@
 <section id="attachments-section">
-	<!-- Question Image -->
 	<!-- TODO: Allow for multiple files. -->
-	<div class="button" ngf-select="upload($file, 'Q')">Upload on file select</div>
+
+	<!-- Question Image -->
+	<div class="container">
+		<div class="row">
+			<h3>Question Image</h3>
+		</div>
+		<div class="row">
+			<div ng-if="!questionImage" class="btn btn-primary" ngf-select="upload($file, 'Q')">Upload on file select</div>
+			<img ng-if="questionImage" ng-src="{{questionImage.path}}" alt="question image" />
+			<td><button ng-if="questionImage" type="button" class="btn btn-danger"
+												   ng-click="remove(questionImage)">Remove</button></td>
+		</div>
+	</div>
+
+	<!-- Answer Image -->
+	<div class="container">
+		<div class="row">
+			<h3>Answer Image</h3>
+		</div>
+		<div class="row">
+			<div ng-if="!answerImage" class="btn btn-primary" ngf-select="upload($file, 'A')">Upload on file select</div>
+			<img ng-if="answerImage" ng-src="{{answerImage.path}}" alt="answer image" />
+			<td><button ng-if="answerImage" type="button" class="btn btn-danger"
+												   ng-click="remove(answerImage)">Remove</button></td>
+		</div>
+	</div>
+
+	<!-- Back Button
+		...
+	-->
 
 	<!--
 	<input type="file" ngf-select ng-model="questionPic" name="questionFile"    
@@ -18,5 +46,4 @@
 	<span class="err" ng-show="errorMsg">{{errorMsg}}</span>
 	-->
 
-	<!-- Answer Image -->
 </section>

@@ -34,20 +34,13 @@ angular.module("card.controllers", ["card.services", "topiclist.services", "ngFi
 		alert("Error: " + err.message);
 	}
 
-	function uploadImage(card_id, img_file) {
-		return Upload.upload({
-			url: "uploads/cards/" + card_id,
-			data: {questionImage: img_file}
-		});
-	}
-
 
 	//////////////////////////////////////////////////
 	// Scope functions.
 	//////////////////////////////////////////////////
 
 	$scope.openAttachments = function() {
-		$location.url(`/topics/${$routeParams.topicId}/cards/${$routeParams.cardId}/attachments`);
+		$location.url(`/topics/${$routeParams.topicId}/cards/${$scope.card.id}/attachments`);
 	};
 
 	$scope.onSubmit = function() {
@@ -56,6 +49,7 @@ angular.module("card.controllers", ["card.services", "topiclist.services", "ngFi
 			cardSvc.addCard($scope.card).then(function(response) {
 				alert("Successfully added card.");
 				$scope.card.id = response.id;
+				// TODO Update url.
 			}).catch(function(err) {
 				handleApiError(err);
 			});
