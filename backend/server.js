@@ -6,9 +6,9 @@ const app = express();
 // Set up middleware.
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "/../public")));
-app.use("/api1/topics", require("./routes/api1/topics.js"));
+app.use("/api1/categories", require("./routes/api1/categories.js"));
+app.use("/api1/collections", require("./routes/api1/collections.js"));
 app.use("/api1/cards", require("./routes/api1/cards.js"));
-
 
 // Listen to requests.
 const PORT = process.env.PORT || 5000;

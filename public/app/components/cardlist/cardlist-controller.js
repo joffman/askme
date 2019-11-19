@@ -6,8 +6,8 @@ angular.module("cardlist.controllers", ["cardlist.services"])
 	// Scope variables.
 	//////////////////////////////////////////////////
 
-	$scope.topicId = $routeParams.topicId;
-	$scope.topicName = $scope.topicId;	// todo: get name from backend
+	$scope.collection_id = $routeParams.collection_id;
+	$scope.collection_name = $scope.collection_id;	// todo: get name from backend
 	$scope.cards = [];
 
 
@@ -20,7 +20,7 @@ angular.module("cardlist.controllers", ["cardlist.services"])
 	}
 
 	function fetchCards() {
-		cardlistSvc.queryCards($routeParams.topicId).then(function(resp_data) {
+		cardlistSvc.queryCards($routeParams.collection_id).then(function(resp_data) {
 			$scope.cards = resp_data.cards;
 		})
 		["catch"](function(error) {
@@ -46,11 +46,11 @@ angular.module("cardlist.controllers", ["cardlist.services"])
 	};
 
 	$scope.onAddCardClicked = function() {
-		$location.url(`/topics/${$routeParams.topicId}/cards/0`);
+		$location.url(`/collections/${$routeParams.collection_id}/cards/0`);
 	};
 
 	$scope.startQuiz = function() {
-		$location.url(`/topics/${$routeParams.topicId}/quiz`);
+		$location.url(`/collections/${$routeParams.collection_id}/quiz`);
 	};
 
 

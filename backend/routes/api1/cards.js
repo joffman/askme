@@ -35,9 +35,9 @@ function parseMultipart(req) {
 ////////////////////////////////////////////////////////////////////////////////
 
 router.get("/", async function(req, res) {
-	if (("topic_id" in req.query)) {
+	if (("collection_id" in req.query)) {
 		try {
-			var cards = await database.getCards(req.query.topic_id);
+			var cards = await database.getCards(req.query.collection_id);
 			res.json({success: true, cards: cards});
 		} catch (err) {
 			res.statusCode = 500;
@@ -50,7 +50,7 @@ router.get("/", async function(req, res) {
 		res.statusCode = 400;
 		res.json({
 			success: false,
-			error_msg: "topic_id parameter is missing"
+			error_msg: "collection_id parameter is missing"
 		});
 	}
 });

@@ -5,9 +5,9 @@ header {
 }
 
 header > img {
-	width: 70px;
 	height: 70px;
 	float: left;
+	margin-left: 10px;
 }
 
 header > nav {

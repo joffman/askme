@@ -1,26 +1,30 @@
-var askMeApp = angular.module("askMeApp", [ "ngRoute", "ngResource", "topiclist.controllers",
-		"cardlist.controllers", "card.controllers", "attachments.controllers",
-		"quiz.controllers" ]);
+var askMeApp = angular.module("askMeApp", [ "ngRoute", "ngResource", "categories.controllers",
+		"collections.controllers", "cardlist.controllers", "card.controllers",
+		"attachments.controllers", "quiz.controllers" ]);
 
 // Configure routes.
 askMeApp.config(function($routeProvider) {
-	$routeProvider.when("/topics", {
-		templateUrl: "app/components/topiclist/topiclist.html",
-		controller: "topicListController"
+	$routeProvider.when("/categories", {
+		templateUrl: "app/components/categories/categories.html",
+		controller: "categoriesController"
 	})
-	.when("/topics/:topicId/cards", {
+	$routeProvider.when("/collections", {
+		templateUrl: "app/components/collections/collections.html",
+		controller: "collectionsController"
+	})
+	.when("/collections/:collection_id/cards", {
 		templateUrl: "app/components/cardlist/cardlist.html",
 		controller: "cardListController"
 	})
-	.when("/topics/:topicId/quiz", {
+	.when("/collections/:collection_id/quiz", {
 		templateUrl: "app/components/quiz/quiz.html",
 		controller: "quizController"
 	})
-	.when("/topics/:topicId/cards/:cardId", {
+	.when("/collections/:collection_id/cards/:card_id", {
 		templateUrl: "app/components/card/card.html",
 		controller: "cardController"
 	})
-	.when("/topics/:topicId/cards/:cardId/attachments", {
+	.when("/collections/:collection_id/cards/:card_id/attachments", {
 		templateUrl: "app/components/attachments/attachments.html",
 		controller: "attachmentsController"
 	})
@@ -28,7 +32,7 @@ askMeApp.config(function($routeProvider) {
 		templateUrl: "app/components/about/about.html"
 	})
 	.otherwise({
-		redirectTo: "/topics"
+		redirectTo: "/collections"
 	});
 });
 

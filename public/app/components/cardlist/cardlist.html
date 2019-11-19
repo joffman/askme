@@ -1,5 +1,5 @@
 <section id="cardlist-section">
-	<h2>Cards of topic {{topicName}}</h2>
+	<h2>Cards of collection {{collection_name}}</h2>
 	<table id="cardlist-table" class="table table-striped table-hover">
 		<thead>
 			<tr>
@@ -9,7 +9,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="card in cards">
-				<td><a href="#!/topics/{{topicId}}/cards/{{card.id}}">{{card.title}}</a></td>
+				<td><a href="#!/collections/{{collection_id}}/cards/{{card.id}}">{{card.title}}</a></td>
 				<td><button type="button" class="btn btn-danger"
 						ng-click="remove(card.id)">Remove</button></td>
 			</tr>

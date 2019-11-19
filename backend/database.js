@@ -89,29 +89,54 @@ class Database {
 	}
 
 	//////////////////////////////////////////////////
-	// Topics API.
+	// Categories API.
 	//////////////////////////////////////////////////
 
-	getTopics() {
-		const sql = "SELECT id, name, "
-			+ "(SELECT COUNT(*) FROM card WHERE card.topic_id = topic.id) num_cards "
-			+ "FROM topic";
+	getCategories() {
+		const sql = "SELECT * FROM category";
 		return this.db.allAsync(sql, []);
 	}
 
-	addTopic(topic) {
+	addCategory(category) {
 		// TODO: Can't we just let the database do the validation?
-		if ("name" in topic) {
-			const sql = "INSERT INTO topic (name) VALUES (?)";
-			return this.db.insertAsync(sql, [topic.name]);
+		if ("name" in category) {
+			const sql = "INSERT INTO category (name) VALUES (?)";
+			return this.db.insertAsync(sql, [category.name]);
 		} else {
-			return Promise.reject({message: "invalid topic-data passed to addTopic"});
+			return Promise.reject({message: "invalid category-data passed to addCategory"});
 		}
 	}
 
-	deleteTopic(topic_id) {
-		const sql = "DELETE FROM topic WHERE id = ?";
-		return this.db.deleteAsync(sql, topic_id);
+	deleteCategory(category_id) {
+		const sql = "DELETE FROM category WHERE id = ?";
+		return this.db.deleteAsync(sql, category_id);
+	}
+
+
+	//////////////////////////////////////////////////
+	// Collections API.
+	//////////////////////////////////////////////////
+
+	getCollections() {
+		const sql = "SELECT id, name, "
+			+ "(SELECT COUNT(*) FROM card WHERE card.collection_id = collection.id) num_cards "
+			+ "FROM collection";
+		return this.db.allAsync(sql, []);
+	}
+
+	addCollection(collection) {
+		// TODO: Can't we just let the database do the validation?
+		if ("name" in collection) {
+			const sql = "INSERT INTO collection (name) VALUES (?)";
+			return this.db.insertAsync(sql, [collection.name]);
+		} else {
+			return Promise.reject({message: "invalid collection-data passed to addCollection"});
+		}
+	}
+
+	deleteCollection(collection_id) {
+		const sql = "DELETE FROM collection WHERE id = ?";
+		return this.db.deleteAsync(sql, collection_id);
 	}
 
 
@@ -119,9 +144,9 @@ class Database {
 	// Cards API.
 	//////////////////////////////////////////////////
 
-	getCards(topic_id) {
-		const sql = "SELECT id, title FROM card WHERE topic_id = ?";
-		return this.db.allAsync(sql, [topic_id]);
+	getCards(collection_id) {
+		const sql = "SELECT id, title FROM card WHERE collection_id = ?";
+		return this.db.allAsync(sql, [collection_id]);
 	}
 
 	getCard(card_id) {
@@ -131,18 +156,18 @@ class Database {
 
 	addCard(card) {
 		// The database does the validation.
-		const sql = "INSERT INTO card (title, question, answer, topic_id)"
+		const sql = "INSERT INTO card (title, question, answer, collection_id)"
 		   + " VALUES (?, ?, ?, ?)";
 		return this.db.insertAsync(sql,
-				[card.title, card.question, card.answer, card.topic_id]);
+				[card.title, card.question, card.answer, card.collection_id]);
 	}
 
 	updateCard(card_id, card) {
 		// The database does the validation.
-		const sql = "UPDATE card SET title=?, question=?, answer=?, topic_id=? "
+		const sql = "UPDATE card SET title=?, question=?, answer=?, collection_id=? "
 			+ "WHERE id=?";
 		return this.db.updateAsync(sql,
-				[card.title, card.question, card.answer, card.topic_id, card_id]);
+				[card.title, card.question, card.answer, card.collection_id, card_id]);
 	}
 
 	deleteCard(card_id) {

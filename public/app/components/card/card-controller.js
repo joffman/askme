@@ -1,15 +1,15 @@
-angular.module("card.controllers", ["card.services", "topiclist.services", "ngFileUpload"])
-.controller("cardController", ["$scope", "$location", "$routeParams", "cardSvc", "topiclistSvc", "Upload",
-		function($scope, $location, $routeParams, cardSvc, topiclistSvc, Upload) {
+angular.module("card.controllers", ["card.services", "collections.services", "ngFileUpload"])
+.controller("cardController", ["$scope", "$location", "$routeParams", "cardSvc", "collectionsSvc", "Upload",
+		function($scope, $location, $routeParams, cardSvc, collectionsSvc, Upload) {
 
 	// Set $scope.card.
-	if ($routeParams.cardId == 0) {	// new card
+	if ($routeParams.card_id == 0) {	// new card
 		$scope.card = {
 			id: 0,
-			topic_id: $routeParams.topicId
+			collection_id: $routeParams.collection_id
 		};
 	} else {						// existing card
-		cardSvc.getCard($routeParams.cardId).then(function(resp_data) {
+		cardSvc.getCard($routeParams.card_id).then(function(resp_data) {
 			$scope.card = resp_data.card;
 		})
 		["catch"](function(err) {
@@ -17,9 +17,9 @@ angular.module("card.controllers", ["card.services", "topiclist.services", "ngFi
 		});
 	}
 
-	// Fetch topics.
-	topiclistSvc.queryTopics().then(function(resp_data) {
-		$scope.topics = resp_data.topics;
+	// Fetch collections.
+	collectionsSvc.queryCollections().then(function(resp_data) {
+		$scope.collections = resp_data.collections;
 	})
 	["catch"](function(error) {
 		handleApiError(error);
@@ -40,7 +40,7 @@ angular.module("card.controllers", ["card.services", "topiclist.services", "ngFi
 	//////////////////////////////////////////////////
 
 	$scope.openAttachments = function() {
-		$location.url(`/topics/${$routeParams.topicId}/cards/${$scope.card.id}/attachments`);
+		$location.url(`/collections/${$routeParams.collection_id}/cards/${$scope.card.id}/attachments`);
 	};
 
 	$scope.onSubmit = function() {

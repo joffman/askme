@@ -105,12 +105,12 @@ angular.module("quiz.controllers", ["cardlist.services", "card.services", "attac
 	// Initialization.
 	//////////////////////////////////////////////////
 
-	cardlistSvc.queryCards($routeParams.topicId).then((resp) => {
+	cardlistSvc.queryCards($routeParams.collection_id).then((resp) => {
 		if (resp.success) {
 			cards = resp.cards;
 			if (cards.length < $scope.cards_per_quiz) {
-				alert(`Topic has only ${cards.length} cards.`
-					+ `Quiz requires at least ${$scope.cards_per_quiz} cards.`);
+				alert(`Collection has only ${cards.length} cards.`
+					+ ` Quiz requires at least ${$scope.cards_per_quiz} cards.`);
 				return;
 			}
 			advance();
@@ -118,7 +118,7 @@ angular.module("quiz.controllers", ["cardlist.services", "card.services", "attac
 			throw(Error(resp.error_msg));
 		}
 	}).catch((err) => {
-		alert(`Cannot fetch cards of topic with id '${$routeParams.topicId}': ${err}`);
+		alert(`Cannot fetch cards of collection with id '${$routeParams.collection_id}': ${err}`);
 	});
 
 
@@ -138,7 +138,7 @@ angular.module("quiz.controllers", ["cardlist.services", "card.services", "attac
 
 	$scope.quitQuiz = function() {
 		// todo use confirmation-dialog (modal window)
-		$location.url(`/topics/${$routeParams.topicId}/cards`);
+		$location.url(`/collections/${$routeParams.collection_id}/cards`);
 	};
 
 		}

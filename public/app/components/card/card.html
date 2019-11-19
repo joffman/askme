@@ -23,10 +23,10 @@
 		</div>
 
 		<div class="form-group">
-			<label for="card-topic">Topic</label>
-			<select id="card-topic" name="cardTopic" class="form-control"
-				ng-model="card.topic_id" ng-options="t.id as t.name for t in topics"
-				required>
+			<label for="card-collection">Collection</label>
+			<select id="card-collection" name="cardCollection" class="form-control"
+				ng-model="card.collection_id"
+				ng-options="t.id as t.name for t in collections" required>
 			</select>	<!-- FIXME: This doesn't work for a new card. -->
 		</div>
 

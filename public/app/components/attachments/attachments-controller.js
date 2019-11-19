@@ -5,7 +5,7 @@ angular.module("attachments.controllers", ["attachments.services", "ngFileUpload
 	// Fetch attachments.
 	$scope.questionImage = null;
 	$scope.answerImage = null;
-	attachmentsSvc.queryAttachments($routeParams.cardId).then(function(resp_data) {
+	attachmentsSvc.queryAttachments($routeParams.card_id).then(function(resp_data) {
 		for (var att of resp_data.attachments) {
 			if (att.belongs_to == "Q")
 				$scope.questionImage = att;
@@ -33,7 +33,7 @@ angular.module("attachments.controllers", ["attachments.services", "ngFileUpload
 	//////////////////////////////////////////////////
 
 	$scope.upload = async function(file, belongs_to) {
-		const attachment = {card_id: $routeParams.cardId, file: file,
+		const attachment = {card_id: $routeParams.card_id, file: file,
 			belongs_to: belongs_to};
 		try {
 			// Store attachment at backend.
