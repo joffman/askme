@@ -1,5 +1,6 @@
 angular.module("cardlist.services", [])
 .factory("cardlistSvc", ["$resource", function($resource) {
+	// todo: I think this should be merged with card.services.
 	var cardlistResource = $resource("api1/cards/:card_id", {}, {});
 
 	function queryCards(topic_id) {

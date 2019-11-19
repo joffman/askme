@@ -1,6 +1,6 @@
 angular.module("cardlist.controllers", ["cardlist.services"])
-.controller("cardListController", ["$scope", "$routeParams", "cardlistSvc",
-		function($scope, $routeParams, cardlistSvc) {
+.controller("cardListController", ["$scope", "$location", "$routeParams", "cardlistSvc",
+		function($scope, $location, $routeParams, cardlistSvc) {
 
 	//////////////////////////////////////////////////
 	// Scope variables.
@@ -46,8 +46,11 @@ angular.module("cardlist.controllers", ["cardlist.services"])
 	};
 
 	$scope.onAddCardClicked = function() {
-		window.location = `#!/topics/${$routeParams.topicId}/cards/0`;
-		// TODO: we probably want to use $location.path("/...");
+		$location.url(`/topics/${$routeParams.topicId}/cards/0`);
+	};
+
+	$scope.startQuiz = function() {
+		$location.url(`/topics/${$routeParams.topicId}/quiz`);
 	};
 
 

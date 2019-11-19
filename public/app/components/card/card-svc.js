@@ -4,6 +4,7 @@ angular.module("card.services", [])
 		update: {method: "PUT", params: {card_id: "@id"}}
 	});
 
+	// TODO Fail when card cannot be fetched.
 	function getCard(card_id) {
 		return cardResource.get({card_id: card_id}).$promise;
 	}
