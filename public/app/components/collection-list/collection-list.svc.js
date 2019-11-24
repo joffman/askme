@@ -11,14 +11,8 @@ angular.module("collections.services", [])
 	}
 
 	function addCollection(collection_data) {
-		// TODO: Better validation.
-		var collection = {};
-		if ("name" in collection_data) {
-			collection.name = collection_data.name;
-			return collectionsResource.save(collection).$promise;
-		} else {	// todo: error handling
-			throw { message: "addCollection: Invalid collection-data" };
-		}
+		var collection = { name: collection_data.name };
+		return collectionsResource.save(collection).$promise;
 	}
 
 	return {

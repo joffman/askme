@@ -108,6 +108,7 @@ class Database {
 	}
 
 	deleteCategory(category_id) {
+		// TODO Make sure that deletion is cascaded to collection_category table.
 		const sql = "DELETE FROM category WHERE id = ?";
 		return this.db.deleteAsync(sql, category_id);
 	}
@@ -124,13 +125,124 @@ class Database {
 		return this.db.allAsync(sql, []);
 	}
 
-	addCollection(collection) {
-		// TODO: Can't we just let the database do the validation?
-		if ("name" in collection) {
-			const sql = "INSERT INTO collection (name) VALUES (?)";
-			return this.db.insertAsync(sql, [collection.name]);
-		} else {
-			return Promise.reject({message: "invalid collection-data passed to addCollection"});
+	getCollection(id) {
+		// Get collection-promise.
+		const collSql = "SELECT id, name "
+			+ "FROM collection WHERE id = ?";
+		var collProm = this.db.getAsync(collSql, [id]);
+
+		// Get category-ids-promise.
+		const catSql = "SELECT category_id FROM collection_category "
+			+ "WHERE collection_id = ?";
+		var catProm = this.db.allAsync(catSql, [id]);
+
+		return Promise.all([collProm, catProm]).then((values) => {
+			var coll = values[0];
+			if (!coll)
+				return null;
+
+			// Merge collection and categories.
+			var cats = values[1];
+			coll.categoryIds = cats.map((elem) => { return elem.category_id; });
+			return coll;
+		});
+	}
+
+	async addCollection(collection) {
+		console.log("addCollection entered.");
+		try {
+			await this.db.runAsync("BEGIN TRANSACTION");
+
+			// Insert collection.
+			console.log("Inserting collection.");
+			const collSql = "INSERT INTO collection (name) VALUES (?)";
+			const collId = await this.db.insertAsync(collSql, [collection.name]);
+
+			if (!collection.categoryIds || collection.categoryIds.length == 0) {
+				console.log("No categories given. Committing.");
+				return this.db.runAsync("COMMIT").then(() => {
+					return collId;
+				});
+			}
+
+			// Create promises for inserting the collection-categories.
+			var collCatPromises = [];
+			console.log("Creating collection-category-promises.");
+			for (var catId of collection.categoryIds) {
+				const collCatSql = "INSERT INTO collection_category "
+					+ "(collection_id, category_id) VALUES (?, ?)";
+				collCatPromises.push(this.db.insertAsync(collCatSql,
+							[collId, catId]));
+			}
+			return Promise.all(collCatPromises).then(async (values) => {
+				// We successfully inserted the collection and all
+				// collection-categories.
+				// Commit the transaction and return the ID of the new collection.
+				console.log("Committing...");
+				await this.db.runAsync("COMMIT");
+				return collId;
+			}).catch(async (err) => {
+				console.log("Error:", err);
+				console.log("Rolling back.");
+				await this.db.runAsync("ROLLBACK");
+				return Promise.reject(err);
+			});
+		} catch (err) {
+			console.log("Error on async operation:", err);
+			console.log("Rolling back...");
+			await this.db.runAsync("ROLLBACK");
+			return Promise.reject(err);
+		}
+	}
+
+	async updateCollection(collId, collection) {
+		console.log("updateCollection entered.");
+		try {
+			await this.db.runAsync("BEGIN TRANSACTION");
+
+			// Create update-collection promise.
+			const collSql = "UPDATE collection SET name = ? WHERE id = ?";
+			var collProm = this.db.updateAsync(collSql,
+					[collection.name, collId]).then((changes) => {
+				if (changes == 0)
+					return Promise.reject(Error(`No collection with given id ${collId}.`));
+				else
+					return changes;
+			});
+
+			// Remove all categories from this collection.
+			const deleteCollCatsSql =
+				"DELETE FROM collection_category WHERE collection_id = ?";
+			await this.db.deleteAsync(deleteCollCatsSql, [collId]);
+
+			// Create promises to insert categories for this collection.
+			var promises = [];
+			if (collection.categoryIds) {
+				for (var catId of collection.categoryIds) {
+					// TODO Create function for insert into collection_category.
+					const sql = "INSERT INTO collection_category "
+						+ "(collection_id, category_id) VALUES (?, ?)";
+					promises.push(this.db.insertAsync(sql, [collId, catId]));
+				}
+			}
+
+			// Collect all promises and check their outcome.
+			promises.push(collProm);
+			return Promise.all(promises).then((values) => {
+				console.log("Committing.");
+				return this.db.runAsync("COMMIT");
+			}).catch((err) => {
+				console.log("Error:", err);
+				console.log("Rolling back.");
+				return this.db.runAsync("ROLLBACK").then(() => {
+					return Promise.reject(err);
+				});
+			});
+		} catch (err) {
+			console.log("Error on async operation:", err);
+			console.log("Rolling back.");
+			await this.db.runAsync("ROLLBACK");
+			return Promise.reject(err);
 		}
 	}
 

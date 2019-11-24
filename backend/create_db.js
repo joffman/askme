@@ -18,7 +18,7 @@ db.serialize(function() {
 	db.run("CREATE TABLE IF NOT EXISTS collection_category (\n"
 			+ "\tcollection_id INTEGER NOT NULL,\n"
 			+ "\tcategory_id INTEGER NOT NULL,\n"
-			+ "\tFOREIGN KEY(collection_id) REFERENCES collection(id),\n"
+			+ "\tFOREIGN KEY(collection_id) REFERENCES collection(id) ON DELETE CASCADE,\n"
 			+ "\tFOREIGN KEY(category_id) REFERENCES category(id),\n"
 			+ "\tPRIMARY KEY(collection_id, category_id)\n"
 			+ ")");

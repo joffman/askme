@@ -6,7 +6,7 @@ angular.module("collections.controllers", ["collections.services"])
 	//////////////////////////////////////////////////
 
 	function handleApiError(err) {
-		alert("Error: " + err.message);
+		alert("Error: " + err.data.error_msg);
 	}
 
 	function fetchCollections() {
@@ -26,21 +26,6 @@ angular.module("collections.controllers", ["collections.services"])
 	//////////////////////////////////////////////////
 	// Scope functions.
 	//////////////////////////////////////////////////
-
-	$scope.add = function() {
-		// Create new collection.
-		var new_collection = {
-			name: $scope.new_collection_name,
-		};
-		collectionsSvc.addCollection(new_collection).then(function(resp_data) {
-			fetchCollections();
-		}).catch((error) => {
-			handleApiError(error);
-		});
-
-		// Clear input.
-		$scope.new_collection_name = "";
-	};
 
 	$scope.remove = function(collection_id) {
 		collectionsSvc.removeCollection(collection_id).then(function(resp_data) {
