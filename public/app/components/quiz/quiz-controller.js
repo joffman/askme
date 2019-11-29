@@ -1,7 +1,7 @@
-angular.module("quiz.controllers", ["cardlist.services", "card.services", "attachments.services"])
-.controller("quizController", ["$scope", "$location", "$routeParams", "cardlistSvc",
+angular.module("quiz.controllers", ["common.card", "card.services", "attachments.services"])
+.controller("quizController", ["$scope", "$location", "$routeParams", "Card",
 		"cardSvc", "attachmentsSvc",
-		function($scope, $location, $routeParams, cardlistSvc, cardSvc, attachmentsSvc) {
+		function($scope, $location, $routeParams, Card, cardSvc, attachmentsSvc) {
 
 	//////////////////////////////////////////////////
 	// Private state.
@@ -105,12 +105,12 @@ angular.module("quiz.controllers", ["cardlist.services", "card.services", "attac
 	// Initialization.
 	//////////////////////////////////////////////////
 
-	cardlistSvc.queryCards($routeParams.collection_id).then((resp) => {
+	Card.query({collection_id: $routeParams.collection_id}).$promise.then((resp) => {
 		if (resp.success) {
 			cards = resp.cards;
 			if (cards.length < $scope.cards_per_quiz) {
 				alert(`Collection has only ${cards.length} cards.`
-					+ ` Quiz requires at least ${$scope.cards_per_quiz} cards.`);
+						+ ` Quiz requires at least ${$scope.cards_per_quiz} cards.`);
 				return;
 			}
 			advance();

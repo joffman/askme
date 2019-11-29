@@ -1,6 +1,6 @@
 var askMeApp = angular.module("askMeApp", [ "ngRoute", "ngResource", "categories.controllers",
-		"collections.controllers", "cardlist.controllers", "card.controllers",
-		"attachments.controllers", "quiz.controllers", "collectionDetails" ]);
+		"collections.controllers", "card.controllers",
+		"attachments.controllers", "quiz.controllers", "collectionDetails", "cardList" ]);
 
 // Configure routes.
 // TODO Use components instead.
@@ -10,22 +10,21 @@ askMeApp.config(function($routeProvider) {
 		controller: "categoriesController"
 	})
 	$routeProvider.when("/collections", {
-		templateUrl: "app/components/collection-list/collection-list.template.html",
+		templateUrl: "app/components/collection-list/collection-list.html",
 		controller: "collectionsController"
 	})
 	$routeProvider.when("/collections/:collectionId", {
 		template: "<collection-details></collection-details>"
 	})
 	.when("/collections/:collection_id/cards", {
-		templateUrl: "app/components/cardlist/cardlist.html",
-		controller: "cardListController"
+		template: "<card-list></card-list>"
 	})
 	.when("/collections/:collection_id/quiz", {
 		templateUrl: "app/components/quiz/quiz.html",
 		controller: "quizController"
 	})
 	.when("/collections/:collection_id/cards/:card_id", {
-		templateUrl: "app/components/card/card.html",
+		templateUrl: "app/components/card-details/card-details.html",
 		controller: "cardController"
 	})
 	.when("/collections/:collection_id/cards/:card_id/attachments", {

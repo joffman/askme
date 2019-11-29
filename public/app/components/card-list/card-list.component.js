@@ -1,14 +1,14 @@
-angular.module("cardlist.controllers", ["cardlist.services"])
-.controller("cardListController", ["$scope", "$location", "$routeParams", "cardlistSvc",
-		function($scope, $location, $routeParams, cardlistSvc) {
+function CardListCtrl($routeParams, $location, Card) {
+
+	var self = this;
 
 	//////////////////////////////////////////////////
 	// Scope variables.
 	//////////////////////////////////////////////////
 
-	$scope.collection_id = $routeParams.collection_id;
-	$scope.collection_name = $scope.collection_id;	// todo: get name from backend
-	$scope.cards = [];
+	self.collection_id = $routeParams.collection_id;
+	self.collection_name = self.collection_id;	// todo: get name from backend
+	self.cards = [];
 
 
 	//////////////////////////////////////////////////
@@ -20,36 +20,31 @@ angular.module("cardlist.controllers", ["cardlist.services"])
 	}
 
 	function fetchCards() {
-		cardlistSvc.queryCards($routeParams.collection_id).then(function(resp_data) {
-			$scope.cards = resp_data.cards;
-		})
-		["catch"](function(error) {
-			handleApiError(error);
-		});
-	}
-
-	function init() {
-		fetchCards();
+		Card.query({collection_id: $routeParams.collection_id})
+			.$promise.then(function(resp_data) {
+				self.cards = resp_data.cards;
+			}).catch(function(error) {
+				handleApiError(error);
+			});
 	}
 
 	//////////////////////////////////////////////////
 	// Scope functions.
 	//////////////////////////////////////////////////
 
-	$scope.remove = function(card_id) {
-		cardlistSvc.removeCard(card_id).then(function(resp_data) {
+	self.remove = function(card_id) {
+		Card.remove({card_id: card_id}).$promise.then(function(resp_data) {
 			fetchCards();
-		})
-		["catch"](function(error) {
+		}).catch(function(error) {
 			handleApiError(error);
 		});
 	};
 
-	$scope.onAddCardClicked = function() {
+	self.onAddCardClicked = function() {
 		$location.url(`/collections/${$routeParams.collection_id}/cards/0`);
 	};
 
-	$scope.startQuiz = function() {
+	self.startQuiz = function() {
 		$location.url(`/collections/${$routeParams.collection_id}/quiz`);
 	};
 
@@ -58,6 +53,12 @@ angular.module("cardlist.controllers", ["cardlist.services"])
 	// Initialization.
 	//////////////////////////////////////////////////
 
-	init();
+	fetchCards();
 
-}]);
+}
+
+angular.module("cardList")
+.component("cardList", {
+	templateUrl: "app/components/card-list/card-list.html",
+	controller: ["$routeParams", "$location", "Card", CardListCtrl]
+});
