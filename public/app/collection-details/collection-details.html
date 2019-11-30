@@ -2,36 +2,31 @@
 <h1 ng-if="$ctrl.collection.id != 0">Edit Collection '{{$ctrl.collection.name}}'</h1>
 
 <form name="collectionForm" ng-submit="$ctrl.submit()">
-  <div class="form-group">
-    <label
-      >Name:
-      <input
-        name="name"
-        type="text"
-        ng-model="$ctrl.collection.name"
-        class="form-control"
-        required
-      />
-    </label>
-  </div>
+<div class="form-group">
+<label >Name: <input name="name" type="text" ng-model="$ctrl.collection.name"
+	class="form-control"
+	required
+  />
+</label>
+</div>
 
-  <div class="form-group">
-    <label
-      >Categories:
-      <select
-        name="categoriesSelect"
-        class="form-control"
-        ng-model="$ctrl.collection.categoryIds"
-        ng-options="cat.id as cat.name for cat in $ctrl.categories"
-        multiple
-      ></select>
-    </label>
-  </div>
+<div class="form-group">
+<label
+  >Categories:
+  <select
+	name="categoriesSelect"
+	class="form-control"
+	ng-model="$ctrl.collection.categoryIds"
+	ng-options="cat.id as cat.name for cat in $ctrl.categories"
+	multiple
+  ></select>
+</label>
+</div>
 
-  <button
-    type="submit"
-    class="btn btn-primary"
-    ng-disabled="collectionForm.$invalid"
+<button
+type="submit"
+class="btn btn-primary"
+ng-disabled="collectionForm.$invalid"
   >
     Submit
   </button>

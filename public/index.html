@@ -1,66 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" ng-app="askMeApp">
-	<head>
-		<!-- Meta tags. -->
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <head>
+        <!-- Meta tags. -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
 
-		<!-- CSS. -->
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet"
-		href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-		    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-	  		crossorigin="anonymous">
-		<link rel="stylesheet" href="css/askme.css">
+        <!-- CSS. -->
+        <link rel="stylesheet" href="css/reset.css" />
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="css/askme.css" />
 
-		<!-- Other stuff. -->
-		<title>AskMe</title>
-	</head>
-	<body>
-		<header ng-include src="'app/header/header.html'">
-		</header>
-		<main ng-view>
-		</main>
-		<!-- Javascript for bootstrap. -->
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-			integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-			crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-			integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-			crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-			integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-			crossorigin="anonymous"></script>
+        <!-- Other stuff. -->
+        <title>AskMe</title>
+    </head>
+    <body>
+        <header ng-include src="'app/header/header.html'"></header>
+        <main ng-view></main>
+        <!-- Javascript for bootstrap. -->
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"
+        ></script>
 
-		<!-- Thirdparty scripts. -->
-		<script src="app/thirdparty/angular.js"></script>
-		<script src="app/thirdparty/angular-route.js"></script>
-		<script src="app/thirdparty/angular-resource.js"></script>
-		<script src="app/thirdparty/ng-file-upload.js"></script>
+        <!-- Thirdparty scripts. -->
+        <script src="app/thirdparty/angular.js"></script>
+        <script src="app/thirdparty/angular-route.js"></script>
+        <script src="app/thirdparty/angular-resource.js"></script>
+        <script src="app/thirdparty/ng-file-upload.js"></script>
 
-		<!-- Our (app) scripts. -->
-		<script src="app/app.js"></script>
-		<script src="app/common/category/category.module.js"></script>
-		<script src="app/common/category/category.svc.js"></script>
-		<script src="app/common/collection/collection.module.js"></script>
-		<script src="app/common/collection/collection.svc.js"></script>
-		<script src="app/common/card/card.module.js"></script>
-		<script src="app/common/card/card.svc.js"></script>
-		<script src="app/common/attachment/attachment.module.js"></script>
-		<script src="app/common/attachment/attachment.svc.js"></script>
-		<script src="app/category-list/category-list.module.js"></script>
-		<script src="app/category-list/category-list.component.js"></script>
-		<script src="app/collection-list/collection-list.module.js"></script>
-		<script src="app/collection-list/collection-list.component.js"></script>
-		<script src="app/collection-details/collection-details.module.js"></script>
-		<script src="app/collection-details/collection-details.component.js"></script>
-		<script src="app/card-list/card-list.module.js"></script>
-		<script src="app/card-list/card-list.component.js"></script>
-		<script src="app/card-details/card-details.module.js"></script>
-		<script src="app/card-details/card-details.component.js"></script>
-		<script src="app/attachments/attachments.module.js"></script>
-		<script src="app/attachments/attachments.component.js"></script>
-		<script src="app/quiz/quiz.module.js"></script>
-		<script src="app/quiz/quiz.component.js"></script>
-	</body>
+        <!-- Our (app) scripts. -->
+        <script src="app/app.js"></script>
+        <script src="app/common/category/category.module.js"></script>
+        <script src="app/common/category/category.svc.js"></script>
+        <script src="app/common/collection/collection.module.js"></script>
+        <script src="app/common/collection/collection.svc.js"></script>
+        <script src="app/common/card/card.module.js"></script>
+        <script src="app/common/card/card.svc.js"></script>
+        <script src="app/common/attachment/attachment.module.js"></script>
+        <script src="app/common/attachment/attachment.svc.js"></script>
+        <script src="app/category-list/category-list.module.js"></script>
+        <script src="app/category-list/category-list.component.js"></script>
+        <script src="app/collection-list/collection-list.module.js"></script>
+        <script src="app/collection-list/collection-list.component.js"></script>
+        <script src="app/collection-details/collection-details.module.js"></script>
+        <script src="app/collection-details/collection-details.component.js"></script>
+        <script src="app/card-list/card-list.module.js"></script>
+        <script src="app/card-list/card-list.component.js"></script>
+        <script src="app/card-details/card-details.module.js"></script>
+        <script src="app/card-details/card-details.component.js"></script>
+        <script src="app/attachments/attachments.module.js"></script>
+        <script src="app/attachments/attachments.component.js"></script>
+        <script src="app/quiz/quiz.module.js"></script>
+        <script src="app/quiz/quiz.component.js"></script>
+    </body>
 </html>
