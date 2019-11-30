@@ -1,66 +1,67 @@
 function CategoryListCtrl(Category) {
+    var self = this;
 
-	var self = this;
+    //////////////////////////////////////////////////
+    // General functions.
+    //////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////
-	// General functions.
-	//////////////////////////////////////////////////
+    function handleApiError(err) {
+        alert("Error: " + err.data.errorMsg);
+    }
 
-	function handleApiError(err) {
-		alert("Error: " + err.data.errorMsg);
-	}
+    function fetchCategories() {
+        Category.query()
+            .$promise.then(respData => {
+                self.categories = respData.categories;
+            })
+            .catch(error => {
+                handleApiError(error);
+            });
+    }
 
-	function fetchCategories() {
-		Category.query().$promise.then((respData) => {
-			self.categories = respData.categories;
-		}).catch((error) => {
-			handleApiError(error);
-		});
-	}
+    function init() {
+        fetchCategories();
+    }
 
-	function init() {
-		fetchCategories();
-	}
+    //////////////////////////////////////////////////
+    // Scope functions.
+    //////////////////////////////////////////////////
 
+    self.add = function() {
+        // Create new category.
+        var newCategory = {
+            name: self.newCategoryName
+        };
+        Category.save(newCategory)
+            .$promise.then(respData => {
+                fetchCategories();
+            })
+            .catch(error => {
+                handleApiError(error);
+            });
 
-	//////////////////////////////////////////////////
-	// Scope functions.
-	//////////////////////////////////////////////////
+        // Clear input.
+        self.newCategoryName = "";
+    };
 
-	self.add = function() {
-		// Create new category.
-		var newCategory = {
-			name: self.newCategoryName,
-		};
-		Category.save(newCategory).$promise.then((respData) => {
-			fetchCategories();
-		}).catch((error) => {
-			handleApiError(error);
-		});
+    self.remove = function(categoryId) {
+        Category.remove({ id: categoryId })
+            .$promise.then(respData => {
+                fetchCategories();
+            })
+            .catch(error => {
+                handleApiError(error);
+            });
+    };
 
-		// Clear input.
-		self.newCategoryName = "";
-	};
+    //////////////////////////////////////////////////
+    // Initialization.
+    //////////////////////////////////////////////////
 
-	self.remove = function(categoryId) {
-		Category.remove({id: categoryId}).$promise.then((respData) => {
-			fetchCategories();
-		}).catch((error) => {
-			handleApiError(error);
-		});
-	};
-
-
-	//////////////////////////////////////////////////
-	// Initialization.
-	//////////////////////////////////////////////////
-
-	init();
-
+    init();
 }
 
-angular.module("categoryList")
-.component("categoryList", {
-	templateUrl: "app/category-list/category-list.html",
-	controller: ["Category", CategoryListCtrl]
+angular.module("categoryList").component("categoryList", {
+    templateUrl: "app/category-list/category-list.html",
+    controller: ["Category", CategoryListCtrl]
 });

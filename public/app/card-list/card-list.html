@@ -1,22 +1,42 @@
 <section id="cardlist-section">
-	<h2>Cards of collection {{$ctrl.collectionName}}</h2>
-	<table id="cardlist-table" class="table table-striped table-hover">
-		<thead>
-			<tr>
-				<th>Title</th>
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="card in $ctrl.cards">
-				<td><a href="#!/collections/{{$ctrl.collectionId}}/cards/{{card.id}}">{{card.title}}</a></td>
-				<td><button type="button" class="btn btn-danger"
-						ng-click="$ctrl.remove(card.id)">Remove</button></td>
-			</tr>
-		</tbody>
-	</table>
-	<a type="button" class="btn btn-success"
-		href="#!/collections/{{$ctrl.collectionId}}/cards/0">Add card</a>
-	<a type="button" class="btn btn-primary"
-		href="#!/collections/{{$ctrl.collectionId}}/quiz">Start Quiz</a>
+    <h2>Cards of collection {{$ctrl.collectionName}}</h2>
+    <table id="cardlist-table" class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="card in $ctrl.cards">
+                <td>
+                    <a
+                        href="#!/collections/{{$ctrl.collectionId}}/cards/{{card.id}}"
+                        >{{card.title}}</a
+                    >
+                </td>
+                <td>
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        ng-click="$ctrl.remove(card.id)"
+                    >
+                        Remove
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a
+        type="button"
+        class="btn btn-success"
+        href="#!/collections/{{$ctrl.collectionId}}/cards/0"
+        >Add card</a
+    >
+    <a
+        type="button"
+        class="btn btn-primary"
+        href="#!/collections/{{$ctrl.collectionId}}/quiz"
+        >Start Quiz</a
+    >
 </section>

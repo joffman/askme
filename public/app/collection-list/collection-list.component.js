@@ -1,51 +1,50 @@
 function CollectionListCtrl(Collection) {
+    var self = this;
 
-	var self = this;
+    //////////////////////////////////////////////////
+    // General functions.
+    //////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////
-	// General functions.
-	//////////////////////////////////////////////////
+    function handleApiError(err) {
+        alert("Error: " + err.data.errorMsg);
+    }
 
-	function handleApiError(err) {
-		alert("Error: " + err.data.errorMsg);
-	}
+    function fetchCollections() {
+        Collection.query()
+            .$promise.then(respData => {
+                self.collections = respData.collections;
+            })
+            .catch(error => {
+                handleApiError(error);
+            });
+    }
 
-	function fetchCollections() {
-		Collection.query().$promise.then((respData) => {
-			self.collections = respData.collections;
-		}).catch((error) => {
-			handleApiError(error);
-		});
-	}
+    function init() {
+        fetchCollections();
+    }
 
-	function init() {
-		fetchCollections();
-	}
+    //////////////////////////////////////////////////
+    // Scope functions.
+    //////////////////////////////////////////////////
 
+    self.remove = function(collectionId) {
+        Collection.remove({ id: collectionId })
+            .$promise.then(respData => {
+                fetchCollections();
+            })
+            .catch(error => {
+                handleApiError(error);
+            });
+    };
 
-	//////////////////////////////////////////////////
-	// Scope functions.
-	//////////////////////////////////////////////////
+    //////////////////////////////////////////////////
+    // Initialization.
+    //////////////////////////////////////////////////
 
-	self.remove = function(collectionId) {
-		Collection.remove({id: collectionId}).$promise.then((respData) => {
-			fetchCollections();
-		}).catch((error) => {
-			handleApiError(error);
-		});
-	};
-
-
-	//////////////////////////////////////////////////
-	// Initialization.
-	//////////////////////////////////////////////////
-
-	init();
-
+    init();
 }
 
-angular.module("collectionList")
-.component("collectionList", {
-	templateUrl: "app/collection-list/collection-list.html",
-	controller: ["Collection", CollectionListCtrl]
+angular.module("collectionList").component("collectionList", {
+    templateUrl: "app/collection-list/collection-list.html",
+    controller: ["Collection", CollectionListCtrl]
 });

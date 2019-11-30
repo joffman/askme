@@ -1,2 +1,1 @@
-angular.module("collectionDetails",
-		["common.collection", "common.category"]);
+angular.module("collectionDetails", ["common.collection", "common.category"]);

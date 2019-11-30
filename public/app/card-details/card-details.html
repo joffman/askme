@@ -1,46 +1,73 @@
 <section id="card-section">
-	<div ng-if="$ctrl.card.id == 0">
-		<h2>New Card</h2>
-	</div>
-	<div ng-if="$ctrl.card.id != 0">
-		<h2>Card #{{$ctrl.card.id}}</h2>
-	</div>
-	<form id="card-form" name="cardForm" novalidate>
-		<!-- TODO: Use ngRequired for card-title. -->
-		<div class="form-group">
-			<label for="card-title">Title</label>
-			<input type="text" id="card-title" class="form-control" ng-model="$ctrl.card.title" />
-		</div>
+    <div ng-if="$ctrl.card.id == 0">
+        <h2>New Card</h2>
+    </div>
+    <div ng-if="$ctrl.card.id != 0">
+        <h2>Card #{{$ctrl.card.id}}</h2>
+    </div>
+    <form id="card-form" name="cardForm" novalidate>
+        <!-- TODO: Use ngRequired for card-title. -->
+        <div class="form-group">
+            <label for="card-title">Title</label>
+            <input
+                type="text"
+                id="card-title"
+                class="form-control"
+                ng-model="$ctrl.card.title"
+            />
+        </div>
 
-		<div class="form-group">
-			<label for="card-question">Question</label>
-			<textarea id="card-question" class="form-control" ng-model="$ctrl.card.question" />
-		</div>
+        <div class="form-group">
+            <label for="card-question">Question</label>
+            <textarea
+                id="card-question"
+                class="form-control"
+                ng-model="$ctrl.card.question"
+            />
+        </div>
 
-		<div class="form-group">
-			<label for="card-answer">Answer</label>
-			<textarea id="card-answer" class="form-control" ng-model="$ctrl.card.answer" />
-		</div>
+        <div class="form-group">
+            <label for="card-answer">Answer</label>
+            <textarea
+                id="card-answer"
+                class="form-control"
+                ng-model="$ctrl.card.answer"
+            />
+        </div>
 
-		<div class="form-group">
-			<label for="card-collection">Collection</label>
-			<select id="card-collection" name="cardCollection" class="form-control"
-				ng-model="$ctrl.card.collectionId"
-				ng-options="coll.id as coll.name for coll in $ctrl.collections" required>
-			</select>	<!-- FIXME: This doesn't work for a new card. -->
-		</div>
+        <div class="form-group">
+            <label for="card-collection">Collection</label>
+            <select
+                id="card-collection"
+                name="cardCollection"
+                class="form-control"
+                ng-model="$ctrl.card.collectionId"
+                ng-options="coll.id as coll.name for coll in $ctrl.collections"
+                required
+            >
+            </select>
+            <!-- FIXME: This doesn't work for a new card. -->
+        </div>
 
-		<!-- Buttons -->
-		<div class="form-group">
-			<button class="btn btn-primary form-control"
-		   ng-click="$ctrl.onSubmit()" ng-disabled="cardForm.$invalid">Submit</button>
-		</div>
+        <!-- Buttons -->
+        <div class="form-group">
+            <button
+                class="btn btn-primary form-control"
+                ng-click="$ctrl.onSubmit()"
+                ng-disabled="cardForm.$invalid"
+            >
+                Submit
+            </button>
+        </div>
 
-		<div class="form-group">
-			<a class="btn btn-primary form-control"
-	  ng-hide="$ctrl.card.id == 0" href="#!/collections/{{$ctrl.collectionId}}/cards/{{$ctrl.card.id}}/attachments">
-				Manage attachments
-			</a>
-		</div>
-	</form>
+        <div class="form-group">
+            <a
+                class="btn btn-primary form-control"
+                ng-hide="$ctrl.card.id == 0"
+                href="#!/collections/{{$ctrl.collectionId}}/cards/{{$ctrl.card.id}}/attachments"
+            >
+                Manage attachments
+            </a>
+        </div>
+    </form>
 </section>

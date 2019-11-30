@@ -1,37 +1,73 @@
 <section id="attachments-section">
-	<!-- TODO: Allow for multiple files. -->
+    <!-- TODO: Allow for multiple files. -->
 
-	<!-- Question Image -->
-	<div class="container">
-		<div class="row">
-			<h3>Question Image</h3>
-		</div>
-		<div class="row">
-			<div ng-if="!$ctrl.questionImage" class="btn btn-primary" ngf-select="$ctrl.upload($file, 'Q')">Upload on file select</div>
-			<img ng-if="$ctrl.questionImage" ng-src="{{$ctrl.questionImage.path}}" alt="question image" />
-			<td><button ng-if="$ctrl.questionImage" type="button" class="btn btn-danger"
-												   ng-click="$ctrl.remove($ctrl.questionImage)">Remove</button></td>
-		</div>
-	</div>
+    <!-- Question Image -->
+    <div class="container">
+        <div class="row">
+            <h3>Question Image</h3>
+        </div>
+        <div class="row">
+            <div
+                ng-if="!$ctrl.questionImage"
+                class="btn btn-primary"
+                ngf-select="$ctrl.upload($file, 'Q')"
+            >
+                Upload on file select
+            </div>
+            <img
+                ng-if="$ctrl.questionImage"
+                ng-src="{{$ctrl.questionImage.path}}"
+                alt="question image"
+            />
+            <td>
+                <button
+                    ng-if="$ctrl.questionImage"
+                    type="button"
+                    class="btn btn-danger"
+                    ng-click="$ctrl.remove($ctrl.questionImage)"
+                >
+                    Remove
+                </button>
+            </td>
+        </div>
+    </div>
 
-	<!-- Answer Image -->
-	<div class="container">
-		<div class="row">
-			<h3>Answer Image</h3>
-		</div>
-		<div class="row">
-			<div ng-if="!$ctrl.answerImage" class="btn btn-primary" ngf-select="$ctrl.upload($file, 'A')">Upload on file select</div>
-			<img ng-if="$ctrl.answerImage" ng-src="{{$ctrl.answerImage.path}}" alt="answer image" />
-			<td><button ng-if="$ctrl.answerImage" type="button" class="btn btn-danger"
-												   ng-click="$ctrl.remove($ctrl.answerImage)">Remove</button></td>
-		</div>
-	</div>
+    <!-- Answer Image -->
+    <div class="container">
+        <div class="row">
+            <h3>Answer Image</h3>
+        </div>
+        <div class="row">
+            <div
+                ng-if="!$ctrl.answerImage"
+                class="btn btn-primary"
+                ngf-select="$ctrl.upload($file, 'A')"
+            >
+                Upload on file select
+            </div>
+            <img
+                ng-if="$ctrl.answerImage"
+                ng-src="{{$ctrl.answerImage.path}}"
+                alt="answer image"
+            />
+            <td>
+                <button
+                    ng-if="$ctrl.answerImage"
+                    type="button"
+                    class="btn btn-danger"
+                    ng-click="$ctrl.remove($ctrl.answerImage)"
+                >
+                    Remove
+                </button>
+            </td>
+        </div>
+    </div>
 
-	<!-- Back Button
+    <!-- Back Button
 		...
 	-->
 
-	<!--
+    <!--
 	<input type="file" ngf-select ng-model="questionPic" name="questionFile"    
 		accept="image/*" ngf-max-size="2MB" ngf-model-invalid="errorFile" />
 	<span ng-show="cardForm.questionFile.$error.maxSize">File too large 
@@ -45,5 +81,4 @@
 	<span ng-show="questionPic.result">Upload Successful</span>
 	<span class="err" ng-show="errorMsg">{{errorMsg}}</span>
 	-->
-
 </section>
