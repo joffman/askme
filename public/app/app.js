@@ -3,9 +3,7 @@ var askMeApp = angular.module("askMeApp", [ "ngRoute", "ngResource",
 		"collectionDetails", "cardList", "cardDetails" ]);
 
 // Configure routes.
-// TODO
-//	- Use components instead.
-//	- If possible, pass route-parameters as attributes to components.
+// TODO If possible, pass route-parameters as attributes to components.
 askMeApp.config(function($routeProvider) {
 	$routeProvider.when("/categories", {
 		template: "<category-list></category-list>"
@@ -29,7 +27,7 @@ askMeApp.config(function($routeProvider) {
 		template: "<attachments></attachments>"
 	})
 	.when("/about", {
-		templateUrl: "app/components/about/about.html"
+		templateUrl: "app/about/about.html"
 	})
 	.otherwise({
 		redirectTo: "/collections"

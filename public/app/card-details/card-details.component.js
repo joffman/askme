@@ -67,6 +67,6 @@ function CardDetailsCtrl($routeParams, Card, Collection) {
 
 angular.module("cardDetails")
 .component("cardDetails", {
-	templateUrl: "app/components/card-details/card-details.html",
+	templateUrl: "app/card-details/card-details.html",
 	controller: ["$routeParams", "Card", "Collection", CardDetailsCtrl]
 });

@@ -146,6 +146,6 @@ function QuizCtrl($scope, $routeParams, Card, Attachment) {
 
 angular.module("quiz")
 .component("quiz", {
-	templateUrl: "app/components/quiz/quiz.html",
+	templateUrl: "app/quiz/quiz.html",
 	controller: ["$scope", "$routeParams", "Card", "Attachment", QuizCtrl]
 });

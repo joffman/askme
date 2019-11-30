@@ -46,6 +46,6 @@ function CollectionListCtrl(Collection) {
 
 angular.module("collectionList")
 .component("collectionList", {
-	templateUrl: "app/components/collection-list/collection-list.html",
+	templateUrl: "app/collection-list/collection-list.html",
 	controller: ["Collection", CollectionListCtrl]
 });

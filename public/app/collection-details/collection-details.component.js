@@ -53,6 +53,6 @@ function CollectionDetailsCtrl($routeParams, Collection, Category) {
 
 angular.module("collectionDetails")
 .component("collectionDetails", {
-	templateUrl: "app/components/collection-details/collection-details.html",
+	templateUrl: "app/collection-details/collection-details.html",
 	controller: ["$routeParams", "Collection", "Category", CollectionDetailsCtrl]
 });

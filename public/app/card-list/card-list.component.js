@@ -51,6 +51,6 @@ function CardListCtrl($routeParams, Card) {
 
 angular.module("cardList")
 .component("cardList", {
-	templateUrl: "app/components/card-list/card-list.html",
+	templateUrl: "app/card-list/card-list.html",
 	controller: ["$routeParams", "Card", CardListCtrl]
 });

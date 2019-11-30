@@ -61,6 +61,6 @@ function CategoryListCtrl(Category) {
 
 angular.module("categoryList")
 .component("categoryList", {
-	templateUrl: "app/components/category-list/category-list.html",
+	templateUrl: "app/category-list/category-list.html",
 	controller: ["Category", CategoryListCtrl]
 });

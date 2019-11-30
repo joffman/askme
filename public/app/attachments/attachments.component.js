@@ -73,6 +73,6 @@ function AttachmentsCtrl($scope, $routeParams, Attachment, Upload) {
 
 angular.module("attachments")
 .component("attachments", {
-	templateUrl: "app/components/attachments/attachments.html",
+	templateUrl: "app/attachments/attachments.html",
 	controller: ["$scope", "$routeParams", "Attachment", "Upload", AttachmentsCtrl]
 });
