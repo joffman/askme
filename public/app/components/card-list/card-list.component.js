@@ -1,4 +1,4 @@
-function CardListCtrl($routeParams, $location, Card) {
+function CardListCtrl($routeParams, Card) {
 
 	var self = this;
 
@@ -40,14 +40,6 @@ function CardListCtrl($routeParams, $location, Card) {
 		});
 	};
 
-	self.onAddCardClicked = function() {
-		$location.url(`/collections/${$routeParams.collectionId}/cards/0`);
-	};
-
-	self.startQuiz = function() {
-		$location.url(`/collections/${$routeParams.collectionId}/quiz`);
-	};
-
 
 	//////////////////////////////////////////////////
 	// Initialization.
@@ -60,5 +52,5 @@ function CardListCtrl($routeParams, $location, Card) {
 angular.module("cardList")
 .component("cardList", {
 	templateUrl: "app/components/card-list/card-list.html",
-	controller: ["$routeParams", "$location", "Card", CardListCtrl]
+	controller: ["$routeParams", "Card", CardListCtrl]
 });

@@ -1,8 +1,12 @@
-function CardDetailsCtrl($routeParams, $location, Card, Collection) {
+function CardDetailsCtrl($routeParams, Card, Collection) {
 
 	var self = this;
 
-	// Set self.card.
+	//////////////////////////////////////////////////
+	// Set properties of self.
+	//////////////////////////////////////////////////
+
+	// Fetch card.
 	if ($routeParams.cardId == 0) {	// new card
 		self.card = {
 			id: 0,
@@ -23,6 +27,9 @@ function CardDetailsCtrl($routeParams, $location, Card, Collection) {
 		handleApiError(error);
 	});
 
+	// Make collectionId from routeParams visible.
+	self.collectionId = $routeParams.collectionId;
+
 
 	//////////////////////////////////////////////////
 	// Private functions.
@@ -36,10 +43,6 @@ function CardDetailsCtrl($routeParams, $location, Card, Collection) {
 	//////////////////////////////////////////////////
 	// Scope functions.
 	//////////////////////////////////////////////////
-
-	self.openAttachments = function() {
-		$location.url(`/collections/${$routeParams.collectionId}/cards/${self.card.id}/attachments`);
-	};
 
 	self.onSubmit = function() {
 
@@ -65,5 +68,5 @@ function CardDetailsCtrl($routeParams, $location, Card, Collection) {
 angular.module("cardDetails")
 .component("cardDetails", {
 	templateUrl: "app/components/card-details/card-details.html",
-	controller: ["$routeParams", "$location", "Card", "Collection", CardDetailsCtrl]
+	controller: ["$routeParams", "Card", "Collection", CardDetailsCtrl]
 });

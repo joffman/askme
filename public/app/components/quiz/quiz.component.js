@@ -1,16 +1,22 @@
-function QuizCtrl($scope, $location, $routeParams, Card, Attachment) {
+function QuizCtrl($scope, $routeParams, Card, Attachment) {
 
 	var self = this;
 
 	//////////////////////////////////////////////////
-	// Private state.
+	// Public variables.
 	//////////////////////////////////////////////////
 
-	self.currentCard = {};
-	self.quizIsOver = false;
-	self.numCorrectAnswers = 0;
 	self.cardsPerQuiz = 3;
+	self.collectionId = $routeParams.collectionId;
+	self.currentCard = {};
+	self.numCorrectAnswers = 0;
+	self.quizIsOver = false;
 	self.results = {};
+
+
+	//////////////////////////////////////////////////
+	// Private variables.
+	//////////////////////////////////////////////////
 
 	var cardsLeft = self.cardsPerQuiz;
 	var cards = [];
@@ -109,7 +115,7 @@ function QuizCtrl($scope, $location, $routeParams, Card, Attachment) {
 		if (resp.success) {
 			cards = resp.cards;
 			if (cards.length < self.cardsPerQuiz) {
-				alert(`Collection has only ${cards.length} cards.`
+				alert(`Collection has only ${cards.length} card(s).`
 						+ ` Quiz requires at least ${self.cardsPerQuiz} cards.`);
 				return;
 			}
@@ -136,15 +142,10 @@ function QuizCtrl($scope, $location, $routeParams, Card, Attachment) {
 		advance();
 	};
 
-	self.quitQuiz = function() {
-		// todo use confirmation-dialog (modal window)
-		$location.url(`/collections/${$routeParams.collectionId}/cards`);
-	};
-
 }
 
 angular.module("quiz")
 .component("quiz", {
 	templateUrl: "app/components/quiz/quiz.html",
-	controller: ["$scope", "$location", "$routeParams", "Card", "Attachment", QuizCtrl]
+	controller: ["$scope", "$routeParams", "Card", "Attachment", QuizCtrl]
 });

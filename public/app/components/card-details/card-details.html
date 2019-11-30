@@ -37,10 +37,10 @@
 		</div>
 
 		<div class="form-group">
-			<button class="btn btn-primary form-control"
-		   ng-disabled="$ctrl.card.id == 0" ng-click="$ctrl.openAttachments()">
+			<a class="btn btn-primary form-control"
+	  ng-disabled="$ctrl.card.id == 0" href="#!/collections/{{$ctrl.collectionId}}/cards/{{$ctrl.card.id}}/attachments">
 				Manage attachments
-			</button>
+			</a>
 		</div>
 	</form>
 </section>

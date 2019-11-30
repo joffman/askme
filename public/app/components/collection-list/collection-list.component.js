@@ -35,11 +35,6 @@ function CollectionListCtrl(Collection) {
 		});
 	};
 
-	self.onCollectionClicked = function(collectionId) {
-		window.location = `#!/collections/${collectionId}/cards`;
-		// TODO: we probably want to use $location.path("/...");
-	};
-
 
 	//////////////////////////////////////////////////
 	// Initialization.
