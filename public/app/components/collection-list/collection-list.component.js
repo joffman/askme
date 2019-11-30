@@ -1,5 +1,6 @@
-angular.module("collections.controllers", ["collections.services"])
-.controller("collectionsController", ["$scope", "collectionsSvc", function($scope, collectionsSvc) {
+function CollectionListCtrl(Collection) {
+
+	var self = this;
 
 	//////////////////////////////////////////////////
 	// General functions.
@@ -10,10 +11,9 @@ angular.module("collections.controllers", ["collections.services"])
 	}
 
 	function fetchCollections() {
-		collectionsSvc.queryCollections().then(function(resp_data) {
-			$scope.collections = resp_data.collections;
-		})
-		["catch"](function(error) {
+		Collection.query().$promise.then((resp_data) => {
+			self.collections = resp_data.collections;
+		}).catch((error) => {
 			handleApiError(error);
 		});
 	}
@@ -27,16 +27,15 @@ angular.module("collections.controllers", ["collections.services"])
 	// Scope functions.
 	//////////////////////////////////////////////////
 
-	$scope.remove = function(collection_id) {
-		collectionsSvc.removeCollection(collection_id).then(function(resp_data) {
+	self.remove = function(collection_id) {
+		Collection.remove({id: collection_id}).$promise.then((resp_data) => {
 			fetchCollections();
-		})
-		["catch"](function(error) {
+		}).catch((error) => {
 			handleApiError(error);
 		});
 	};
 
-	$scope.onCollectionClicked = function(collection_id) {
+	self.onCollectionClicked = function(collection_id) {
 		window.location = `#!/collections/${collection_id}/cards`;
 		// TODO: we probably want to use $location.path("/...");
 	};
@@ -48,4 +47,10 @@ angular.module("collections.controllers", ["collections.services"])
 
 	init();
 
-}]);
+}
+
+angular.module("collectionList")
+.component("collectionList", {
+	templateUrl: "app/components/collection-list/collection-list.html",
+	controller: ["Collection", CollectionListCtrl]
+});

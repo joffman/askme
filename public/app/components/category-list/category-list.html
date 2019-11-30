@@ -8,14 +8,14 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="cat in categories">
+			<tr ng-repeat="cat in $ctrl.categories">
 				<td>{{cat.name}}</td>
 				<td><button type="button" class="btn btn-danger"
-						ng-click="remove(cat.id)">Remove</button></td>
+						ng-click="$ctrl.remove(cat.id)">Remove</button></td>
 			</tr>
 			<tr>
-				<td><input type="text" ng-model="new_category_name" /></td>
-				<td><button type="button" class="btn btn-success" ng-click="add()">Add</button></td>
+				<td><input type="text" ng-model="$ctrl.new_category_name" /></td>
+				<td><button type="button" class="btn btn-success" ng-click="$ctrl.add()">Add</button></td>
 			</tr>
 		</tbody>
 	</table>

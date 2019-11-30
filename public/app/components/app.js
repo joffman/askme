@@ -1,17 +1,17 @@
-var askMeApp = angular.module("askMeApp", [ "ngRoute", "ngResource", "categories.controllers",
-		"collections.controllers", "card.controllers",
-		"attachments.controllers", "quiz.controllers", "collectionDetails", "cardList" ]);
+var askMeApp = angular.module("askMeApp", [ "ngRoute", "ngResource",
+		"attachments", "quiz", "categoryList", "collectionList",
+		"collectionDetails", "cardList", "cardDetails" ]);
 
 // Configure routes.
-// TODO Use components instead.
+// TODO
+//	- Use components instead.
+//	- If possible, pass route-parameters as attributes to components.
 askMeApp.config(function($routeProvider) {
 	$routeProvider.when("/categories", {
-		templateUrl: "app/components/categories/categories.html",
-		controller: "categoriesController"
+		template: "<category-list></category-list>"
 	})
 	$routeProvider.when("/collections", {
-		templateUrl: "app/components/collection-list/collection-list.html",
-		controller: "collectionsController"
+		template: "<collection-list></collection-list>"
 	})
 	$routeProvider.when("/collections/:collectionId", {
 		template: "<collection-details></collection-details>"
@@ -20,16 +20,13 @@ askMeApp.config(function($routeProvider) {
 		template: "<card-list></card-list>"
 	})
 	.when("/collections/:collection_id/quiz", {
-		templateUrl: "app/components/quiz/quiz.html",
-		controller: "quizController"
+		template: "<quiz></quiz>"
 	})
 	.when("/collections/:collection_id/cards/:card_id", {
-		templateUrl: "app/components/card-details/card-details.html",
-		controller: "cardController"
+		template: "<card-details></card-details>"
 	})
 	.when("/collections/:collection_id/cards/:card_id/attachments", {
-		templateUrl: "app/components/attachments/attachments.html",
-		controller: "attachmentsController"
+		template: "<attachments></attachments>"
 	})
 	.when("/about", {
 		templateUrl: "app/components/about/about.html"

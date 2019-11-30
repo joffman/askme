@@ -1,20 +1,19 @@
-angular.module("categories.controllers", ["categories.services"])
-.controller("categoriesController", ["$scope", "categoriesSvc",
-		function($scope, categoriesSvc) {
+function CategoryListCtrl(Category) {
+
+	var self = this;
 
 	//////////////////////////////////////////////////
 	// General functions.
 	//////////////////////////////////////////////////
 
 	function handleApiError(err) {
-		alert("Error: " + err.message);
+		alert("Error: " + err.data.error_msg);
 	}
 
 	function fetchCategories() {
-		categoriesSvc.queryCategories().then(function(resp_data) {
-			$scope.categories = resp_data.categories;
-		})
-		["catch"](function(error) {
+		Category.query().$promise.then((resp_data) => {
+			self.categories = resp_data.categories;
+		}).catch((error) => {
 			handleApiError(error);
 		});
 	}
@@ -28,26 +27,25 @@ angular.module("categories.controllers", ["categories.services"])
 	// Scope functions.
 	//////////////////////////////////////////////////
 
-	$scope.add = function() {
+	self.add = function() {
 		// Create new category.
 		var new_category = {
-			name: $scope.new_category_name,
+			name: self.new_category_name,
 		};
-		categoriesSvc.addCategory(new_category).then(function(resp_data) {
+		Category.save(new_category).$promise.then((resp_data) => {
 			fetchCategories();
 		}).catch((error) => {
 			handleApiError(error);
 		});
 
 		// Clear input.
-		$scope.new_category_name = "";
+		self.new_category_name = "";
 	};
 
-	$scope.remove = function(category_id) {
-		categoriesSvc.removeCategory(category_id).then(function(resp_data) {
+	self.remove = function(category_id) {
+		Category.remove({id: category_id}).$promise.then((resp_data) => {
 			fetchCategories();
-		})
-		["catch"](function(error) {
+		}).catch((error) => {
 			handleApiError(error);
 		});
 	};
@@ -59,4 +57,10 @@ angular.module("categories.controllers", ["categories.services"])
 
 	init();
 
-}]);
+}
+
+angular.module("categoryList")
+.component("categoryList", {
+	templateUrl: "app/components/category-list/category-list.html",
+	controller: ["Category", CategoryListCtrl]
+});

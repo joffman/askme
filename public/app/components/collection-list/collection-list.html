@@ -12,7 +12,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="coll in collections">
+			<tr ng-repeat="coll in $ctrl.collections">
 				<td><a href="#!/collections/{{coll.id}}/cards">{{coll.name}}</a></td>
 				<td>{{coll.num_cards}}</td>
 				<!--<td><button type="button" class="btn btn-warning"
@@ -21,11 +21,10 @@
 					<a class="btn btn-warning" href="#!/collections/{{coll.id}}">
 						Edit</a>
 					<button type="button" class="btn btn-danger"
-						   ng-click="remove(coll.id)">Remove</button>
+						   ng-click="$ctrl.remove(coll.id)">Remove</button>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	<!--<button class="btn btn-success" ng-click="add()">Add</button>-->
 	<a href="#!/collections/0" class="btn btn-success">Add Collection</a>
 </section>

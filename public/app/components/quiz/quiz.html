@@ -13,41 +13,41 @@
 </style>
 
 <section id="quiz-section">
-	<div ng-if="!quiz_is_over">
+	<div ng-if="!$ctrl.quiz_is_over">
 		<h2>Quiz</h2>
 
 		<h4>Title</h4>
-		<p>{{current_card.title}}</p>
+		<p>{{$ctrl.current_card.title}}</p>
 
 		<h4>Question</h4>
-		<p>{{current_card.question}}</p>
-		<img ng-if="current_card.question_image" ng-src="{{current_card.question_image}}" alt="question image" />
+		<p>{{$ctrl.current_card.question}}</p>
+		<img ng-if="$ctrl.current_card.question_image" ng-src="{{$ctrl.current_card.question_image}}" alt="question image" />
 
-		<div ng-show="answer_is_visible">
+		<div ng-show="$ctrl.answer_is_visible">
 			<h4>Answer</h4>
-			<p>{{current_card.answer}}</p>
-			<img ng-if="current_card.answer_image" ng-src="{{current_card.answer_image}}" alt="answer image" />
+			<p>{{$ctrl.current_card.answer}}</p>
+			<img ng-if="$ctrl.current_card.answer_image" ng-src="{{$ctrl.current_card.answer_image}}" alt="answer image" />
 		</div>
 
 		<!-- Buttons -->
 		<div class="form-group">
-			<button ng-if="!answer_is_visible" class="btn btn-primary form-control" ng-click="showAnswer()">Show Answer</button>
+			<button ng-if="!$ctrl.answer_is_visible" class="btn btn-primary form-control" ng-click="$ctrl.showAnswer()">Show Answer</button>
 		</div>
 
 		<div class="form-group">
-			<button ng-if="answer_is_visible" class="btn btn-success"
-									 ng-click="processAnswer(true)">I know that :)</button>
-			<button ng-if="answer_is_visible" class="btn btn-warning"
-									 ng-click="processAnswer(false)">No idea :(</button>
+			<button ng-if="$ctrl.answer_is_visible" class="btn btn-success"
+									 ng-click="$ctrl.processAnswer(true)">I know that :)</button>
+			<button ng-if="$ctrl.answer_is_visible" class="btn btn-warning"
+									 ng-click="$ctrl.processAnswer(false)">No idea :(</button>
 		</div>
 
 		<div class="form-group">
-			<button class="btn btn-primary form-control" ng-click="quitQuiz()">Quit</button>
+			<button class="btn btn-primary form-control" ng-click="$ctrl.quitQuiz()">Quit</button>
 		</div>
 	</div>	<!-- !quiz_is_over -->
-	<div ng-if="quiz_is_over">
+	<div ng-if="$ctrl.quiz_is_over">
 		<h2>Results</h2>
-		<p>You answered {{num_correct_answers}} of {{cards_per_quiz}} question(s) correctly.</p>
-		<p ng-class="results.class">{{results.text}}</p>
+		<p>You answered {{$ctrl.num_correct_answers}} of {{$ctrl.cards_per_quiz}} question(s) correctly.</p>
+		<p ng-class="$ctrl.results.class">{{$ctrl.results.text}}</p>
 	</div>	<!-- quiz_is_over -->
 </section>
