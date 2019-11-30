@@ -6,8 +6,8 @@ function CardListCtrl($routeParams, $location, Card) {
 	// Scope variables.
 	//////////////////////////////////////////////////
 
-	self.collection_id = $routeParams.collection_id;
-	self.collection_name = self.collection_id;	// todo: get name from backend
+	self.collectionId = $routeParams.collectionId;
+	self.collectionName = self.collectionId;	// todo: get name from backend
 	self.cards = [];
 
 
@@ -20,9 +20,9 @@ function CardListCtrl($routeParams, $location, Card) {
 	}
 
 	function fetchCards() {
-		Card.query({collection_id: $routeParams.collection_id})
-			.$promise.then(function(resp_data) {
-				self.cards = resp_data.cards;
+		Card.query({collectionId: $routeParams.collectionId})
+			.$promise.then(function(respData) {
+				self.cards = respData.cards;
 			}).catch(function(error) {
 				handleApiError(error);
 			});
@@ -32,8 +32,8 @@ function CardListCtrl($routeParams, $location, Card) {
 	// Scope functions.
 	//////////////////////////////////////////////////
 
-	self.remove = function(card_id) {
-		Card.remove({card_id: card_id}).$promise.then(function(resp_data) {
+	self.remove = function(cardId) {
+		Card.remove({id: cardId}).$promise.then(function(respData) {
 			fetchCards();
 		}).catch(function(error) {
 			handleApiError(error);
@@ -41,11 +41,11 @@ function CardListCtrl($routeParams, $location, Card) {
 	};
 
 	self.onAddCardClicked = function() {
-		$location.url(`/collections/${$routeParams.collection_id}/cards/0`);
+		$location.url(`/collections/${$routeParams.collectionId}/cards/0`);
 	};
 
 	self.startQuiz = function() {
-		$location.url(`/collections/${$routeParams.collection_id}/quiz`);
+		$location.url(`/collections/${$routeParams.collectionId}/quiz`);
 	};
 
 

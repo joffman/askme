@@ -6,15 +6,15 @@ function QuizCtrl($scope, $location, $routeParams, Card, Attachment) {
 	// Private state.
 	//////////////////////////////////////////////////
 
-	self.current_card = {};
-	self.quiz_is_over = false;
-	self.num_correct_answers = 0;
-	self.cards_per_quiz = 3;
+	self.currentCard = {};
+	self.quizIsOver = false;
+	self.numCorrectAnswers = 0;
+	self.cardsPerQuiz = 3;
 	self.results = {};
 
-	var cards_left = self.cards_per_quiz;
+	var cardsLeft = self.cardsPerQuiz;
 	var cards = [];
-	var used_card_indices = [];
+	var usedCardIndices = [];
 
 
 	//////////////////////////////////////////////////
@@ -26,60 +26,60 @@ function QuizCtrl($scope, $location, $routeParams, Card, Attachment) {
 	}
 
 	function getNextCardIndex() {
-		if (used_card_indices.length == self.cards_per_quiz)
+		if (usedCardIndices.length == self.cardsPerQuiz)
 			throw(Error("no more cards"));
 
 		// Compute (random) index of next card.
 		var index = -1;
 		while (index == -1) {
 			var i = getRandomInt(cards.length - 1);
-			if (!used_card_indices.includes(i))
+			if (!usedCardIndices.includes(i))
 				index = i;
 		}
-		used_card_indices.push(index);
+		usedCardIndices.push(index);
 		return index;
 	}
 
-	async function fetchNextCard(card_id) {
-		// Fetch next card and its attachments and put them in self.current_card.
+	async function fetchNextCard(cardId) {
+		// Fetch next card and its attachments and put them in self.currentCard.
 		try {
-			var responses = await Promise.all([Card.get({id: card_id}).$promise,
-					Attachment.query({card_id: card_id}).$promise]);
-			var card_response = responses[0];
-			var attachments_response = responses[1];
+			var responses = await Promise.all([Card.get({id: cardId}).$promise,
+					Attachment.query({cardId: cardId}).$promise]);
+			var cardResponse = responses[0];
+			var attachmentsResponse = responses[1];
 
-			if (!card_response.success)
-				throw(Error(card_response.error_msg));
-			if (!attachments_response.success)
-				throw(Error(attachments_response.error_msg));
+			if (!cardResponse.success)
+				throw(Error(cardResponse.errorMsg));
+			if (!attachmentsResponse.success)
+				throw(Error(attachmentsResponse.errorMsg));
 
-			$scope.$apply(() => {self.current_card = card_response.card;});
-			var attachments = attachments_response.attachments;
-			var question_image;
-			var answer_image;
+			$scope.$apply(() => {self.currentCard = cardResponse.card;});
+			var attachments = attachmentsResponse.attachments;
+			var questionImage;
+			var answerImage;
 			for (var att of attachments) {
-				switch (att.belongs_to) {
+				switch (att.belongsTo) {
 					case "Q":
-						$scope.$apply(() => {self.current_card.question_image = att.path;});
+						$scope.$apply(() => {self.currentCard.questionImage = att.path;});
 						break;
 					case "A":
-						$scope.$apply(() => {self.current_card.answer_image = att.path;});
+						$scope.$apply(() => {self.currentCard.answerImage = att.path;});
 						break;
 					default:
-						console.log("Unknown belongs_to property:", att.belongs_to);
+						console.log("Unknown belongsTo property:", att.belongsTo);
 				}
 			}
 		} catch (err) {
-			alert("Error fetching next card: " + err.data.error_msg);
+			alert("Error fetching next card: " + err.data.errorMsg);
 		}
 	}
 
 	function computeResults() {
-		const percentage_correct = self.num_correct_answers / self.cards_per_quiz;
-		if (percentage_correct < 0.4) {
+		const percentageCorrect = self.numCorrectAnswers / self.cardsPerQuiz;
+		if (percentageCorrect < 0.4) {
 			self.results.class = "failure";
 			self.results.text = "That is bad. Work harder!";
-		} else if (percentage_correct < 0.8) {
+		} else if (percentageCorrect < 0.8) {
 			self.results.class = "mediocre";
 			self.results.text = "That was mediocre. Keep going!";
 		} else {
@@ -89,14 +89,14 @@ function QuizCtrl($scope, $location, $routeParams, Card, Attachment) {
 	}
 
 	function advance() {
-		if (cards_left-- > 0) {
-			self.answer_is_visible = false;
+		if (cardsLeft-- > 0) {
+			self.answerIsVisible = false;
 			var index = getNextCardIndex();
-			var card_id = cards[index].id;
-			fetchNextCard(card_id);
+			var cardId = cards[index].id;
+			fetchNextCard(cardId);
 		} else {
 			computeResults();
-			self.quiz_is_over = true;
+			self.quizIsOver = true;
 		}
 	}
 
@@ -105,20 +105,20 @@ function QuizCtrl($scope, $location, $routeParams, Card, Attachment) {
 	// Initialization.
 	//////////////////////////////////////////////////
 
-	Card.query({collection_id: $routeParams.collection_id}).$promise.then((resp) => {
+	Card.query({collectionId: $routeParams.collectionId}).$promise.then((resp) => {
 		if (resp.success) {
 			cards = resp.cards;
-			if (cards.length < self.cards_per_quiz) {
+			if (cards.length < self.cardsPerQuiz) {
 				alert(`Collection has only ${cards.length} cards.`
-						+ ` Quiz requires at least ${self.cards_per_quiz} cards.`);
+						+ ` Quiz requires at least ${self.cardsPerQuiz} cards.`);
 				return;
 			}
 			advance();
 		} else {
-			throw(Error(resp.error_msg));
+			throw(Error(resp.errorMsg));
 		}
 	}).catch((err) => {
-		alert(`Cannot fetch cards of collection with id '${$routeParams.collection_id}': ${err}`);
+		alert(`Cannot fetch cards of collection with id '${$routeParams.collectionId}': ${err}`);
 	});
 
 
@@ -127,18 +127,18 @@ function QuizCtrl($scope, $location, $routeParams, Card, Attachment) {
 	//////////////////////////////////////////////////
 
 	self.showAnswer = function() {
-		self.answer_is_visible = true;
+		self.answerIsVisible = true;
 	};
 
 	self.processAnswer = function(correct) {
 		if (correct)
-			++self.num_correct_answers;
+			++self.numCorrectAnswers;
 		advance();
 	};
 
 	self.quitQuiz = function() {
 		// todo use confirmation-dialog (modal window)
-		$location.url(`/collections/${$routeParams.collection_id}/cards`);
+		$location.url(`/collections/${$routeParams.collectionId}/cards`);
 	};
 
 }

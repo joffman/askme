@@ -7,12 +7,12 @@ function CategoryListCtrl(Category) {
 	//////////////////////////////////////////////////
 
 	function handleApiError(err) {
-		alert("Error: " + err.data.error_msg);
+		alert("Error: " + err.data.errorMsg);
 	}
 
 	function fetchCategories() {
-		Category.query().$promise.then((resp_data) => {
-			self.categories = resp_data.categories;
+		Category.query().$promise.then((respData) => {
+			self.categories = respData.categories;
 		}).catch((error) => {
 			handleApiError(error);
 		});
@@ -29,21 +29,21 @@ function CategoryListCtrl(Category) {
 
 	self.add = function() {
 		// Create new category.
-		var new_category = {
-			name: self.new_category_name,
+		var newCategory = {
+			name: self.newCategoryName,
 		};
-		Category.save(new_category).$promise.then((resp_data) => {
+		Category.save(newCategory).$promise.then((respData) => {
 			fetchCategories();
 		}).catch((error) => {
 			handleApiError(error);
 		});
 
 		// Clear input.
-		self.new_category_name = "";
+		self.newCategoryName = "";
 	};
 
-	self.remove = function(category_id) {
-		Category.remove({id: category_id}).$promise.then((resp_data) => {
+	self.remove = function(categoryId) {
+		Category.remove({id: categoryId}).$promise.then((respData) => {
 			fetchCategories();
 		}).catch((error) => {
 			handleApiError(error);

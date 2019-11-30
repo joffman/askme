@@ -16,16 +16,16 @@ askMeApp.config(function($routeProvider) {
 	$routeProvider.when("/collections/:collectionId", {
 		template: "<collection-details></collection-details>"
 	})
-	.when("/collections/:collection_id/cards", {
+	.when("/collections/:collectionId/cards", {
 		template: "<card-list></card-list>"
 	})
-	.when("/collections/:collection_id/quiz", {
+	.when("/collections/:collectionId/quiz", {
 		template: "<quiz></quiz>"
 	})
-	.when("/collections/:collection_id/cards/:card_id", {
+	.when("/collections/:collectionId/cards/:cardId", {
 		template: "<card-details></card-details>"
 	})
-	.when("/collections/:collection_id/cards/:card_id/attachments", {
+	.when("/collections/:collectionId/cards/:cardId/attachments", {
 		template: "<attachments></attachments>"
 	})
 	.when("/about", {

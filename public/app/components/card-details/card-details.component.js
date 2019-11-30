@@ -3,22 +3,22 @@ function CardDetailsCtrl($routeParams, $location, Card, Collection) {
 	var self = this;
 
 	// Set self.card.
-	if ($routeParams.card_id == 0) {	// new card
+	if ($routeParams.cardId == 0) {	// new card
 		self.card = {
 			id: 0,
-			collection_id: $routeParams.collection_id
+			collectionId: $routeParams.collectionId
 		};
 	} else {						// existing card
-		Card.get({id: $routeParams.card_id}).$promise.then((resp_data) => {
-			self.card = resp_data.card;
+		Card.get({id: $routeParams.cardId}).$promise.then((respData) => {
+			self.card = respData.card;
 		}).catch((err) => {
 			handleApiError(err);
 		});
 	}
 
 	// Fetch collections.
-	Collection.query().$promise.then((resp_data) => {
-		self.collections = resp_data.collections;
+	Collection.query().$promise.then((respData) => {
+		self.collections = respData.collections;
 	}).catch((error) => {
 		handleApiError(error);
 	});
@@ -29,7 +29,7 @@ function CardDetailsCtrl($routeParams, $location, Card, Collection) {
 	//////////////////////////////////////////////////
 
 	function handleApiError(err) {
-		alert("Error: " + err.data.error_msg);
+		alert("Error: " + err.data.errorMsg);
 	}
 
 
@@ -38,7 +38,7 @@ function CardDetailsCtrl($routeParams, $location, Card, Collection) {
 	//////////////////////////////////////////////////
 
 	self.openAttachments = function() {
-		$location.url(`/collections/${$routeParams.collection_id}/cards/${self.card.id}/attachments`);
+		$location.url(`/collections/${$routeParams.collectionId}/cards/${self.card.id}/attachments`);
 	};
 
 	self.onSubmit = function() {

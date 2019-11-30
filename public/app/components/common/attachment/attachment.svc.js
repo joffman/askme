@@ -3,15 +3,15 @@ angular.module("common.attachment")
 
 	// We use the standard resource but add a function for the upload.
 
-	var svc = $resource("api1/cards/:card_id/attachments/:attachment_id", {}, {
+	var svc = $resource("api1/cards/:cardId/attachments/:attachmentId", {}, {
 		query: { method: "GET", isArray: false },
 	});
 
 	svc.addAttachment = function (attachment) {
 		return Upload.upload({
-			url: `api1/cards/${attachment.card_id}/attachments`,
+			url: `api1/cards/${attachment.cardId}/attachments`,
 			data: {questionImage: attachment.file,
-				belongs_to: attachment.belongs_to}
+				belongsTo: attachment.belongsTo}
 		});
 	}
 

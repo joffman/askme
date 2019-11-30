@@ -5,14 +5,14 @@ function AttachmentsCtrl($scope, $routeParams, Attachment, Upload) {
 	// Fetch attachments.
 	self.questionImage = null;
 	self.answerImage = null;
-	Attachment.query({card_id: $routeParams.card_id}).$promise.then((resp_data) => {
-		for (var att of resp_data.attachments) {
-			if (att.belongs_to == "Q")
+	Attachment.query({cardId: $routeParams.cardId}).$promise.then((respData) => {
+		for (var att of respData.attachments) {
+			if (att.belongsTo == "Q")
 				self.questionImage = att;
-			else if (att.belongs_to == "A")
+			else if (att.belongsTo == "A")
 				self.answerImage = att;
 			else
-				console.log("Attachment with unknown 'belongs_to' property:", att);
+				console.log("Attachment with unknown 'belongsTo' property:", att);
 		}
 	}).catch((err) => {
 		handleApiError(err);
@@ -32,9 +32,9 @@ function AttachmentsCtrl($scope, $routeParams, Attachment, Upload) {
 	// Scope functions.
 	//////////////////////////////////////////////////
 
-	self.upload = async function(file, belongs_to) {
-		const attachment = {card_id: $routeParams.card_id, file: file,
-			belongs_to: belongs_to};
+	self.upload = async function(file, belongsTo) {
+		const attachment = {cardId: $routeParams.cardId, file: file,
+			belongsTo: belongsTo};
 		try {
 			// Store attachment at backend.
 			var response = await Attachment.addAttachment(attachment);
@@ -43,12 +43,12 @@ function AttachmentsCtrl($scope, $routeParams, Attachment, Upload) {
 
 			// Set question or answer image.
 			var att = response.data.attachment;
-			if (belongs_to == "Q")
+			if (belongsTo == "Q")
 				$scope.$apply(() => {self.questionImage = att; });
-			else if (belongs_to == "A")
+			else if (belongsTo == "A")
 				$scope.$apply(() => {self.answerImage = att; });
 			else
-				console.log("Attachment with unknown 'belongs_to' property:", att);
+				console.log("Attachment with unknown 'belongsTo' property:", att);
 
 			alert("Successfully uploaded attachment!");
 		} catch (err) {
@@ -59,10 +59,10 @@ function AttachmentsCtrl($scope, $routeParams, Attachment, Upload) {
 	self.remove = async function(attachment) {
 		try {
 			// Do we need await? Can't we just remove it and the '$promise'?
-			await Attachment.remove({card_id: attachment.card_id, attachment_id: attachment.id}).$promise;
-			if (attachment.belongs_to == "Q")
+			await Attachment.remove({cardId: attachment.cardId, attachmentId: attachment.id}).$promise;
+			if (attachment.belongsTo == "Q")
 				$scope.$apply(() => { self.questionImage = null; });
-			else if (attachment.belongs_to == "A")
+			else if (attachment.belongsTo == "A")
 				$scope.$apply(() => { self.answerImage = null; });
 		} catch (err) {
 			alert("Removing attachment failed:", err);

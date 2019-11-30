@@ -7,9 +7,9 @@ function CollectionDetailsCtrl($routeParams, Collection, Category) {
 		Collection.get({ id: $routeParams.collectionId }).$promise
 			.then((response) => {
 				self.collection = response.collection;
-			}).catch((err_resp) => {
-				console.log("Error:", err_resp);
-				alert("Error when fetching collection: " + err_resp.data.error_msg);
+			}).catch((errorResp) => {
+				console.log("Error:", errorResp);
+				alert("Error when fetching collection: " + errorResp.data.errorMsg);
 			});
 	}
 
@@ -18,9 +18,9 @@ function CollectionDetailsCtrl($routeParams, Collection, Category) {
 	Category.query().$promise
 		.then((response) => {
 			self.categories = response.categories;
-		}).catch((err_resp) => {
-			console.log("Error:", err_resp);
-			alert("Error when fetching categories: " + err_resp.data.error_msg);
+		}).catch((errorResp) => {
+			console.log("Error:", errorResp);
+			alert("Error when fetching categories: " + errorResp.data.errorMsg);
 		});
 
 
@@ -36,16 +36,16 @@ function CollectionDetailsCtrl($routeParams, Collection, Category) {
 					self.collection.id = response.id;
 					// TODO: Update url.
 					alert("Saved successfully!");
-				}).catch((err_resp) => {
-					alert("Error on save: " + err_resp.data.error_msg);
+				}).catch((errorResp) => {
+					alert("Error on save: " + errorResp.data.errorMsg);
 				});
 		} else {
 			// Update existing card.
 			Collection.update(self.collection).$promise
 				.then((response) => {
 					alert("Collection updated successfully!");
-				}).catch((err_resp) => {
-					alert("Error on save: " + err_resp.data.error_msg);
+				}).catch((errorResp) => {
+					alert("Error on save: " + errorResp.data.errorMsg);
 				});
 		}
 	};

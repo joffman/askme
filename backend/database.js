@@ -107,10 +107,11 @@ class Database {
 		}
 	}
 
-	deleteCategory(category_id) {
-		// TODO Make sure that deletion is cascaded to collection_category table.
+	deleteCategory(categoryId) {
+		// TODO Make sure that deletion is not possible if collectionCategory table
+		//   contains corresponding entries.
 		const sql = "DELETE FROM category WHERE id = ?";
-		return this.db.deleteAsync(sql, category_id);
+		return this.db.deleteAsync(sql, categoryId);
 	}
 
 
@@ -120,7 +121,7 @@ class Database {
 
 	getCollections() {
 		const sql = "SELECT id, name, "
-			+ "(SELECT COUNT(*) FROM card WHERE card.collection_id = collection.id) num_cards "
+			+ "(SELECT COUNT(*) FROM card WHERE card.collectionId = collection.id) numCards "
 			+ "FROM collection";
 		return this.db.allAsync(sql, []);
 	}
@@ -132,8 +133,8 @@ class Database {
 		var collProm = this.db.getAsync(collSql, [id]);
 
 		// Get category-ids-promise.
-		const catSql = "SELECT category_id FROM collection_category "
-			+ "WHERE collection_id = ?";
+		const catSql = "SELECT categoryId FROM collectionCategory "
+			+ "WHERE collectionId = ?";
 		var catProm = this.db.allAsync(catSql, [id]);
 
 		return Promise.all([collProm, catProm]).then((values) => {
@@ -143,7 +144,7 @@ class Database {
 
 			// Merge collection and categories.
 			var cats = values[1];
-			coll.categoryIds = cats.map((elem) => { return elem.category_id; });
+			coll.categoryIds = cats.map((elem) => { return elem.categoryId; });
 			return coll;
 		});
 	}
@@ -169,8 +170,8 @@ class Database {
 			var collCatPromises = [];
 			console.log("Creating collection-category-promises.");
 			for (var catId of collection.categoryIds) {
-				const collCatSql = "INSERT INTO collection_category "
-					+ "(collection_id, category_id) VALUES (?, ?)";
+				const collCatSql = "INSERT INTO collectionCategory "
+					+ "(collectionId, categoryId) VALUES (?, ?)";
 				collCatPromises.push(this.db.insertAsync(collCatSql,
 							[collId, catId]));
 			}
@@ -212,16 +213,16 @@ class Database {
 
 			// Remove all categories from this collection.
 			const deleteCollCatsSql =
-				"DELETE FROM collection_category WHERE collection_id = ?";
+				"DELETE FROM collectionCategory WHERE collectionId = ?";
 			await this.db.deleteAsync(deleteCollCatsSql, [collId]);
 
 			// Create promises to insert categories for this collection.
 			var promises = [];
 			if (collection.categoryIds) {
 				for (var catId of collection.categoryIds) {
-					// TODO Create function for insert into collection_category.
-					const sql = "INSERT INTO collection_category "
-						+ "(collection_id, category_id) VALUES (?, ?)";
+					// TODO Create function for insert into collectionCategory.
+					const sql = "INSERT INTO collectionCategory "
+						+ "(collectionId, categoryId) VALUES (?, ?)";
 					promises.push(this.db.insertAsync(sql, [collId, catId]));
 				}
 			}
@@ -246,9 +247,9 @@ class Database {
 		}
 	}
 
-	deleteCollection(collection_id) {
+	deleteCollection(collectionId) {
 		const sql = "DELETE FROM collection WHERE id = ?";
-		return this.db.deleteAsync(sql, collection_id);
+		return this.db.deleteAsync(sql, collectionId);
 	}
 
 
@@ -256,35 +257,35 @@ class Database {
 	// Cards API.
 	//////////////////////////////////////////////////
 
-	getCards(collection_id) {
-		const sql = "SELECT id, title FROM card WHERE collection_id = ?";
-		return this.db.allAsync(sql, [collection_id]);
+	getCards(collectionId) {
+		const sql = "SELECT id, title FROM card WHERE collectionId = ?";
+		return this.db.allAsync(sql, [collectionId]);
 	}
 
-	getCard(card_id) {
+	getCard(cardId) {
 		const sql = "SELECT * FROM card WHERE id = ?";
-		return this.db.getAsync(sql, [card_id]);
+		return this.db.getAsync(sql, [cardId]);
 	}
 
 	addCard(card) {
 		// The database does the validation.
-		const sql = "INSERT INTO card (title, question, answer, collection_id)"
+		const sql = "INSERT INTO card (title, question, answer, collectionId)"
 		   + " VALUES (?, ?, ?, ?)";
 		return this.db.insertAsync(sql,
-				[card.title, card.question, card.answer, card.collection_id]);
+				[card.title, card.question, card.answer, card.collectionId]);
 	}
 
-	updateCard(card_id, card) {
+	updateCard(cardId, card) {
 		// The database does the validation.
-		const sql = "UPDATE card SET title=?, question=?, answer=?, collection_id=? "
+		const sql = "UPDATE card SET title=?, question=?, answer=?, collectionId=? "
 			+ "WHERE id=?";
 		return this.db.updateAsync(sql,
-				[card.title, card.question, card.answer, card.collection_id, card_id]);
+				[card.title, card.question, card.answer, card.collectionId, cardId]);
 	}
 
-	deleteCard(card_id) {
+	deleteCard(cardId) {
 		const sql = "DELETE FROM card WHERE id = ?";
-		return this.db.deleteAsync(sql, [card_id]);
+		return this.db.deleteAsync(sql, [cardId]);
 	}
 
 
@@ -292,30 +293,30 @@ class Database {
 	// Attachments API.
 	//////////////////////////////////////////////////
 
-	getAttachment(attachment_id) {
+	getAttachment(attachmentId) {
 		const sql = "SELECT * FROM attachment WHERE id = ?";
-		return this.db.getAsync(sql, [attachment_id]);
+		return this.db.getAsync(sql, [attachmentId]);
 	}
 
-	getAttachments(card_id) {
-		const sql = "SELECT * FROM attachment WHERE card_id = ?";
-		return this.db.allAsync(sql, [card_id]);
+	getAttachments(cardId) {
+		const sql = "SELECT * FROM attachment WHERE cardId = ?";
+		return this.db.allAsync(sql, [cardId]);
 	}
 
-	addAttachment(url_path, card_id, belongs_to) {
-		const sql = "INSERT INTO attachment (path, card_id, belongs_to)"
+	addAttachment(urlPath, cardId, belongsTo) {
+		const sql = "INSERT INTO attachment (path, cardId, belongsTo)"
 			+ " VALUES (?, ?, ?)";
-		return this.db.insertAsync(sql, [url_path, card_id, belongs_to]);
+		return this.db.insertAsync(sql, [urlPath, cardId, belongsTo]);
 	}
 
-	deleteAttachment(attachment_id) {
+	deleteAttachment(attachmentId) {
 		const sql = "DELETE FROM attachment WHERE id = ?";
-		return this.db.deleteAsync(sql, [attachment_id]);
+		return this.db.deleteAsync(sql, [attachmentId]);
 	}
 
-	deleteAttachments(card_id) {
-		const sql = "DELETE FROM attachment WHERE card_id = ?";
-		return this.db.deleteAsync(sql, [card_id]);
+	deleteAttachments(cardId) {
+		const sql = "DELETE FROM attachment WHERE cardId = ?";
+		return this.db.deleteAsync(sql, [cardId]);
 	}
 
 	// todo: where to call db.close()?

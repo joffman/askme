@@ -7,12 +7,12 @@ function CollectionListCtrl(Collection) {
 	//////////////////////////////////////////////////
 
 	function handleApiError(err) {
-		alert("Error: " + err.data.error_msg);
+		alert("Error: " + err.data.errorMsg);
 	}
 
 	function fetchCollections() {
-		Collection.query().$promise.then((resp_data) => {
-			self.collections = resp_data.collections;
+		Collection.query().$promise.then((respData) => {
+			self.collections = respData.collections;
 		}).catch((error) => {
 			handleApiError(error);
 		});
@@ -27,16 +27,16 @@ function CollectionListCtrl(Collection) {
 	// Scope functions.
 	//////////////////////////////////////////////////
 
-	self.remove = function(collection_id) {
-		Collection.remove({id: collection_id}).$promise.then((resp_data) => {
+	self.remove = function(collectionId) {
+		Collection.remove({id: collectionId}).$promise.then((respData) => {
 			fetchCollections();
 		}).catch((error) => {
 			handleApiError(error);
 		});
 	};
 
-	self.onCollectionClicked = function(collection_id) {
-		window.location = `#!/collections/${collection_id}/cards`;
+	self.onCollectionClicked = function(collectionId) {
+		window.location = `#!/collections/${collectionId}/cards`;
 		// TODO: we probably want to use $location.path("/...");
 	};
 

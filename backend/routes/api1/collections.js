@@ -9,34 +9,34 @@ var database = new Database();
 router.get("/", async function(req, res) {
 	try {
 		// Get collections from database and add number of cards to it.
-		var collections_data = await database.getCollections();
-		res.json({success: true, collections: collections_data});
+		var collectionsData = await database.getCollections();
+		res.json({success: true, collections: collectionsData});
 	} catch (err) {
 		res.statusCode = 500;
 		res.json({
 			success: false, 
-			error_msg: err.message
+			errorMsg: err.message
 		});
 	}
 });
 
 router.get("/:id", async function(req, res) {
 	try {
-		var collection_data = await database.getCollection(req.params.id);
-		if (collection_data) {
-			res.json({success: true, collection: collection_data});
+		var collectionData = await database.getCollection(req.params.id);
+		if (collectionData) {
+			res.json({success: true, collection: collectionData});
 		} else {
 			res.statusCode = 400;
 			res.json({
 				success: false, 
-				error_msg: "No collection with given id."
+				errorMsg: "No collection with given id."
 			});
 		}
 	} catch (err) {
 		res.statusCode = 500;
 		res.json({
 			success: false, 
-			error_msg: err.message
+			errorMsg: err.message
 		});
 	}
 });
@@ -44,31 +44,31 @@ router.get("/:id", async function(req, res) {
 router.post("/", async function(req, res) {
 	const collection = req.body;
 	try {
-		var collection_id = await database.addCollection(collection);
-		res.json({success: true, id: collection_id});
+		var collectionId = await database.addCollection(collection);
+		res.json({success: true, id: collectionId});
 	} catch (err) {
 		// TODO Check for invalid input and send 400.
 		console.log("Error:", err);
 		res.statusCode = 500;
 		res.json({
 			success: false,
-			error_msg: err.message
+			errorMsg: err.message
 		});
 	}
 });
 
 router.put("/:id", async function(req, res) {
 	const collection = req.body;
-	const coll_id = req.params.id;
+	const collId = req.params.id;
 	try {
-		var changes = await database.updateCollection(coll_id, collection);
+		var changes = await database.updateCollection(collId, collection);
 		res.json({success: true});
 	} catch (err) {
 		// todo: Check for invalid input and send 400.
 		res.statusCode = 500;
 		res.json({
 			success: false,
-			error_msg: err.message
+			errorMsg: err.message
 		});
 	}
 
@@ -83,14 +83,14 @@ router.delete("/:id", async function(req, res) {
 			res.statusCode = 400;
 			res.json({
 				success: false,
-				error_msg: `Collection with id ${id} does not exist.`
+				errorMsg: `Collection with id ${id} does not exist.`
 			});
 	} catch (err) {
 		if (err.code == "SQLITE_CONSTRAINT") {
 			res.statusCode = 400;
 			res.json({
 				success: false,
-				error_msg: "SQL constraint failed."
+				errorMsg: "SQL constraint failed."
 					+ " You can only delete a collection, when it does"
 					+ " not contain any cards."
 			});
@@ -98,7 +98,7 @@ router.delete("/:id", async function(req, res) {
 			res.statusCode = 500;
 			res.json({
 				success: false,
-				error_msg: err.message
+				errorMsg: err.message
 			});
 		}
 	}
