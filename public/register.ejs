@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Meta tags. -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+
+        <!-- CSS. -->
+        <link rel="stylesheet" href="css/reset.css" />
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="css/askme.css" />
+
+        <!-- Other stuff. -->
+        <title>AskMe-Register</title>
+    </head>
+
+    <body>
+        <main>
+            <h1>Register</h1>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input
+                        class="form-control"
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="joe@somedomain.com"
+                        required
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                        class="form-control"
+                        id="password"
+                        name="password"
+                        type="password"
+                        required
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmed">Confirm Password</label>
+                    <input
+                        class="form-control"
+                        id="confirmed"
+                        type="password"
+                        required
+                    />
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Register" />
+                </div>
+            </form>
+
+            <p>
+                Already registered?
+                <a href="/login">Go to the login page.</a>
+            </p>
+        </main>
+    </body>
+
+    <script>
+        var password = document.getElementById("password");
+        var confirmed = document.getElementById("confirmed");
+
+        function validateConfirmedPassword() {
+            if (password.value === confirmed.value)
+                confirmed.setCustomValidity("");
+            else confirmed.setCustomValidity("passwords don't match");
+        }
+
+        password.onchange = validateConfirmedPassword;
+        confirmed.onkeyup = validateConfirmedPassword;
+    </script>
+</html>

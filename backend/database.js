@@ -76,6 +76,21 @@ class Database {
     }
 
     //////////////////////////////////////////////////
+    // Users API.
+    //////////////////////////////////////////////////
+
+	getUserFromEmail(email) {
+		const sql = "SELECT * FROM user WHERE email = ?";
+		return this.db.getAsync(sql, [email]);
+	}
+
+    addUser(user) {
+		const sql = "INSERT INTO user (email, password) VALUES (?, ?)";
+		return this.db.insertAsync(sql, [user.email, user.password]);
+    }
+
+
+    //////////////////////////////////////////////////
     // Categories API.
     //////////////////////////////////////////////////
 

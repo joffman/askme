@@ -6,6 +6,14 @@ db.serialize(function() {
     db.run("PRAGMA foreign_keys = ON");
 
     db.run(
+        "CREATE TABLE IF NOT EXISTS user (\n" +
+            "\temail TEXT PRIMARY KEY NOT NULL CHECK(path <> ''),\n" +
+            "\tpassword TEXT NOT NULL CHECK(path <> '')\n" +
+            ")"	// TODO: Add 'active' flag.
+				//	The user has to activate his account, clicking a link in email.
+    );
+
+    db.run(
         "CREATE TABLE IF NOT EXISTS category (\n" +
             "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
             "\tname TEXT UNIQUE NOT NULL\n" +

@@ -1,2 +1,6 @@
-- Use Prettier for the html (and maybe javascript) and create a .prettierrc file
-for this.
+Frontend:
+- ...
+
+Backend:
+- Get rid of the nodejs warnings.
+- Understand express-flash and -session and passport modules.
