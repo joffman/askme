@@ -8,7 +8,7 @@ var database = new Database();
 router.get("/", async function(req, res) {
     try {
         // Get collections from database and add number of cards to it.
-        var collectionsData = await database.getCollections();
+        var collectionsData = await database.getUserCollections(req.user.id);
         res.json({ success: true, collections: collectionsData });
     } catch (err) {
         res.statusCode = 500;
@@ -42,8 +42,9 @@ router.get("/:id", async function(req, res) {
 
 router.post("/", async function(req, res) {
     const collection = req.body;
+    const userId = req.user.id;
     try {
-        var collectionId = await database.addCollection(collection);
+        var collectionId = await database.addCollection(collection, userId);
         res.json({ success: true, id: collectionId });
     } catch (err) {
         // TODO Check for invalid input and send 400.

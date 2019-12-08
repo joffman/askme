@@ -5,3 +5,7 @@ Backend:
 - Get rid of the nodejs warnings.
 - Understand express-flash and -session and passport modules.
 - What happens in login.js when the user is already logged in?
+- Restrict access to an upload to the user who did the upload.
+  Maybe add another folder: /uploads/userId/cardId
+- Restrict access to collections and cards to the person who
+  created them (except for public / published collections/cards.

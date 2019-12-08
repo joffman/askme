@@ -10,7 +10,7 @@ function CollectionDetailsCtrl($routeParams, Utils, Collection, Category) {
             })
             .catch(errorResp => {
                 console.log("Error:", errorResp);
-				Utils.handleApiError(errorResp);
+                Utils.handleApiError(errorResp);
             });
     }
 
@@ -22,7 +22,7 @@ function CollectionDetailsCtrl($routeParams, Utils, Collection, Category) {
         })
         .catch(errorResp => {
             console.log("Error:", errorResp);
-			Utils.handleApiError(errorResp);
+            Utils.handleApiError(errorResp);
         });
 
     //////////////////////////////////////////////////
@@ -40,7 +40,7 @@ function CollectionDetailsCtrl($routeParams, Utils, Collection, Category) {
                 })
                 .catch(errorResp => {
                     console("Error on save:", errorResp);
-					Utils.handleApiError(errorResp);
+                    Utils.handleApiError(errorResp);
                 });
         } else {
             // Update existing card.
@@ -50,7 +50,7 @@ function CollectionDetailsCtrl($routeParams, Utils, Collection, Category) {
                 })
                 .catch(errorResp => {
                     console("Error on update:", errorResp);
-					Utils.handleApiError(errorResp);
+                    Utils.handleApiError(errorResp);
                 });
         }
     };
@@ -60,7 +60,7 @@ angular.module("collectionDetails").component("collectionDetails", {
     templateUrl: "app/collection-details/collection-details.html",
     controller: [
         "$routeParams",
-		"Utils",
+        "Utils",
         "Collection",
         "Category",
         CollectionDetailsCtrl

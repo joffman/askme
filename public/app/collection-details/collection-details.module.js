@@ -1,1 +1,5 @@
-angular.module("collectionDetails", ["common.utils", "common.collection", "common.category"]);
+angular.module("collectionDetails", [
+    "common.utils",
+    "common.collection",
+    "common.category"
+]);

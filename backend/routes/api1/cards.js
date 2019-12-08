@@ -33,7 +33,10 @@ function parseMultipart(req) {
 router.get("/", async function(req, res) {
     if ("collectionId" in req.query) {
         try {
-            var cards = await database.getCards(req.query.collectionId);
+            var cards = await database.getUserCards(
+                req.query.collectionId,
+                req.user.id
+            );
             res.json({ success: true, cards: cards });
         } catch (err) {
             res.statusCode = 500;
@@ -66,8 +69,9 @@ router.get("/:id", async function(req, res) {
 
 router.post("/", async function(req, res) {
     const card = req.body;
+    const userId = req.user.id;
     try {
-        var cardId = await database.addCard(card);
+        var cardId = await database.addCard(card, userId);
         res.json({ success: true, id: cardId });
     } catch (err) {
         console.log("Error:", err);

@@ -10,8 +10,8 @@ db.serialize(function() {
             "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
             "\temail TEXT UNIQUE NOT NULL CHECK(email <> ''),\n" +
             "\tpassword TEXT NOT NULL CHECK(password <> '')\n" +
-            ")"	// TODO: Add 'active' flag.
-				//	The user has to activate his account, clicking a link in email.
+            ")" // TODO: Add 'active' flag.
+        //	The user has to activate his account, clicking a link in email.
     );
 
     db.run(
@@ -24,7 +24,10 @@ db.serialize(function() {
     db.run(
         "CREATE TABLE IF NOT EXISTS collection (\n" +
             "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
-            "\tname TEXT UNIQUE NOT NULL\n" +
+            "\tname TEXT UNIQUE NOT NULL,\n" +
+            "\tuserId INTEGER NOT NULL,\n" +
+            "\tpublic INTEGER NOT NULL CHECK( public in (0, 1) ),\n" +
+            "\tFOREIGN KEY(userId) REFERENCES user(id) ON DELETE CASCADE\n" +
             ")"
     );
 
@@ -45,7 +48,9 @@ db.serialize(function() {
             "\tquestion TEXT,\n" +
             "\tanswer TEXT,\n" +
             "\tcollectionId INTEGER NOT NULL,\n" +
-            "\tFOREIGN KEY(collectionId) REFERENCES collection(id)\n" +
+            "\tuserId INTEGER NOT NULL,\n" +
+            "\tFOREIGN KEY(collectionId) REFERENCES collection(id),\n" +
+            "\tFOREIGN KEY(userId) REFERENCES user(id) ON DELETE CASCADE\n" +
             ")"
     );
 

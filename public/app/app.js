@@ -8,8 +8,8 @@ var askMeApp = angular.module("askMeApp", [
     "collectionDetails",
     "cardList",
     "cardDetails",
-	"askmeHeader",
-	"navigation"
+    "askmeHeader",
+    "navigation"
 ]);
 
 // Configure routes.

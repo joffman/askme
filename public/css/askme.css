@@ -11,16 +11,16 @@ header img {
 }
 
 #user-mgmt {
-	float: right;
-	padding: 15px 10px;
+    float: right;
+    padding: 15px 10px;
 }
 
 header nav {
-	border-top: 1px solid silver;
+    border-top: 1px solid silver;
     float: left;
     padding: 5px;
-	clear: left;
-	width: 100%;
+    clear: left;
+    width: 100%;
 }
 
 main {

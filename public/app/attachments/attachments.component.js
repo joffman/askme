@@ -84,7 +84,7 @@ angular.module("attachments").component("attachments", {
     controller: [
         "$scope",
         "$routeParams",
-		"Utils",
+        "Utils",
         "Attachment",
         "Upload",
         AttachmentsCtrl

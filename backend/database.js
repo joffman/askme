@@ -4,7 +4,7 @@ const sqlite3 = require("sqlite3").verbose();
 
 class Database {
     constructor() {
-        this.db = new sqlite3.Database("askme.db");
+        this.db = new sqlite3.Database("askme.db", sqlite3.OPEN_READWRITE);
 
         this.db.run("PRAGMA foreign_keys = ON", [], function(err) {
             if (err) throw err;
@@ -79,16 +79,15 @@ class Database {
     // Users API.
     //////////////////////////////////////////////////
 
-	getUserFromEmail(email) {
-		const sql = "SELECT * FROM user WHERE email = ?";
-		return this.db.getAsync(sql, [email]);
-	}
-
-    addUser(user) {
-		const sql = "INSERT INTO user (email, password) VALUES (?, ?)";
-		return this.db.insertAsync(sql, [user.email, user.password]);
+    getUserFromEmail(email) {
+        const sql = "SELECT * FROM user WHERE email = ?";
+        return this.db.getAsync(sql, [email]);
     }
 
+    addUser(user) {
+        const sql = "INSERT INTO user (email, password) VALUES (?, ?)";
+        return this.db.insertAsync(sql, [user.email, user.password]);
+    }
 
     //////////////////////////////////////////////////
     // Categories API.
@@ -122,12 +121,12 @@ class Database {
     // Collections API.
     //////////////////////////////////////////////////
 
-    getCollections() {
+    getUserCollections(userId) {
         const sql =
-            "SELECT id, name, " +
+            "SELECT id, name, public, " +
             "(SELECT COUNT(*) FROM card WHERE card.collectionId = collection.id) numCards " +
-            "FROM collection";
-        return this.db.allAsync(sql, []);
+            "FROM collection WHERE userId = ?";
+        return this.db.allAsync(sql, [userId]);
     }
 
     getCollection(id) {
@@ -154,16 +153,19 @@ class Database {
         });
     }
 
-    async addCollection(collection) {
+    async addCollection(collection, userId) {
         console.log("addCollection entered.");
         try {
             await this.db.runAsync("BEGIN TRANSACTION");
 
             // Insert collection.
             console.log("Inserting collection.");
-            const collSql = "INSERT INTO collection (name) VALUES (?)";
+            const collSql =
+                "INSERT INTO collection (name, userId, public) VALUES (?, ?, ?)";
             const collId = await this.db.insertAsync(collSql, [
-                collection.name
+                collection.name,
+                userId,
+                0
             ]);
 
             if (!collection.categoryIds || collection.categoryIds.length == 0) {
@@ -272,9 +274,11 @@ class Database {
     // Cards API.
     //////////////////////////////////////////////////
 
-    getCards(collectionId) {
-        const sql = "SELECT id, title FROM card WHERE collectionId = ?";
-        return this.db.allAsync(sql, [collectionId]);
+    getUserCards(collectionId, userId) {
+        const sql =
+            "SELECT id, title FROM card" +
+            " WHERE collectionId = ? AND userId = ?";
+        return this.db.allAsync(sql, [collectionId, userId]);
     }
 
     getCard(cardId) {
@@ -282,16 +286,17 @@ class Database {
         return this.db.getAsync(sql, [cardId]);
     }
 
-    addCard(card) {
+    addCard(card, userId) {
         // The database does the validation.
         const sql =
-            "INSERT INTO card (title, question, answer, collectionId)" +
-            " VALUES (?, ?, ?, ?)";
+            "INSERT INTO card (title, question, answer, collectionId, userId)" +
+            " VALUES (?, ?, ?, ?, ?)";
         return this.db.insertAsync(sql, [
             card.title,
             card.question,
             card.answer,
-            card.collectionId
+            card.collectionId,
+            userId
         ]);
     }
 
