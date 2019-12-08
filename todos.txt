@@ -4,3 +4,4 @@ Frontend:
 Backend:
 - Get rid of the nodejs warnings.
 - Understand express-flash and -session and passport modules.
+- What happens in login.js when the user is already logged in?

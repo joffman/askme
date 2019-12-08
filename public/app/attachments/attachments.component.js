@@ -1,4 +1,4 @@
-function AttachmentsCtrl($scope, $routeParams, Attachment, Upload) {
+function AttachmentsCtrl($scope, $routeParams, Utils, Attachment, Upload) {
     var self = this;
 
     // Fetch attachments.
@@ -17,16 +17,8 @@ function AttachmentsCtrl($scope, $routeParams, Attachment, Upload) {
             }
         })
         .catch(err => {
-            handleApiError(err);
+            Utils.handleApiError(err);
         });
-
-    //////////////////////////////////////////////////
-    // Private functions.
-    //////////////////////////////////////////////////
-
-    function handleApiError(err) {
-        alert("Error: " + err.message);
-    }
 
     //////////////////////////////////////////////////
     // Scope functions.
@@ -92,6 +84,7 @@ angular.module("attachments").component("attachments", {
     controller: [
         "$scope",
         "$routeParams",
+		"Utils",
         "Attachment",
         "Upload",
         AttachmentsCtrl

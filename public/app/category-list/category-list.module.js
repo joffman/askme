@@ -1,1 +1,1 @@
-angular.module("categoryList", ["common.category"]);
+angular.module("categoryList", ["common.utils", "common.category"]);

@@ -1,13 +1,9 @@
-function CategoryListCtrl(Category) {
+function CategoryListCtrl(Utils, Category) {
     var self = this;
 
     //////////////////////////////////////////////////
     // General functions.
     //////////////////////////////////////////////////
-
-    function handleApiError(err) {
-        alert("Error: " + err.data.errorMsg);
-    }
 
     function fetchCategories() {
         Category.query()
@@ -15,7 +11,7 @@ function CategoryListCtrl(Category) {
                 self.categories = respData.categories;
             })
             .catch(error => {
-                handleApiError(error);
+                Utils.handleApiError(error);
             });
     }
 
@@ -37,7 +33,7 @@ function CategoryListCtrl(Category) {
                 fetchCategories();
             })
             .catch(error => {
-                handleApiError(error);
+                Utils.handleApiError(error);
             });
 
         // Clear input.
@@ -50,7 +46,7 @@ function CategoryListCtrl(Category) {
                 fetchCategories();
             })
             .catch(error => {
-                handleApiError(error);
+                Utils.handleApiError(error);
             });
     };
 
@@ -63,5 +59,5 @@ function CategoryListCtrl(Category) {
 
 angular.module("categoryList").component("categoryList", {
     templateUrl: "app/category-list/category-list.html",
-    controller: ["Category", CategoryListCtrl]
+    controller: ["Utils", "Category", CategoryListCtrl]
 });

@@ -1,1 +1,1 @@
-angular.module("cardList", ["common.card"]);
+angular.module("cardList", ["common.utils", "common.card"]);

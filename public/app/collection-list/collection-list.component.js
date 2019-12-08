@@ -1,13 +1,9 @@
-function CollectionListCtrl(Collection) {
+function CollectionListCtrl($window, Utils, Collection) {
     var self = this;
 
     //////////////////////////////////////////////////
     // General functions.
     //////////////////////////////////////////////////
-
-    function handleApiError(err) {
-        alert("Error: " + err.data.errorMsg);
-    }
 
     function fetchCollections() {
         Collection.query()
@@ -15,7 +11,7 @@ function CollectionListCtrl(Collection) {
                 self.collections = respData.collections;
             })
             .catch(error => {
-                handleApiError(error);
+                Utils.handleApiError(error);
             });
     }
 
@@ -33,7 +29,7 @@ function CollectionListCtrl(Collection) {
                 fetchCollections();
             })
             .catch(error => {
-                handleApiError(error);
+                Utils.handleApiError(error);
             });
     };
 
@@ -46,5 +42,5 @@ function CollectionListCtrl(Collection) {
 
 angular.module("collectionList").component("collectionList", {
     templateUrl: "app/collection-list/collection-list.html",
-    controller: ["Collection", CollectionListCtrl]
+    controller: ["$window", "Utils", "Collection", CollectionListCtrl]
 });

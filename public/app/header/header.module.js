@@ -1,1 +1,1 @@
-angular.module("askmeHeader", ["common.user"]);
+angular.module("askmeHeader", ["common.utils", "common.user"]);

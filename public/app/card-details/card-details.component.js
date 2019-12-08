@@ -1,4 +1,4 @@
-function CardDetailsCtrl($routeParams, Card, Collection) {
+function CardDetailsCtrl($routeParams, Utils, Card, Collection) {
     var self = this;
 
     //////////////////////////////////////////////////
@@ -19,7 +19,7 @@ function CardDetailsCtrl($routeParams, Card, Collection) {
                 self.card = respData.card;
             })
             .catch(err => {
-                handleApiError(err);
+                Utils.handleApiError(err);
             });
     }
 
@@ -29,19 +29,11 @@ function CardDetailsCtrl($routeParams, Card, Collection) {
             self.collections = respData.collections;
         })
         .catch(error => {
-            handleApiError(error);
+            Utils.handleApiError(error);
         });
 
     // Make collectionId from routeParams visible.
     self.collectionId = $routeParams.collectionId;
-
-    //////////////////////////////////////////////////
-    // Private functions.
-    //////////////////////////////////////////////////
-
-    function handleApiError(err) {
-        alert("Error: " + err.data.errorMsg);
-    }
 
     //////////////////////////////////////////////////
     // Scope functions.
@@ -57,7 +49,7 @@ function CardDetailsCtrl($routeParams, Card, Collection) {
                     // TODO Update url.
                 })
                 .catch(err => {
-                    handleApiError(err);
+                    Utils.handleApiError(err);
                 });
         } else {
             // existing card
@@ -66,7 +58,7 @@ function CardDetailsCtrl($routeParams, Card, Collection) {
                     alert("Successfully updated card.");
                 })
                 .catch(err => {
-                    handleApiError(err);
+                    Utils.handleApiError(err);
                 });
         }
     };
@@ -74,5 +66,5 @@ function CardDetailsCtrl($routeParams, Card, Collection) {
 
 angular.module("cardDetails").component("cardDetails", {
     templateUrl: "app/card-details/card-details.html",
-    controller: ["$routeParams", "Card", "Collection", CardDetailsCtrl]
+    controller: ["$routeParams", "Utils", "Card", "Collection", CardDetailsCtrl]
 });

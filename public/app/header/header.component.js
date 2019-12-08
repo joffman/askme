@@ -1,4 +1,4 @@
-function HeaderCtrl($window, User) {
+function HeaderCtrl($window, Utils, User) {
     var self = this;
 
     //////////////////////////////////////////////////
@@ -9,10 +9,6 @@ function HeaderCtrl($window, User) {
     // General functions.
     //////////////////////////////////////////////////
 
-    function handleApiError(err) {
-        alert("Error: " + err.data.errorMsg);
-    }
-
     //////////////////////////////////////////////////
     // Scope functions.
     //////////////////////////////////////////////////
@@ -22,12 +18,13 @@ function HeaderCtrl($window, User) {
 			console.log("User logged out.");
 			$window.location.href = "/login";
 		}).catch(response => {
-			handleApiError(response);
+			console.log("Error on logout:", response);
+			Utils.handleApiError(response);
 		});
 	};
 }
 
 angular.module("askmeHeader").component("askmeHeader", {
     templateUrl: "app/header/header.html",
-    controller: ["$window", "User", HeaderCtrl]
+    controller: ["$window", "Utils", "User", HeaderCtrl]
 });

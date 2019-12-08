@@ -1,34 +1,35 @@
-function NavigationCtrl() {
+function NavigationCtrl($scope, $location) {
     var self = this;
 
-    //////////////////////////////////////////////////
-    // Scope variables.
-    //////////////////////////////////////////////////
-
-	// TODO Get selected item from url and keep it in sync.
-	self.selectedNavItem = null;
-
-    //////////////////////////////////////////////////
-    // General functions.
-    //////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////
-    // Scope functions.
-    //////////////////////////////////////////////////
-
-	self.selectNavItem = function(event) {
-		var elem = angular.element(event.target);
-
+	markNavItem = function(elemId) {
 		// Unselect all navigation-items.
-		var ul = elem.parents("ul");
-		ul.find("li > a").removeClass("active");
+		var ul = angular.element("header nav ul");
+		ul.find("li > a").removeClass("active").blur();
+		// blur() is used to "unfocus".
 
 		// Select the clicked item.
-		elem.addClass("active");
+		angular.element("header nav " + elemId).addClass("active");
 	};
+
+	// Keep the navigation items in sync with the url.
+	$scope.$watch(() => {
+		return $location.path();
+	}, path => {
+		switch (path) {
+			case "/categories":
+				markNavItem("#categoriesNav");
+				break;
+			case "/collections":
+				markNavItem("#collectionsNav");
+				break;
+			case "/about":
+				markNavItem("#aboutNav");
+				break;
+		}
+	});
 }
 
 angular.module("navigation").component("navigation", {
     templateUrl: "app/navigation/navigation.html",
-    controller: [NavigationCtrl]
+    controller: ["$scope", "$location", NavigationCtrl]
 });

@@ -1,4 +1,4 @@
-function QuizCtrl($scope, $routeParams, Card, Attachment) {
+function QuizCtrl($scope, $routeParams, Utils, Card, Attachment) {
     var self = this;
 
     //////////////////////////////////////////////////
@@ -82,7 +82,8 @@ function QuizCtrl($scope, $routeParams, Card, Attachment) {
                 }
             }
         } catch (err) {
-            alert("Error fetching next card: " + err.data.errorMsg);
+            console.log("Error fetching next card:", err);
+			Utils.handleApiError(err);
         }
     }
 
@@ -154,5 +155,5 @@ function QuizCtrl($scope, $routeParams, Card, Attachment) {
 
 angular.module("quiz").component("quiz", {
     templateUrl: "app/quiz/quiz.html",
-    controller: ["$scope", "$routeParams", "Card", "Attachment", QuizCtrl]
+    controller: ["$scope", "$routeParams", "Utils", "Card", "Attachment", QuizCtrl]
 });

@@ -1,4 +1,4 @@
-function CollectionDetailsCtrl($routeParams, Collection, Category) {
+function CollectionDetailsCtrl($routeParams, Utils, Collection, Category) {
     var self = this;
 
     // Fetch collection with given id.
@@ -10,9 +10,7 @@ function CollectionDetailsCtrl($routeParams, Collection, Category) {
             })
             .catch(errorResp => {
                 console.log("Error:", errorResp);
-                alert(
-                    "Error when fetching collection: " + errorResp.data.errorMsg
-                );
+				Utils.handleApiError(errorResp);
             });
     }
 
@@ -24,7 +22,7 @@ function CollectionDetailsCtrl($routeParams, Collection, Category) {
         })
         .catch(errorResp => {
             console.log("Error:", errorResp);
-            alert("Error when fetching categories: " + errorResp.data.errorMsg);
+			Utils.handleApiError(errorResp);
         });
 
     //////////////////////////////////////////////////
@@ -41,7 +39,8 @@ function CollectionDetailsCtrl($routeParams, Collection, Category) {
                     alert("Saved successfully!");
                 })
                 .catch(errorResp => {
-                    alert("Error on save: " + errorResp.data.errorMsg);
+                    console("Error on save:", errorResp);
+					Utils.handleApiError(errorResp);
                 });
         } else {
             // Update existing card.
@@ -50,7 +49,8 @@ function CollectionDetailsCtrl($routeParams, Collection, Category) {
                     alert("Collection updated successfully!");
                 })
                 .catch(errorResp => {
-                    alert("Error on save: " + errorResp.data.errorMsg);
+                    console("Error on update:", errorResp);
+					Utils.handleApiError(errorResp);
                 });
         }
     };
@@ -60,6 +60,7 @@ angular.module("collectionDetails").component("collectionDetails", {
     templateUrl: "app/collection-details/collection-details.html",
     controller: [
         "$routeParams",
+		"Utils",
         "Collection",
         "Category",
         CollectionDetailsCtrl

@@ -1,1 +1,1 @@
-angular.module("cardDetails", ["ngRoute", "common.card", "common.collection"]);
+angular.module("cardDetails", ["ngRoute", "common.utils", "common.card", "common.collection"]);

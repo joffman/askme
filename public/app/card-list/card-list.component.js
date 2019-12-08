@@ -1,4 +1,4 @@
-function CardListCtrl($routeParams, Card) {
+function CardListCtrl($routeParams, Utils, Card) {
     var self = this;
 
     //////////////////////////////////////////////////
@@ -13,17 +13,13 @@ function CardListCtrl($routeParams, Card) {
     // General functions.
     //////////////////////////////////////////////////
 
-    function handleApiError(err) {
-        alert("Error: " + err.data.errorMsg);
-    }
-
     function fetchCards() {
         Card.query({ collectionId: $routeParams.collectionId })
             .$promise.then(function(respData) {
                 self.cards = respData.cards;
             })
             .catch(function(error) {
-                handleApiError(error);
+                Utils.handleApiError(error);
             });
     }
 
@@ -37,7 +33,7 @@ function CardListCtrl($routeParams, Card) {
                 fetchCards();
             })
             .catch(function(error) {
-                handleApiError(error);
+                Utils.handleApiError(error);
             });
     };
 
@@ -50,5 +46,5 @@ function CardListCtrl($routeParams, Card) {
 
 angular.module("cardList").component("cardList", {
     templateUrl: "app/card-list/card-list.html",
-    controller: ["$routeParams", "Card", CardListCtrl]
+    controller: ["$routeParams", "Utils", "Card", CardListCtrl]
 });
