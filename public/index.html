@@ -22,8 +22,13 @@
         <title>AskMe</title>
     </head>
     <body>
-        <header ng-include src="'app/header/header.html'"></header>
+		<header>
+			<askme-header></askme-header>
+			<navigation></navigation>
+		</header>
+
         <main ng-view></main>
+
         <!-- Javascript for bootstrap. -->
         <script
             src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -55,8 +60,14 @@
         <script src="app/common/collection/collection.svc.js"></script>
         <script src="app/common/card/card.module.js"></script>
         <script src="app/common/card/card.svc.js"></script>
+        <script src="app/common/user/user.module.js"></script>
+        <script src="app/common/user/user.svc.js"></script>
         <script src="app/common/attachment/attachment.module.js"></script>
         <script src="app/common/attachment/attachment.svc.js"></script>
+        <script src="app/header/header.module.js"></script>
+        <script src="app/header/header.component.js"></script>
+        <script src="app/navigation/navigation.module.js"></script>
+        <script src="app/navigation/navigation.component.js"></script>
         <script src="app/category-list/category-list.module.js"></script>
         <script src="app/category-list/category-list.component.js"></script>
         <script src="app/collection-list/collection-list.module.js"></script>

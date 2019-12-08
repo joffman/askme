@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
             email: email,
             password: hash
         };
-        var ret = await database.addUser(user);
+        await database.addUser(user);
 
         res.redirect("/login"); // TODO: pass success message
     } catch (err) {

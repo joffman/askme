@@ -4,15 +4,23 @@ header {
     background-color: #ddd;
 }
 
-header > img {
+header img {
     height: 70px;
     float: left;
     margin-left: 10px;
 }
 
-header > nav {
-    float: right;
-    padding: 15px 0;
+#user-mgmt {
+	float: right;
+	padding: 15px 10px;
+}
+
+header nav {
+	border-top: 1px solid silver;
+    float: left;
+    padding: 5px;
+	clear: left;
+	width: 100%;
 }
 
 main {

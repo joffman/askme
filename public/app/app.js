@@ -7,7 +7,9 @@ var askMeApp = angular.module("askMeApp", [
     "collectionList",
     "collectionDetails",
     "cardList",
-    "cardDetails"
+    "cardDetails",
+	"askmeHeader",
+	"navigation"
 ]);
 
 // Configure routes.
@@ -41,17 +43,4 @@ askMeApp.config(function($routeProvider) {
         .otherwise({
             redirectTo: "/collections"
         });
-});
-
-askMeApp.controller("headerNavCtrl", function($scope) {
-    $scope.onNavItemClick = function($event) {
-        var elem = angular.element($event.target);
-
-        // Unselect all navigation-items.
-        var ul = elem.parents("ul");
-        ul.find("li > a").removeClass("active");
-
-        // Select the clicked item.
-        elem.addClass("active");
-    };
 });

@@ -14,7 +14,7 @@ function CardListCtrl($routeParams, Card) {
     //////////////////////////////////////////////////
 
     function handleApiError(err) {
-        alert("Error: " + err.message);
+        alert("Error: " + err.data.errorMsg);
     }
 
     function fetchCards() {

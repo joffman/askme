@@ -1,29 +1,7 @@
 <img src="images/logo.jpeg" />
-<nav ng-controller="headerNavCtrl">
-    <ul class="nav nav-pills">
-        <li class="nav-item">
-            <a
-                class="nav-link"
-                href="#!/categories"
-                ng-click="onNavItemClick($event)"
-                >Categories</a
-            >
-        </li>
-        <li class="nav-item">
-            <a
-                class="nav-link"
-                href="#!/collections"
-                ng-click="onNavItemClick($event)"
-                >Collections</a
-            >
-        </li>
-        <li class="nav-item">
-            <a
-                class="nav-link"
-                href="#!/about"
-                ng-click="onNavItemClick($event)"
-                >About</a
-            >
-        </li>
-    </ul>
-</nav>
+
+<div id="user-mgmt">
+	<button class="btn btn-warning" ng-click="$ctrl.logout()">
+		Logout
+	</button>
+</div>
