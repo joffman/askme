@@ -7,8 +7,9 @@ db.serialize(function() {
 
     db.run(
         "CREATE TABLE IF NOT EXISTS user (\n" +
-            "\temail TEXT PRIMARY KEY NOT NULL CHECK(path <> ''),\n" +
-            "\tpassword TEXT NOT NULL CHECK(path <> '')\n" +
+            "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
+            "\temail TEXT UNIQUE NOT NULL CHECK(email <> ''),\n" +
+            "\tpassword TEXT NOT NULL CHECK(password <> '')\n" +
             ")"	// TODO: Add 'active' flag.
 				//	The user has to activate his account, clicking a link in email.
     );

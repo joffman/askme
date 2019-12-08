@@ -30,17 +30,20 @@ router.post("/", async (req, res) => {
             email: email,
             password: hash
         };
-        await database.addUser(user);
+        const id = await database.addUser(user);
 
-        res.redirect("/login"); // TODO: pass success message
+		res.status(200).render("../../public/register.ejs", {
+			success: true,
+			email: email
+		});
     } catch (err) {
         console.log("Error:", err);
-        var errorMsg = "";
-        if (err.errno == 19) {
-            // User with given email already exists.
+        var errorMsg = "User creation failed.";
+        if (err.errno == 19)
             errorMsg = "User with given email already exists.";
-        }
-        res.redirect("/register"); // TODO: Pass errorMsg.
+        res.render("../../public/register.ejs", {
+			error: errorMsg
+		});
     }
 });
 

@@ -25,6 +25,25 @@
     <body>
         <main>
             <h1>Register</h1>
+
+			<% if (locals.error) { %>
+			<div class="alert alert-warning">
+				Could not create user. Error:
+				<%= error %>
+			</div>
+			<% } %>
+
+			<% if (locals.success) { %>
+			<div class="alert alert-success">
+				<p>
+				User with email "<%= email %>" has been successfully
+				created.
+				</p>
+				<p>
+				<a href="/login">Login now!</a>
+				</p>
+			</div>
+			<% } else { %>
             <form method="POST">
                 <div class="form-group">
                     <label for="email">Email</label>
@@ -68,6 +87,7 @@
                 Already registered?
                 <a href="/login">Go to the login page.</a>
             </p>
+			<% } %>
         </main>
     </body>
 

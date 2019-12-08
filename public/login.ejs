@@ -26,9 +26,10 @@
         <main>
             <h1>Login</h1>
 
-			<!-- prettier-ignore -->
 			<% if (messages.error) { %>
-			<%= messages.error %>
+			<div class="alert alert-warning">
+				<%= messages.error %>
+			</div>
 			<% } %>
 
             <form method="POST">
