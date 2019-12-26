@@ -83,7 +83,7 @@ app.use((req, res, next) => {
         return next();
     else res.redirect("/login");
 });
-app.use(express.static(path.join(__dirname, "/../apps/userApp")));
+app.use(express.static(path.join(__dirname, "/../apps")));
 
 // Listen to requests.
 const PORT = process.env.PORT || 5000;

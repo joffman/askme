@@ -240,7 +240,7 @@ router.post("/:id/attachments", async function(req, res) {
     // Add entry in attachment-table.
     var attachmentId;
     try {
-        const urlPath = `/uploads/cards/${cardId}/${attachmentFilename}`;
+        const urlPath = `/userApp/uploads/cards/${cardId}/${attachmentFilename}`;
         attachmentId = await database.addAttachment(urlPath, cardId, belongsTo);
     } catch (err) {
         console.log(
@@ -302,7 +302,7 @@ router.delete("/:cardId/attachments/:attachmentId", async function(req, res) {
         }
 
         // Remove attachment from FS.
-        const filePath = "../apps/userApp" + attachment.path;
+        const filePath = "../apps" + attachment.path;
         await fsProm.unlink(filePath);
 
         // Remove attachment from database.
