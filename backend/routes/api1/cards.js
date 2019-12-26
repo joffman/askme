@@ -110,7 +110,7 @@ router.delete("/:id", async function(req, res) {
     try {
         // Delete all attachments from filesystem.
         var attachmentDirExists = false;
-        const attachmentDir = `../public/uploads/cards/${cardId}`;
+        const attachmentDir = `../apps/userApp/uploads/cards/${cardId}`;
         try {
             await fsProm.access(attachmentDir);
             attachmentDirExists = true;
@@ -195,7 +195,7 @@ router.post("/:id/attachments", async function(req, res) {
     console.log(`Successfully found card with ID '${cardId}'.`);
 
     // Check if upload folder for this card already exists.
-    const uploadDir = `../public/uploads/cards/${cardId}/`;
+    const uploadDir = `../apps/userApp/uploads/cards/${cardId}/`;
     var dirExists = true;
     try {
         await fsProm.access(uploadDir, fs.constants.W_OK);
@@ -302,7 +302,7 @@ router.delete("/:cardId/attachments/:attachmentId", async function(req, res) {
         }
 
         // Remove attachment from FS.
-        const filePath = "../public" + attachment.path;
+        const filePath = "../apps/userApp" + attachment.path;
         await fsProm.unlink(filePath);
 
         // Remove attachment from database.

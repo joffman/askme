@@ -9,7 +9,8 @@ db.serialize(function() {
         "CREATE TABLE IF NOT EXISTS user (\n" +
             "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
             "\temail TEXT UNIQUE NOT NULL CHECK(email <> ''),\n" +
-            "\tpassword TEXT NOT NULL CHECK(password <> '')\n" +
+            "\tpassword TEXT NOT NULL CHECK(password <> ''),\n" +
+            "\tisAdmin INTEGER NOT NULL DEFAULT 0 CHECK( isAdmin in (0, 1) )\n" +
             ")" // TODO: Add 'active' flag.
         //	The user has to activate his account, clicking a link in email.
     );
@@ -57,7 +58,7 @@ db.serialize(function() {
     db.run(
         "CREATE TABLE IF NOT EXISTS attachment (\n" +
             "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
-            "\tpath TEXT UNIQUE NOT NULL CHECK(path <> ''),\n" +
+            "\tpath TEXT UNIQUE NOT NULL CHECK(path <> ''),		-- path within user-app\n" +
             "\tcardId INTEGER NOT NULL,\n" +
             "\tbelongsTo TEXT NOT NULL CHECK( belongsTo in ('Q', 'A') ),\n" +
             "\tFOREIGN KEY(cardId) REFERENCES card(id)\n" +

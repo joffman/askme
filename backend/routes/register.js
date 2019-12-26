@@ -6,7 +6,7 @@ const Database = require("../database.js");
 var database = new Database();
 
 router.get("/", function(req, res) {
-    res.render("../../public/register.ejs");
+    res.render("../../apps/register.ejs");
 });
 
 router.post("/", async (req, res) => {
@@ -28,11 +28,12 @@ router.post("/", async (req, res) => {
         // Store user in database.
         var user = {
             email: email,
-            password: hash
+            password: hash,
+			isAdmin: 0
         };
         const id = await database.addUser(user);
 
-        res.status(200).render("../../public/register.ejs", {
+        res.status(200).render("../../apps/register.ejs", {
             success: true,
             email: email
         });
@@ -40,7 +41,7 @@ router.post("/", async (req, res) => {
         console.log("Error:", err);
         var errorMsg = "User creation failed.";
         if (err.errno == 19) errorMsg = "User with given email already exists.";
-        res.render("../../public/register.ejs", {
+        res.render("../../apps/register.ejs", {
             error: errorMsg
         });
     }

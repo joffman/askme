@@ -52,7 +52,7 @@ app.use("/register", verifyNotAuthenticated, require("./routes/register.js"));
 app.use("/login", verifyNotAuthenticated, require("./routes/login.js"));
 app.use("/logout", require("./routes/logout.js"));
 
-// Set up api routes. TODO: Protect them.
+// Set up api routes. TODO: Protect them using authentication.
 app.use(
     "/api1/categories",
     verifyApiAuthentication,
@@ -69,8 +69,11 @@ app.use(
     require("./routes/api1/cards.js")
 );
 
+//// Protect admin app.
+//app.use("/admin", verifyIsAdmin, express.static(path.join(__dirname, "/../admin")));
+
 // Set up static routes.
-// All files in public are protected, except CSS-files and favicon.ico.
+// All other static files are protected, except CSS-files and favicon.ico.
 app.use((req, res, next) => {
     if (
         req.isAuthenticated() ||
@@ -80,7 +83,7 @@ app.use((req, res, next) => {
         return next();
     else res.redirect("/login");
 });
-app.use(express.static(path.join(__dirname, "/../public")));
+app.use(express.static(path.join(__dirname, "/../apps/userApp")));
 
 // Listen to requests.
 const PORT = process.env.PORT || 5000;

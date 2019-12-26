@@ -9,7 +9,7 @@ var database = new Database();
 router.get("/", function(req, res) {
     console.log("GET-request to login.");
     console.log("User:", req.user);
-    res.render("../../public/login.ejs");
+    res.render("../../apps/login.ejs");
 });
 
 router.post(

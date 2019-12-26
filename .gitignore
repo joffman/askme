@@ -2,7 +2,7 @@ backend/node_modules
 backend/askme.db
 backend/package-lock.json
 
-public/uploads/cards/*
-!public/uploads/cards/.gitkeep
+apps/userApp/uploads/cards/*
+!apps/userApp/uploads/cards/.gitkeep
 
 *.swp
