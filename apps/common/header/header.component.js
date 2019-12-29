@@ -29,7 +29,7 @@ function HeaderCtrl($scope, $window, Utils, User) {
 angular.module("askmeHeader").component("askmeHeader", {
     templateUrl: "/common/header/header.html",
     controller: ["$scope", "$window", "Utils", "User", HeaderCtrl],
-	bindings: {
-		isAdmin: "@admin"
-	}
+    bindings: {
+        isAdmin: "@admin"
+    }
 });

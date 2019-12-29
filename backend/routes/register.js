@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
         var user = {
             email: email,
             password: hash,
-			isAdmin: 0
+            isAdmin: 0
         };
         const id = await database.addUser(user);
 

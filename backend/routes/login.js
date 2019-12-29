@@ -12,44 +12,42 @@ router.get("/", function(req, res) {
     res.render("../../apps/login.ejs");
 });
 
-router.post(
-    "/", function(req, res, next) {
-		console.log("Checking authentication...");
-		passport.authenticate("local", function(err, user, info) {
-			if (err) {
-				console.log("Error on authentication.");
-				return next(err);
-			}
+router.post("/", function(req, res, next) {
+    console.log("Checking authentication...");
+    passport.authenticate("local", function(err, user, info) {
+        if (err) {
+            console.log("Error on authentication.");
+            return next(err);
+        }
 
-			if (!user) {
-				console.log("User no authenticated. Redirect to login...");
-				res.redirect("/login");
-				// TODO Set flash message.
-			}
+        if (!user) {
+            console.log("User no authenticated. Redirect to login...");
+            res.redirect("/login");
+            // TODO Set flash message.
+        }
 
-			// Establish a session.
-			console.log("Establishing session...");
-			req.login(user, function(err) {
-				if (err) {
-					console.log("...error.");
-					return next(err);
-				}
+        // Establish a session.
+        console.log("Establishing session...");
+        req.login(user, function(err) {
+            if (err) {
+                console.log("...error.");
+                return next(err);
+            }
 
-				if (user.isAdmin) {
-					console.log("Redirecting admin...");
-					return res.redirect("/adminApp/index.html");
-				} else {
-					console.log("Redirecting user...");
-					return res.redirect("/userApp/index.html");
-				}
-			});
-		})(req, res, next);
-	});
+            if (user.isAdmin) {
+                console.log("Redirecting admin...");
+                return res.redirect("/adminApp/index.html");
+            } else {
+                console.log("Redirecting user...");
+                return res.redirect("/userApp/index.html");
+            }
+        });
+    })(req, res, next);
+});
 //		{
 //        successRedirect: "/index.html",
 //        failureRedirect: "/login",
 //        failureFlash: true
 //    }
-
 
 module.exports = router;

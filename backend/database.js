@@ -85,8 +85,13 @@ class Database {
     }
 
     addUser(user) {
-        const sql = "INSERT INTO user (email, password, isAdmin) VALUES (?, ?, ?)";
-        return this.db.insertAsync(sql, [user.email, user.password, user.isAdmin]);
+        const sql =
+            "INSERT INTO user (email, password, isAdmin) VALUES (?, ?, ?)";
+        return this.db.insertAsync(sql, [
+            user.email,
+            user.password,
+            user.isAdmin
+        ]);
     }
 
     //////////////////////////////////////////////////
