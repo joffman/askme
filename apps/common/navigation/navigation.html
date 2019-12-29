@@ -1,0 +1,11 @@
+<nav>
+	<ul class="nav nav-pills">
+		<li class="nav-item" ng-repeat="navItem in $ctrl.navItems">
+			<a
+					   id="{{navItem.id}}"
+		class="nav-link"
+  ng-href="{{navItem.href}}"
+  >{{navItem.name}}</a>
+		</li>
+	</ul>
+</nav>

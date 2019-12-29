@@ -1,4 +1,4 @@
-function HeaderCtrl($window, Utils, User) {
+function HeaderCtrl($scope, $window, Utils, User) {
     var self = this;
 
     //////////////////////////////////////////////////
@@ -27,6 +27,9 @@ function HeaderCtrl($window, Utils, User) {
 }
 
 angular.module("askmeHeader").component("askmeHeader", {
-    templateUrl: "app/header/header.html",
-    controller: ["$window", "Utils", "User", HeaderCtrl]
+    templateUrl: "/common/header/header.html",
+    controller: ["$scope", "$window", "Utils", "User", HeaderCtrl],
+	bindings: {
+		isAdmin: "@admin"
+	}
 });

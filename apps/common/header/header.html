@@ -1,0 +1,20 @@
+<style>
+#admin-label {
+	color: #008f11;
+	font-size: xx-large;
+	font-weight: bold;
+	float: left;
+	margin-left: 20%;
+	margin-top: 10px;
+}
+</style>
+
+<img src="/images/logo.jpeg" />
+
+<div ng-if="$ctrl.isAdmin != undefined" id="admin-label">ADMIN</div>
+
+<div id="user-mgmt">
+    <button class="btn btn-warning" ng-click="$ctrl.logout()">
+        Logout
+    </button>
+</div>
