@@ -8,6 +8,7 @@ db.serialize(function() {
     db.run(
         "CREATE TABLE IF NOT EXISTS user (\n" +
             "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
+            "\tusername TEXT UNIQUE NOT NULL CHECK(username <> ''),\n" +
             "\temail TEXT UNIQUE NOT NULL CHECK(email <> ''),\n" +
             "\tpassword TEXT NOT NULL CHECK(password <> ''),\n" +
             "\tisAdmin INTEGER NOT NULL DEFAULT 0 CHECK( isAdmin in (0, 1) )\n" +

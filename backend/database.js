@@ -79,15 +79,21 @@ class Database {
     // Users API.
     //////////////////////////////////////////////////
 
-    getUserFromEmail(email) {
-        const sql = "SELECT * FROM user WHERE email = ?";
-        return this.db.getAsync(sql, [email]);
+    getUserFromId(userid) {
+        const sql = "SELECT * FROM user WHERE id = ?";
+        return this.db.getAsync(sql, [userid]);
+    }
+
+    getUserFromUsername(username) {
+        const sql = "SELECT * FROM user WHERE username = ?";
+        return this.db.getAsync(sql, [username]);
     }
 
     addUser(user) {
         const sql =
-            "INSERT INTO user (email, password, isAdmin) VALUES (?, ?, ?)";
+            "INSERT INTO user (username, email, password, isAdmin) VALUES (?, ?, ?, ?)";
         return this.db.insertAsync(sql, [
+			user.username,
             user.email,
             user.password,
             user.isAdmin

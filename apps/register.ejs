@@ -36,8 +36,7 @@
 			<% if (locals.success) { %>
 			<div class="alert alert-success">
 				<p>
-				User with email "<%= email %>" has been successfully
-				created.
+				User "<%= username %>" has been successfully created.
 				</p>
 				<p>
 				<a href="/login">Login now!</a>
@@ -45,6 +44,17 @@
 			</div>
 			<% } else { %>
             <form method="POST">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input
+                        class="form-control"
+                        id="username"
+                        name="username"
+                        type="text"
+                        required
+                    />
+                </div>
+
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input
@@ -101,7 +111,9 @@
             else confirmed.setCustomValidity("passwords don't match");
         }
 
-        password.onchange = validateConfirmedPassword;
-        confirmed.onkeyup = validateConfirmedPassword;
+		if (password && confirmed) {
+			password.onchange = validateConfirmedPassword;
+			confirmed.onkeyup = validateConfirmedPassword;
+		}
     </script>
 </html>

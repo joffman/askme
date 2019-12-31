@@ -14,12 +14,16 @@ router.post("/", async (req, res) => {
     // TODO:
     //	- Use function for checking valid email format.
     //	- Redirect to /register with error message.
+	//	- Send confirmation mail.
+    const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
+    if (!username || /^\s*$/.test(username))
+        return res.status(400).send("Required username is missing.");
     if (!email || /^\s*$/.test(email))
-        res.status(400).send("Required email-address is missing.");
+        return res.status(400).send("Required email-address is missing.");
     if (!password || /^\s*$/.test(password))
-        res.status(400).send("Required password is missing.");
+        return res.status(400).send("Required password is missing.");
 
     try {
         // Compute password hash.
@@ -27,6 +31,7 @@ router.post("/", async (req, res) => {
 
         // Store user in database.
         var user = {
+            username: username,
             email: email,
             password: hash,
             isAdmin: 0
@@ -35,7 +40,7 @@ router.post("/", async (req, res) => {
 
         res.status(200).render("../../apps/register.ejs", {
             success: true,
-            email: email
+			username: username
         });
     } catch (err) {
         console.log("Error:", err);

@@ -5,12 +5,12 @@ const Database = require("./database.js");
 const database = new Database();
 
 function initialize(passport) {
-    const authenticateUser = async function(email, password, done) {
+    const authenticateUser = async function(username, password, done) {
         var user;
 
         // Get user from database and check if he exists.
         try {
-            user = await database.getUserFromEmail(email);
+            user = await database.getUserFromUsername(username);
         } catch (err) {
             console.log("authenticateUser: error on getting user:", err);
             done(err);
@@ -36,7 +36,7 @@ function initialize(passport) {
     };
 
     passport.use(
-        new LocalStrategy({ usernameField: "email" }, authenticateUser)
+        new LocalStrategy({ usernameField: "username" }, authenticateUser)
     );
 
     // Store the complete user in the session.
@@ -45,9 +45,9 @@ function initialize(passport) {
     passport.serializeUser((user, done) => done(null, user));
     passport.deserializeUser((user, done) => done(null, user));
     // Alternative:
-    //    passport.serializeUser((user, done) => done(null, user.email));
-    //    passport.deserializeUser((email, done) => {
-    //		database.getUserFromEmail(email).then(user => {
+    //    passport.serializeUser((user, done) => done(null, user.username));
+    //    passport.deserializeUser((username, done) => {
+    //		database.getUserFromUsername(username).then(user => {
     //			done(null, user);
     //		}).catch(err => {
     //			done(err, null);

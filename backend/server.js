@@ -54,6 +54,11 @@ app.use("/logout", require("./routes/logout.js"));
 
 // Set up api routes. TODO: Protect them using authentication.
 app.use(
+    "/api1/users",
+    verifyApiAuthentication,
+    require("./routes/api1/users.js")
+);
+app.use(
     "/api1/categories",
     verifyApiAuthentication,
     require("./routes/api1/categories.js")

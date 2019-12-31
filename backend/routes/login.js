@@ -22,7 +22,7 @@ router.post("/", function(req, res, next) {
 
         if (!user) {
             console.log("User no authenticated. Redirect to login...");
-            res.redirect("/login");
+            return res.redirect("/login");
             // TODO Set flash message.
         }
 

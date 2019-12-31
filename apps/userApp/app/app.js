@@ -8,7 +8,9 @@ var askMeApp = angular.module("askMeApp", [
     "cardList",
     "cardDetails",
     "askmeHeader",
-    "navigation"
+    "navigation",
+	"common.utils",
+	"common.user"
 ]);
 
 // Configure routes.
@@ -43,8 +45,9 @@ askMeApp.config(function($routeProvider) {
 
 // Create controller for navigation.
 askMeApp.controller("AskmeNavigationController", [
-    "$scope",
-    function($scope) {
+    "$scope", "User", "Utils",
+    function($scope, User, Utils) {
+		// Define navigation items.
         $scope.navItems = [
             {
                 id: "collectionsNav",
@@ -57,5 +60,12 @@ askMeApp.controller("AskmeNavigationController", [
                 name: "About"
             }
         ];
-    }
+
+		// Store the user in localStorage.
+		User.getActiveUser().then(response => {
+			localStorage.setItem("askme_user", JSON.stringify(response.data.user));
+		}).catch(response => {
+			Utils.handleApiError(response);
+		});
+ 	}
 ]);

@@ -10,6 +10,13 @@ angular.module("common.user").factory("User", [
             });
         };
 
+        fact.getActiveUser = function() {
+            return $http({
+                method: "GET",
+                url: "/api1/users/me"
+            });
+        };
+
         return fact;
     }
 ]);
