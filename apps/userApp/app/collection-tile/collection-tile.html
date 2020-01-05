@@ -1,0 +1,22 @@
+<style>
+.collection-tile {
+	background-color: FloralWhite;
+	border-radius: 10px;
+	border: 1px solid #ddd;
+	margin: 10px;
+	padding: 10px;
+}
+</style>
+
+<div class="collection-tile">
+	<h3><a ng-href="#!/collections/{{$ctrl.collection.id}}/details">{{$ctrl.collection.name}}</a></h3>
+	<p>{{$ctrl.collection.description | limitTo: 40}}{{$ctrl.collection.description.length > 40 ? '...' : ''}}</p>
+	<p>Number cards: {{$ctrl.collection.numCards}}</p>
+	<p>Categories: {{$ctrl.collection.categoryNames.join(", ")}}</p>
+	<!--TODO <p>Rating: ...</p>-->
+	<p>Author: {{$ctrl.collection.username}}</p>
+	<p>
+	<button ng-click="$ctrl.publish()" class="btn btn-primary">Publish</button>
+	<button ng-click="$ctrl.remove()" class="btn btn-danger">Remove</button>
+	</p>
+</div>

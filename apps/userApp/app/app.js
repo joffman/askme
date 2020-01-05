@@ -17,11 +17,18 @@ var askMeApp = angular.module("askMeApp", [
 // TODO If possible, pass route-parameters as attributes to components.
 askMeApp.config(function($routeProvider) {
     $routeProvider
-        .when("/collections", {
-            template: "<collection-list></collection-list>"
+        .when("/collections/public", {
+            template: '<collection-list filter="public"></collection-list>'
         })
-        .when("/collections/:collectionId", {
-            template: "<collection-details></collection-details>"
+        .when("/collections/me", {
+            template: '<collection-list filter="me"></collection-list>'
+        })
+        .when("/collections/:collectionId/details", {
+            template: function(params) {
+				return '<collection-details collection-id="'
+					+ params.collectionId
+					+ '"></collection-details>';
+			}
         })
         .when("/collections/:collectionId/cards", {
             template: "<card-list></card-list>"
@@ -30,7 +37,11 @@ askMeApp.config(function($routeProvider) {
             template: "<quiz></quiz>"
         })
         .when("/collections/:collectionId/cards/:cardId", {
-            template: "<card-details></card-details>"
+            template: function(params) {
+			   return `<card-details collection-id="${params.collectionId}"
+				   card-id="${params.cardId}">
+				   </card-details>`;
+			}
         })
         .when("/collections/:collectionId/cards/:cardId/attachments", {
             template: "<attachments></attachments>"
@@ -39,7 +50,7 @@ askMeApp.config(function($routeProvider) {
             templateUrl: "app/about/about.html"
         })
         .otherwise({
-            redirectTo: "/collections"
+            redirectTo: "/collections/public"
         });
 });
 
@@ -50,9 +61,14 @@ askMeApp.controller("AskmeNavigationController", [
 		// Define navigation items.
         $scope.navItems = [
             {
-                id: "collectionsNav",
-                href: "#!/collections",
-                name: "Collections"
+                id: "publicCollectionsNav",
+                href: "#!/collections/public",
+                name: "Public Collections"
+            },
+            {
+                id: "myCollectionsNav",
+                href: "#!/collections/me",
+                name: "My Collections"
             },
             {
                 id: "aboutNav",

@@ -1,39 +1,37 @@
-function CardDetailsCtrl($routeParams, Utils, Card, Collection) {
+function CardDetailsCtrl(Utils, Card, Collection) {
     var self = this;
 
     //////////////////////////////////////////////////
-    // Set properties of self.
+    // Initialization.
     //////////////////////////////////////////////////
 
     // Fetch card.
-    if ($routeParams.cardId == 0) {
-        // new card
-        self.card = {
-            id: 0,
-            collectionId: $routeParams.collectionId
-        };
-    } else {
-        // existing card
-        Card.get({ id: $routeParams.cardId })
-            .$promise.then(respData => {
-                self.card = respData.card;
-            })
-            .catch(err => {
-                Utils.handleApiError(err);
-            });
-    }
+	self.card = {};
 
-    // Fetch collections.
-    Collection.query()
-        .$promise.then(respData => {
-            self.collections = respData.collections;
-        })
-        .catch(error => {
-            Utils.handleApiError(error);
-        });
+	self.$onInit = function() {
+		self.collectionId = parseInt(self.collectionId);
+		self.cardId = parseInt(self.cardId);
+		if (isNaN(self.collectionId) || isNaN(self.cardId))
+			throw Error("Invalid collection-id or card-id argument.");
 
-    // Make collectionId from routeParams visible.
-    self.collectionId = $routeParams.collectionId;
+		if (self.cardId == 0) {
+			// New card.
+			self.card = {
+				id: 0,
+				collectionId: self.collectionId
+			};
+		} else {
+			// Existing card. Get all the details.
+			Card.get({ id: self.cardId })
+				.$promise.then(respData => {
+					self.card = respData.card;
+				})
+			.catch(err => {
+				Utils.handleApiError(err);
+			});
+		}
+	};
+
 
     //////////////////////////////////////////////////
     // Scope functions.
@@ -66,5 +64,9 @@ function CardDetailsCtrl($routeParams, Utils, Card, Collection) {
 
 angular.module("cardDetails").component("cardDetails", {
     templateUrl: "app/card-details/card-details.html",
-    controller: ["$routeParams", "Utils", "Card", "Collection", CardDetailsCtrl]
+    controller: ["Utils", "Card", "Collection", CardDetailsCtrl],
+	bindings: {
+		collectionId: "@",
+		cardId: "@"
+	}
 });

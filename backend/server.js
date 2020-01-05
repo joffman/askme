@@ -69,6 +69,11 @@ app.use(
     require("./routes/api1/collections.js")
 );
 app.use(
+    "/api1/collectionRatings",
+    verifyApiAuthentication,
+    require("./routes/api1/collection_ratings.js")
+);
+app.use(
     "/api1/cards",
     verifyApiAuthentication,
     require("./routes/api1/cards.js")

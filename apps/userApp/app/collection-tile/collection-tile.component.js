@@ -1,30 +1,19 @@
-function CollectionListCtrl($window, Utils, Collection) {
+function CollectionTileCtrl($scope, Utils, Collection) {
     var self = this;
 
     //////////////////////////////////////////////////
     // General functions.
     //////////////////////////////////////////////////
 
-    function fetchCollections() {
-		Collection.query({
-			filter: self.filter
-		})
-		.$promise.then(respData => {
-			self.collections = respData.collections;
-		})
-		.catch(error => {
-			Utils.handleApiError(error);
-		});
-	}
 
     //////////////////////////////////////////////////
     // Scope functions.
     //////////////////////////////////////////////////
 
-    self.remove = function(collectionId) {
+    var remove = function(collectionId) {
         Collection.remove({ id: collectionId })
             .$promise.then(respData => {
-                fetchCollections();
+                //fetchCollections();
             })
             .catch(error => {
                 Utils.handleApiError(error);
@@ -36,14 +25,17 @@ function CollectionListCtrl($window, Utils, Collection) {
     //////////////////////////////////////////////////
 
 	self.$onInit = function() {
-		fetchCollections();
 	};
+
+    //////////////////////////////////////////////////
+	// Maintaining state variables.
+    //////////////////////////////////////////////////
 }
 
-angular.module("collectionList").component("collectionList", {
-    templateUrl: "app/collection-list/collection-list.html",
-    controller: ["$window", "Utils", "Collection", CollectionListCtrl],
+angular.module("collectionTile").component("collectionTile", {
+    templateUrl: "app/collection-tile/collection-tile.html",
+    controller: ["$scope", "Utils", "Collection", CollectionTileCtrl],
 	bindings: {
-		filter: "@"
+		collection: "<"
 	}
 });

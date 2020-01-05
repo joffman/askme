@@ -1,1 +1,1 @@
-angular.module("common.user", []);
+angular.module("common.user", ["ngResource"]);

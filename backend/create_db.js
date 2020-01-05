@@ -27,8 +27,9 @@ db.serialize(function() {
         "CREATE TABLE IF NOT EXISTS collection (\n" +
             "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
             "\tname TEXT UNIQUE NOT NULL,\n" +
+            "\tdescription TEXT,\n" +
             "\tuserId INTEGER NOT NULL,\n" +
-            "\tpublic INTEGER NOT NULL CHECK( public in (0, 1) ),\n" +
+            "\tpublic INTEGER NOT NULL DEFAULT 0 CHECK( public in (0, 1) ),\n" +
             "\tFOREIGN KEY(userId) REFERENCES user(id) ON DELETE CASCADE\n" +
             ")"
     );
@@ -63,6 +64,20 @@ db.serialize(function() {
             "\tcardId INTEGER NOT NULL,\n" +
             "\tbelongsTo TEXT NOT NULL CHECK( belongsTo in ('Q', 'A') ),\n" +
             "\tFOREIGN KEY(cardId) REFERENCES card(id)\n" +
+            ")"
+    );
+
+    db.run(
+        "CREATE TABLE IF NOT EXISTS collectionRating (\n" +
+            "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
+            "\trating INTEGER NOT NULL CHECK(rating >= 1 AND rating <= 5),\n" +
+            "\tcomment TEXT NOT NULL CHECK(comment <> ''),\n" +
+            "\ttimestamp INTEGER NOT NULL,\n" +
+            "\tcollectionId INTEGER NOT NULL,	-- rated collection\n" +
+            "\tuserId INTEGER NOT NULL,			-- author\n" +
+            "\tFOREIGN KEY(userId) REFERENCES user(id) ON DELETE CASCADE,\n" +
+            "\tFOREIGN KEY(collectionId) REFERENCES collection(id) ON DELETE CASCADE,\n" +
+            "\tCONSTRAINT oneRatingPerUser UNIQUE(collectionId, userId)\n" +
             ")"
     );
 

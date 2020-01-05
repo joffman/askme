@@ -79,6 +79,12 @@ class Database {
     // Users API.
     //////////////////////////////////////////////////
 
+	// Return all users.
+	getUsers() {
+		const sql = "SELECT id, username, email, isAdmin FROM user";
+        return this.db.allAsync(sql, []);
+	}
+
     getUserFromId(userid) {
         const sql = "SELECT * FROM user WHERE id = ?";
         return this.db.getAsync(sql, [userid]);
@@ -132,17 +138,40 @@ class Database {
     // Collections API.
     //////////////////////////////////////////////////
 
-    getUserCollections(userId) {
-        const sql =
-            "SELECT id, name, public, " +
+    getCollections(filter) {
+		// todo: Create temporary table for namedCollectionCategories
+		// to improve readability.
+        var sql =
+            "SELECT *, " +
+			"(SELECT user.username FROM user WHERE user.id = collection.userId) username, " +
+			"(SELECT group_concat(namedCollectionCategories.name, ',') categoryNames " +
+			"FROM (SELECT collectionCategory.collectionId, category.name from collectionCategory INNER JOIN category ON collectionCategory.categoryId = category.id) " + 
+			"AS namedCollectionCategories WHERE namedCollectionCategories.collectionId = collection.id) categoryNames, " + 
             "(SELECT COUNT(*) FROM card WHERE card.collectionId = collection.id) numCards " +
-            "FROM collection WHERE userId = ?";
-        return this.db.allAsync(sql, [userId]);
+			"FROM collection";
+		var values = [];
+		if (filter) {
+			sql += " WHERE";
+			const validKeys = [
+				"userId", "public"
+			];
+			var first = true;
+			for (var key in filter) {
+				if (!validKeys.includes(key))
+					throw Error("Invalid filter key: " + key);
+				if (!first)
+					sql += " AND";
+				sql += " " + key + " = ?";
+				values.push(filter[key]);
+				first = false;
+			}
+		}
+        return this.db.allAsync(sql, values);
     }
 
     getCollection(id) {
         // Get collection-promise.
-        const collSql = "SELECT id, name " + "FROM collection WHERE id = ?";
+        const collSql = "SELECT * FROM collection WHERE id = ?";
         var collProm = this.db.getAsync(collSql, [id]);
 
         // Get category-ids-promise.
@@ -172,9 +201,10 @@ class Database {
             // Insert collection.
             console.log("Inserting collection.");
             const collSql =
-                "INSERT INTO collection (name, userId, public) VALUES (?, ?, ?)";
+                "INSERT INTO collection (name, description, userId, public) VALUES (?, ?, ?, ?)";
             const collId = await this.db.insertAsync(collSql, [
                 collection.name,
+				collection.description,
                 userId,
                 0
             ]);
@@ -220,60 +250,68 @@ class Database {
         }
     }
 
-    async updateCollection(collId, collection) {
-        console.log("updateCollection entered.");
-        try {
-            await this.db.runAsync("BEGIN TRANSACTION");
+    async updateCollection(collId, collection, userId) {
+		console.log("updateCollection entered.");
 
-            // Create update-collection promise.
-            const collSql = "UPDATE collection SET name = ? WHERE id = ?";
-            var collProm = this.db
-                .updateAsync(collSql, [collection.name, collId])
-                .then(changes => {
-                    if (changes == 0)
-                        return Promise.reject(
-                            Error(`No collection with given id ${collId}.`)
-                        );
-                    else return changes;
-                });
+		// Only the owner of a collection is allowed to update it.
+		const userSql = "SELECT userId FROM collection WHERE id = ?";
+		const userResult = await this.db.getAsync(userSql, [collId]);
+		if (userResult.userId !== userId)
+			throw Error("Only the owner of the collection is allowed to "
+					+ "update it.");
+		try {
+			// Start updating the database.
+			await this.db.runAsync("BEGIN TRANSACTION");
 
-            // Remove all categories from this collection.
-            const deleteCollCatsSql =
-                "DELETE FROM collectionCategory WHERE collectionId = ?";
-            await this.db.deleteAsync(deleteCollCatsSql, [collId]);
+			// Create update-collection promise.
+			const collSql = "UPDATE collection SET name = ?, description = ? WHERE id = ?";
+			var collProm = this.db
+				.updateAsync(collSql, [collection.name, collection.description, collId])
+				.then(changes => {
+					if (changes == 0)
+						return Promise.reject(
+								Error(`No collection with given id ${collId}.`)
+								);
+					else return changes;
+				});
 
-            // Create promises to insert categories for this collection.
-            var promises = [];
-            if (collection.categoryIds) {
-                for (var catId of collection.categoryIds) {
-                    // TODO Create function for insert into collectionCategory.
-                    const sql =
-                        "INSERT INTO collectionCategory " +
-                        "(collectionId, categoryId) VALUES (?, ?)";
-                    promises.push(this.db.insertAsync(sql, [collId, catId]));
-                }
-            }
+			// Remove all categories from this collection.
+			const deleteCollCatsSql =
+				"DELETE FROM collectionCategory WHERE collectionId = ?";
+			await this.db.deleteAsync(deleteCollCatsSql, [collId]);
 
-            // Collect all promises and check their outcome.
-            promises.push(collProm);
-            return Promise.all(promises)
-                .then(values => {
-                    console.log("Committing.");
-                    return this.db.runAsync("COMMIT");
-                })
-                .catch(err => {
-                    console.log("Error:", err);
-                    console.log("Rolling back.");
-                    return this.db.runAsync("ROLLBACK").then(() => {
-                        return Promise.reject(err);
-                    });
-                });
-        } catch (err) {
-            console.log("Error on async operation:", err);
-            console.log("Rolling back.");
-            await this.db.runAsync("ROLLBACK");
-            return Promise.reject(err);
-        }
+			// Create promises to insert categories for this collection.
+			var promises = [];
+			if (collection.categoryIds) {
+				for (var catId of collection.categoryIds) {
+					// TODO Create function for insert into collectionCategory.
+					const sql =
+						"INSERT INTO collectionCategory " +
+						"(collectionId, categoryId) VALUES (?, ?)";
+					promises.push(this.db.insertAsync(sql, [collId, catId]));
+				}
+			}
+
+			// Collect all promises and check their outcome.
+			promises.push(collProm);
+			return Promise.all(promises)
+				.then(values => {
+					console.log("Committing.");
+					return this.db.runAsync("COMMIT");
+				})
+			.catch(err => {
+				console.log("Error:", err);
+				console.log("Rolling back.");
+				return this.db.runAsync("ROLLBACK").then(() => {
+					return Promise.reject(err);
+				});
+			});
+		} catch (err) {
+			console.log("Error on async operation:", err);
+			console.log("Rolling back.");
+			await this.db.runAsync("ROLLBACK");
+			return Promise.reject(err);
+		}
     }
 
     deleteCollection(collectionId) {
@@ -356,9 +394,45 @@ class Database {
         return this.db.deleteAsync(sql, [attachmentId]);
     }
 
+	// TODO Can't we just use ON DELETE CASCADE?
     deleteAttachments(cardId) {
         const sql = "DELETE FROM attachment WHERE cardId = ?";
         return this.db.deleteAsync(sql, [cardId]);
+    }
+
+    //////////////////////////////////////////////////
+    // Collection-Ratings API.
+    //////////////////////////////////////////////////
+
+    getCollectionRatings(collectionId) {
+        const sql = "SELECT * FROM collectionRating WHERE collectionId = ?";
+        return this.db.allAsync(sql, [collectionId]);
+    }
+
+    findCollectionRating(collectionId, userId) {
+        const sql = "SELECT COUNT(*) > 0 as found FROM collectionRating WHERE collectionId = ? AND userId = ?";
+        return this.db.getAsync(sql, [collectionId, userId]);
+    }
+
+    addCollectionRating(rating, collectionId, userId) {
+		// The owner of the collection is not allowed to rate the collection.
+        const collSql = "SELECT userId FROM collection WHERE id = ?";
+		return this.db.getAsync(collSql, [collectionId]).then((collUserIdRes) => {
+			if (collUserIdRes.userId == userId)
+				throw Error("Owner is not allowed to rate his own collection.");
+
+			const ratingSql =
+				"INSERT INTO collectionRating (rating, comment, timestamp, collectionId, userId)" +
+				" VALUES (?, ?, strftime('%s', 'now'), ?, ?)";
+			return this.db.insertAsync(ratingSql, [rating.rating, rating.comment, collectionId, userId]);
+		});
+    }
+
+    updateCollectionRating(rating, collectionId, userId) {
+        const sql =
+            "UPDATE collectionRating SET rating = ?, comment = ?, timestamp = strftime('%s', 'now')" +
+            " WHERE collectionId = ? AND userId = ?";
+        return this.db.updateAsync(sql, [rating.rating, rating.comment, collectionId, userId]);
     }
 
     // todo: where to call db.close()?

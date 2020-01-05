@@ -5,10 +5,30 @@ const Database = require("../../database.js");
 
 var database = new Database();
 
+//TODO: Check that collections and cards can only
+//	be updated & deleted by their authors.
+
 router.get("/", async function(req, res) {
     try {
-        // Get collections from database and add number of cards to it.
-        var collectionsData = await database.getUserCollections(req.user.id);
+		// Set database filter.
+		const filterStr = req.query.filter;
+		var filter = null;
+		if (filterStr == "me")
+			filter = { userId: req.user.id };
+		else if (filterStr == "public")
+			filter = { public: 1 };
+		else 
+			throw Error("Invalid or missing 'filter' query-parameter.");
+
+		// Fetch and return collections.
+		var collectionsData = await database.getCollections(filter);
+		for (var i = 0; i < collectionsData.length; ++i) {
+			// Replace (comma-separated) categoryNames string with array of strings.
+			if (collectionsData[i].categoryNames)
+				collectionsData[i].categoryNames = collectionsData[i].categoryNames.split(",");
+			else
+				collectionsData[i].categoryNames = [];
+		}
         res.json({ success: true, collections: collectionsData });
     } catch (err) {
         res.statusCode = 500;
@@ -60,8 +80,9 @@ router.post("/", async function(req, res) {
 router.put("/:id", async function(req, res) {
     const collection = req.body;
     const collId = req.params.id;
+    const userId = req.user.id;
     try {
-        var changes = await database.updateCollection(collId, collection);
+        var changes = await database.updateCollection(collId, collection, userId);
         res.json({ success: true });
     } catch (err) {
         // todo: Check for invalid input and send 400.

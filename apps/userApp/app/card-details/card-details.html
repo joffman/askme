@@ -35,20 +35,6 @@
             />
         </div>
 
-        <div class="form-group">
-            <label for="card-collection">Collection</label>
-            <select
-                id="card-collection"
-                name="cardCollection"
-                class="form-control"
-                ng-model="$ctrl.card.collectionId"
-                ng-options="coll.id as coll.name for coll in $ctrl.collections"
-                required
-            >
-            </select>
-            <!-- FIXME: This doesn't work for a new card. -->
-        </div>
-
         <!-- Buttons -->
         <div class="form-group">
             <button

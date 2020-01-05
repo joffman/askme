@@ -1,35 +1,58 @@
-function CollectionDetailsCtrl($routeParams, Utils, Collection, Category) {
+function CollectionDetailsCtrl(Utils, Collection, Category) {
     var self = this;
 
+    //////////////////////////////////////////////////
+    // Initialization.
+    //////////////////////////////////////////////////
+
+	self.isOwner = false;
+
     // Fetch collection with given id.
-    self.collection = { id: $routeParams.collectionId };
-    if (self.collection.id != 0) {
-        Collection.get({ id: $routeParams.collectionId })
-            .$promise.then(response => {
-                self.collection = response.collection;
-            })
-            .catch(errorResp => {
-                console.log("Error:", errorResp);
-                Utils.handleApiError(errorResp);
-            });
-    }
+	self.collection = {};
+	var fetchCollection = function(collectionId) {
+		self.collection = { id: collectionId };
+		if (self.collection.id != 0) {
+			Collection.get({ id: collectionId })
+				.$promise.then(response => {
+					self.collection = response.collection;
+
+					// Are we the owner of this collection?
+					var thisUser = localStorage.getItem("askme_user");
+					if (thisUser) {
+						thisUser = JSON.parse(thisUser);
+						self.isOwner = thisUser.id == self.collection.userId;
+					}
+				}).catch(errorResp => {
+					console.log("Error on getting collection:", errorResp);
+					Utils.handleApiError(errorResp);
+				});
+		}
+	};
 
     // Fetch categories for multi-select-item.
     self.categories = [];
-    Category.query()
-        .$promise.then(response => {
-            self.categories = response.categories;
-        })
-        .catch(errorResp => {
-            console.log("Error:", errorResp);
-            Utils.handleApiError(errorResp);
-        });
+	var fetchCategories = function() {
+		Category.query()
+			.$promise.then(response => {
+				self.categories = response.categories;
+			})
+		.catch(errorResp => {
+			console.log("Error:", errorResp);
+			Utils.handleApiError(errorResp);
+		});
+	};
+
+	self.$onInit = function() {
+		fetchCollection(self.collectionId);
+		fetchCategories();
+	};
+
 
     //////////////////////////////////////////////////
     // Public functions.
     //////////////////////////////////////////////////
 
-    self.submit = function() {
+    self.submitCollection = function() {
         if (self.collection.id == 0) {
             // Add this new collection.
             Collection.save(self.collection)
@@ -39,7 +62,7 @@ function CollectionDetailsCtrl($routeParams, Utils, Collection, Category) {
                     alert("Saved successfully!");
                 })
                 .catch(errorResp => {
-                    console("Error on save:", errorResp);
+                    console.log("Error on save:", errorResp);
                     Utils.handleApiError(errorResp);
                 });
         } else {
@@ -49,7 +72,7 @@ function CollectionDetailsCtrl($routeParams, Utils, Collection, Category) {
                     alert("Collection updated successfully!");
                 })
                 .catch(errorResp => {
-                    console("Error on update:", errorResp);
+                    console.log("Error on update:", errorResp);
                     Utils.handleApiError(errorResp);
                 });
         }
@@ -59,10 +82,12 @@ function CollectionDetailsCtrl($routeParams, Utils, Collection, Category) {
 angular.module("collectionDetails").component("collectionDetails", {
     templateUrl: "app/collection-details/collection-details.html",
     controller: [
-        "$routeParams",
         "Utils",
         "Collection",
         "Category",
         CollectionDetailsCtrl
-    ]
+    ],
+	bindings: {
+		collectionId: "@"
+	}
 });

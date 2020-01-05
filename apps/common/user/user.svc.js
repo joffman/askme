@@ -1,6 +1,6 @@
 angular.module("common.user").factory("User", [
-    "$http",
-    function($http) {
+    "$http", "$resource",
+    function($http, $resource) {
         var fact = {};
 
         fact.logout = function() {
@@ -16,6 +16,14 @@ angular.module("common.user").factory("User", [
                 url: "/api1/users/me"
             });
         };
+
+		fact.resource = $resource(
+            "/api1/users/:id",
+            {},
+            {
+                query: { method: "GET", isArray: false }
+            }
+        );
 
         return fact;
     }

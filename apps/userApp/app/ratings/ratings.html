@@ -1,0 +1,85 @@
+<style>
+.collection-rating-item {
+	border-top-width: 1px;
+	border-style: solid;
+	border-color: #aaa;
+	padding: 5px;
+}
+
+.collection-rating-item > p {
+	margin: 0;
+}
+
+.collection-rating-item > .rating-user {
+	float: left;
+}
+
+.collection-rating-item > .rating-time {
+	float: left;
+	margin-left: 25px;
+}
+
+.collection-rating-item > .rating-value {
+	clear: left;
+}
+
+.collection-rating-item > .rating-comment {
+	margin-top: 10px;
+}
+</style>
+
+<section id="ratings">
+	<form ng-if="$ctrl.showRatingForm === 'true'" name="ratingForm" ng-submit="$ctrl.submitRating()">
+		<fieldset>
+			<legend>Your Rating</legend>
+			<div class="form-group">
+				<label
+					>Your Rating:
+					<select
+						name="ratingSelect"
+						class="form-control"
+						ng-model="$ctrl.rating.rating"
+						ng-options="opt.value as opt.name for opt in $ctrl.ratingOptions"
+						required
+					></select>
+				</label>
+			</div>
+
+			<div class="form-group">
+				<label
+					>Comment:
+					<textarea
+						name="comment"
+						ng-model="$ctrl.rating.comment"
+						class="form-control"
+						required
+						></textarea>
+				</label>
+			</div>
+
+			<div class="form-group">
+				<button
+									 type="submit"
+				class="btn btn-primary"
+		  ng-disabled="ratingForm.$invalid"
+		  >
+		  Submit Rating
+				</button>
+			</div>
+		</fieldset>
+	</form>
+
+	<div ng-if="$ctrl.showRatingList === 'true'">
+		<h3>Ratings</h3>
+		<p ng-if="$ctrl.ratings && $ctrl.ratings.length">Average Rating: {{$ctrl.averageRating}}</p>
+		<p ng-if="!($ctrl.ratings && $ctrl.ratings.length > 0)">No ratings yet.</p>
+		<ul>
+			<li ng-repeat="r in $ctrl.ratings" class="collection-rating-item">
+				<span class="rating-user">{{$ctrl.users[r.userId].username}}</span>
+				<span class="rating-time">{{r.timestamp * 1000 | date: 'yyyy-MM-dd HH:mm'}}</span>
+				<p class="rating-value">Rating: {{r.rating}}</span>
+				<p class="rating-comment">{{r.comment}}</p>
+			</li>
+		</ul>
+	</div>
+</section>
