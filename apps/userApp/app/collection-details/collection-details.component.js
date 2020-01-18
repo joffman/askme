@@ -1,4 +1,4 @@
-function CollectionDetailsCtrl(Utils, Collection, Category) {
+function CollectionDetailsCtrl($location, Utils, Collection, Category) {
     var self = this;
 
     //////////////////////////////////////////////////
@@ -58,8 +58,8 @@ function CollectionDetailsCtrl(Utils, Collection, Category) {
             Collection.save(self.collection)
                 .$promise.then(response => {
                     self.collection.id = response.id;
-                    // TODO: Update url.
                     alert("Saved successfully!");
+					$location.path(`/collections/${self.collection.id}/details`);
                 })
                 .catch(errorResp => {
                     console.log("Error on save:", errorResp);
@@ -82,6 +82,7 @@ function CollectionDetailsCtrl(Utils, Collection, Category) {
 angular.module("collectionDetails").component("collectionDetails", {
     templateUrl: "app/collection-details/collection-details.html",
     controller: [
+		"$location",
         "Utils",
         "Collection",
         "Category",

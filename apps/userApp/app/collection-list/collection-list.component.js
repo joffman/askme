@@ -21,15 +21,15 @@ function CollectionListCtrl($window, Utils, Collection) {
     // Scope functions.
     //////////////////////////////////////////////////
 
-    self.remove = function(collectionId) {
-        Collection.remove({ id: collectionId })
-            .$promise.then(respData => {
-                fetchCollections();
-            })
-            .catch(error => {
-                Utils.handleApiError(error);
-            });
-    };
+	self.removeCollection = function(collectionId) {
+		for (var i = 0; i < self.collections.length; ++i) {
+			var coll = self.collections[i];
+			if (coll.id == collectionId) {
+				self.collections.splice(i, 1);	// remove collection
+				break;
+			}
+		}
+	};
 
     //////////////////////////////////////////////////
     // Initialization.

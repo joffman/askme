@@ -16,7 +16,7 @@
 	<!--TODO <p>Rating: ...</p>-->
 	<p>Author: {{$ctrl.collection.username}}</p>
 	<p>
-	<button ng-click="$ctrl.publish()" class="btn btn-primary">Publish</button>
-	<button ng-click="$ctrl.remove()" class="btn btn-danger">Remove</button>
+	<button ng-click="$ctrl.remove($ctrl.collection.id)" class="btn btn-danger">Remove</button>
+	<button ng-if="!$ctrl.collection.public" ng-click="$ctrl.publish($ctrl.collection.id)" class="btn btn-primary">Publish</button>
 	</p>
 </div>

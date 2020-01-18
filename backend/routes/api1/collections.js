@@ -77,6 +77,27 @@ router.post("/", async function(req, res) {
     }
 });
 
+// todo: Use POST /:id for updating and publishing
+//	a collection. Then build the sql dynamically from
+//	the POST-/Request-body.
+router.post("/:id/publish", async function(req, res) {
+    const collectionId = req.params.id;
+    const userId = req.user.id;
+    try {
+		await database.publishCollection(collectionId, userId);
+        res.json({ success: true });
+    } catch (err) {
+        // TODO Check for invalid input and send 400.
+        console.log("Error:", err);
+        res.statusCode = 500;
+        res.json({
+            success: false,
+            errorMsg: err.message
+        });
+    }
+});
+
+
 router.put("/:id", async function(req, res) {
     const collection = req.body;
     const collId = req.params.id;

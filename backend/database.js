@@ -250,6 +250,21 @@ class Database {
         }
     }
 
+	async publishCollection(collId, userId) {
+		console.log("publishCollection entered.");
+
+		// Only the owner of a collection is allowed to publish it.
+		const userSql = "SELECT userId FROM collection WHERE id = ?";
+		const userResult = await this.db.getAsync(userSql, [collId]);
+		if (userResult.userId !== userId)
+			throw Error("Only the owner of the collection is allowed to "
+					+ "publish it.");
+
+		// Return promise for publishing the collection.
+		const publishSql = "UPDATE collection SET public = 1 WHERE id = ?";
+		return this.db.runAsync(publishSql, [collId]);
+	}
+
     async updateCollection(collId, collection, userId) {
 		console.log("updateCollection entered.");
 

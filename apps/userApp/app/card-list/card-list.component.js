@@ -1,4 +1,4 @@
-function CardListCtrl($routeParams, Utils, Card) {
+function CardListCtrl($window, $routeParams, Utils, Card) {
     var self = this;
 
     //////////////////////////////////////////////////
@@ -27,15 +27,19 @@ function CardListCtrl($routeParams, Utils, Card) {
     // Scope functions.
     //////////////////////////////////////////////////
 
-    self.remove = function(cardId) {
-        Card.remove({ id: cardId })
-            .$promise.then(function(respData) {
-                fetchCards();
-            })
-            .catch(function(error) {
-                Utils.handleApiError(error);
-            });
-    };
+	self.remove = function(cardId) {
+		if ($window.confirm("Do you really want to remove "
+					+ "this card?")) {
+			Card.remove({ id: cardId })
+				.$promise.then(function(respData) {
+					fetchCards();
+					$window.alert("Card removed successfully!");
+				})
+			.catch(function(error) {
+				Utils.handleApiError(error);
+			});
+		}
+	};
 
     //////////////////////////////////////////////////
     // Initialization.
@@ -46,5 +50,5 @@ function CardListCtrl($routeParams, Utils, Card) {
 
 angular.module("cardList").component("cardList", {
     templateUrl: "app/card-list/card-list.html",
-    controller: ["$routeParams", "Utils", "Card", CardListCtrl]
+    controller: ["$window", "$routeParams", "Utils", "Card", CardListCtrl]
 });

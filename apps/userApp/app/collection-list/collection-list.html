@@ -7,7 +7,7 @@
 
 	<ul>
 		<li ng-repeat="coll in $ctrl.collections">
-			<collection-tile collection="coll"></collection-tile>
+			<collection-tile collection="coll" on-remove="$ctrl.removeCollection"></collection-tile>
 		</li>
 	</ul>
 
