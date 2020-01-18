@@ -7,8 +7,8 @@ var database = new Database();
 
 router.get("/", async function(req, res) {
     try {
-		// Fetch and return users.
-		var usersData = await database.getUsers();
+        // Fetch and return users.
+        var usersData = await database.getUsers();
         return res.json({ success: true, users: usersData });
     } catch (err) {
         res.statusCode = 500;
@@ -23,7 +23,7 @@ router.get("/me", async function(req, res) {
     try {
         // Get session-user from database.
         var userData = await database.getUserFromId(req.user.id);
-		delete userData.password;
+        delete userData.password;
         return res.json({ success: true, user: userData });
     } catch (err) {
         res.statusCode = 500;

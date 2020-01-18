@@ -10,25 +10,23 @@ var database = new Database();
 
 router.get("/", async function(req, res) {
     try {
-		// Set database filter.
-		const filterStr = req.query.filter;
-		var filter = null;
-		if (filterStr == "me")
-			filter = { userId: req.user.id };
-		else if (filterStr == "public")
-			filter = { public: 1 };
-		else 
-			throw Error("Invalid or missing 'filter' query-parameter.");
+        // Set database filter.
+        const filterStr = req.query.filter;
+        var filter = null;
+        if (filterStr == "me") filter = { userId: req.user.id };
+        else if (filterStr == "public") filter = { public: 1 };
+        else throw Error("Invalid or missing 'filter' query-parameter.");
 
-		// Fetch and return collections.
-		var collectionsData = await database.getCollections(filter);
-		for (var i = 0; i < collectionsData.length; ++i) {
-			// Replace (comma-separated) categoryNames string with array of strings.
-			if (collectionsData[i].categoryNames)
-				collectionsData[i].categoryNames = collectionsData[i].categoryNames.split(",");
-			else
-				collectionsData[i].categoryNames = [];
-		}
+        // Fetch and return collections.
+        var collectionsData = await database.getCollections(filter);
+        for (var i = 0; i < collectionsData.length; ++i) {
+            // Replace (comma-separated) categoryNames string with array of strings.
+            if (collectionsData[i].categoryNames)
+                collectionsData[i].categoryNames = collectionsData[
+                    i
+                ].categoryNames.split(",");
+            else collectionsData[i].categoryNames = [];
+        }
         res.json({ success: true, collections: collectionsData });
     } catch (err) {
         res.statusCode = 500;
@@ -84,7 +82,7 @@ router.post("/:id/publish", async function(req, res) {
     const collectionId = req.params.id;
     const userId = req.user.id;
     try {
-		await database.publishCollection(collectionId, userId);
+        await database.publishCollection(collectionId, userId);
         res.json({ success: true });
     } catch (err) {
         // TODO Check for invalid input and send 400.
@@ -97,13 +95,16 @@ router.post("/:id/publish", async function(req, res) {
     }
 });
 
-
 router.put("/:id", async function(req, res) {
     const collection = req.body;
     const collId = req.params.id;
     const userId = req.user.id;
     try {
-        var changes = await database.updateCollection(collId, collection, userId);
+        var changes = await database.updateCollection(
+            collId,
+            collection,
+            userId
+        );
         res.json({ success: true });
     } catch (err) {
         // todo: Check for invalid input and send 400.

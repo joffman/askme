@@ -17,7 +17,7 @@ function HeaderCtrl($scope, $window, Utils, User) {
         User.logout()
             .then(response => {
                 console.log("User logged out.");
-				localStorage.removeItem("askme_user");
+                localStorage.removeItem("askme_user");
                 $window.location.href = "/login";
             })
             .catch(response => {

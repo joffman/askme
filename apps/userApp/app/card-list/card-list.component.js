@@ -27,19 +27,18 @@ function CardListCtrl($window, $routeParams, Utils, Card) {
     // Scope functions.
     //////////////////////////////////////////////////
 
-	self.remove = function(cardId) {
-		if ($window.confirm("Do you really want to remove "
-					+ "this card?")) {
-			Card.remove({ id: cardId })
-				.$promise.then(function(respData) {
-					fetchCards();
-					$window.alert("Card removed successfully!");
-				})
-			.catch(function(error) {
-				Utils.handleApiError(error);
-			});
-		}
-	};
+    self.remove = function(cardId) {
+        if ($window.confirm("Do you really want to remove " + "this card?")) {
+            Card.remove({ id: cardId })
+                .$promise.then(function(respData) {
+                    fetchCards();
+                    $window.alert("Card removed successfully!");
+                })
+                .catch(function(error) {
+                    Utils.handleApiError(error);
+                });
+        }
+    };
 
     //////////////////////////////////////////////////
     // Initialization.

@@ -1,1 +1,5 @@
-angular.module("collectionList", ["common.utils", "common.collection", "collectionTile"]);
+angular.module("collectionList", [
+    "common.utils",
+    "common.collection",
+    "collectionTile"
+]);

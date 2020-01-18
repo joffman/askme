@@ -6,32 +6,31 @@ function CardDetailsCtrl(Utils, Card, Collection) {
     //////////////////////////////////////////////////
 
     // Fetch card.
-	self.card = {};
+    self.card = {};
 
-	self.$onInit = function() {
-		self.collectionId = parseInt(self.collectionId);
-		self.cardId = parseInt(self.cardId);
-		if (isNaN(self.collectionId) || isNaN(self.cardId))
-			throw Error("Invalid collection-id or card-id argument.");
+    self.$onInit = function() {
+        self.collectionId = parseInt(self.collectionId);
+        self.cardId = parseInt(self.cardId);
+        if (isNaN(self.collectionId) || isNaN(self.cardId))
+            throw Error("Invalid collection-id or card-id argument.");
 
-		if (self.cardId == 0) {
-			// New card.
-			self.card = {
-				id: 0,
-				collectionId: self.collectionId
-			};
-		} else {
-			// Existing card. Get all the details.
-			Card.get({ id: self.cardId })
-				.$promise.then(respData => {
-					self.card = respData.card;
-				})
-			.catch(err => {
-				Utils.handleApiError(err);
-			});
-		}
-	};
-
+        if (self.cardId == 0) {
+            // New card.
+            self.card = {
+                id: 0,
+                collectionId: self.collectionId
+            };
+        } else {
+            // Existing card. Get all the details.
+            Card.get({ id: self.cardId })
+                .$promise.then(respData => {
+                    self.card = respData.card;
+                })
+                .catch(err => {
+                    Utils.handleApiError(err);
+                });
+        }
+    };
 
     //////////////////////////////////////////////////
     // Scope functions.
@@ -65,8 +64,8 @@ function CardDetailsCtrl(Utils, Card, Collection) {
 angular.module("cardDetails").component("cardDetails", {
     templateUrl: "app/card-details/card-details.html",
     controller: ["Utils", "Card", "Collection", CardDetailsCtrl],
-	bindings: {
-		collectionId: "@",
-		cardId: "@"
-	}
+    bindings: {
+        collectionId: "@",
+        cardId: "@"
+    }
 });

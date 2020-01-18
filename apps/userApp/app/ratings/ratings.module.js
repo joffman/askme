@@ -1,1 +1,5 @@
-angular.module("ratings", ["common.utils", "common.collectionRating", "common.user"]);
+angular.module("ratings", [
+    "common.utils",
+    "common.collectionRating",
+    "common.user"
+]);

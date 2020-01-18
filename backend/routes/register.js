@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
     // TODO:
     //	- Use function for checking valid email format.
     //	- Redirect to /register with error message.
-	//	- Send confirmation mail.
+    //	- Send confirmation mail.
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
@@ -40,7 +40,7 @@ router.post("/", async (req, res) => {
 
         res.status(200).render("../../apps/register.ejs", {
             success: true,
-			username: username
+            username: username
         });
     } catch (err) {
         console.log("Error:", err);

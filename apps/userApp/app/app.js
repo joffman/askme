@@ -9,8 +9,8 @@ var askMeApp = angular.module("askMeApp", [
     "cardDetails",
     "askmeHeader",
     "navigation",
-	"common.utils",
-	"common.user"
+    "common.utils",
+    "common.user"
 ]);
 
 // Configure routes.
@@ -25,10 +25,12 @@ askMeApp.config(function($routeProvider) {
         })
         .when("/collections/:collectionId/details", {
             template: function(params) {
-				return '<collection-details collection-id="'
-					+ params.collectionId
-					+ '"></collection-details>';
-			}
+                return (
+                    '<collection-details collection-id="' +
+                    params.collectionId +
+                    '"></collection-details>'
+                );
+            }
         })
         .when("/collections/:collectionId/cards", {
             template: "<card-list></card-list>"
@@ -38,10 +40,10 @@ askMeApp.config(function($routeProvider) {
         })
         .when("/collections/:collectionId/cards/:cardId", {
             template: function(params) {
-			   return `<card-details collection-id="${params.collectionId}"
+                return `<card-details collection-id="${params.collectionId}"
 				   card-id="${params.cardId}">
 				   </card-details>`;
-			}
+            }
         })
         .when("/collections/:collectionId/cards/:cardId/attachments", {
             template: "<attachments></attachments>"
@@ -56,9 +58,11 @@ askMeApp.config(function($routeProvider) {
 
 // Create controller for navigation.
 askMeApp.controller("AskmeNavigationController", [
-    "$scope", "User", "Utils",
+    "$scope",
+    "User",
+    "Utils",
     function($scope, User, Utils) {
-		// Define navigation items.
+        // Define navigation items.
         $scope.navItems = [
             {
                 id: "publicCollectionsNav",
@@ -77,11 +81,16 @@ askMeApp.controller("AskmeNavigationController", [
             }
         ];
 
-		// Store the user in localStorage.
-		User.getActiveUser().then(response => {
-			localStorage.setItem("askme_user", JSON.stringify(response.data.user));
-		}).catch(response => {
-			Utils.handleApiError(response);
-		});
- 	}
+        // Store the user in localStorage.
+        User.getActiveUser()
+            .then(response => {
+                localStorage.setItem(
+                    "askme_user",
+                    JSON.stringify(response.data.user)
+                );
+            })
+            .catch(response => {
+                Utils.handleApiError(response);
+            });
+    }
 ]);

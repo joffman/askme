@@ -1,5 +1,6 @@
 angular.module("common.user").factory("User", [
-    "$http", "$resource",
+    "$http",
+    "$resource",
     function($http, $resource) {
         var fact = {};
 
@@ -17,7 +18,7 @@ angular.module("common.user").factory("User", [
             });
         };
 
-		fact.resource = $resource(
+        fact.resource = $resource(
             "/api1/users/:id",
             {},
             {
