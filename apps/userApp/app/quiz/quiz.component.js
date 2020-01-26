@@ -1,24 +1,26 @@
-function QuizCtrl($scope, $routeParams, Utils, Card, Attachment) {
+function QuizCtrl($scope, $window, $location, $routeParams, Utils, Card, Attachment) {
     var self = this;
-
-    //////////////////////////////////////////////////
-    // Public variables.
-    //////////////////////////////////////////////////
-
-    self.cardsPerQuiz = 3;
-    self.collectionId = $routeParams.collectionId;
-    self.currentCard = {};
-    self.numCorrectAnswers = 0;
-    self.quizIsOver = false;
-    self.results = {};
 
     //////////////////////////////////////////////////
     // Private variables.
     //////////////////////////////////////////////////
 
-    var cardsLeft = self.cardsPerQuiz;
+    const maxCardsPerQuiz = 12;
+
     var cards = [];
     var usedCardIndices = [];
+
+    //////////////////////////////////////////////////
+    // Public variables.
+    //////////////////////////////////////////////////
+
+    self.cardsPerQuiz = maxCardsPerQuiz;
+	self.cardsLeft = null;
+    self.collectionId = $routeParams.collectionId;
+    self.currentCard = {};
+    self.numCorrectAnswers = 0;
+    self.quizIsOver = false;
+    self.results = {};
 
     //////////////////////////////////////////////////
     // Private functions.
@@ -102,7 +104,7 @@ function QuizCtrl($scope, $routeParams, Utils, Card, Attachment) {
     }
 
     function advance() {
-        if (cardsLeft-- > 0) {
+        if (self.cardsLeft-- > 0) {
             self.answerIsVisible = false;
             var index = getNextCardIndex();
             var cardId = cards[index].id;
@@ -117,25 +119,25 @@ function QuizCtrl($scope, $routeParams, Utils, Card, Attachment) {
     // Initialization.
     //////////////////////////////////////////////////
 
-    Card.query({ collectionId: $routeParams.collectionId })
+    Card.query({ collectionId: self.collectionId })
         .$promise.then(resp => {
             if (resp.success) {
                 cards = resp.cards;
-                if (cards.length < self.cardsPerQuiz) {
-                    alert(
-                        `Collection has only ${cards.length} card(s).` +
-                            ` Quiz requires at least ${self.cardsPerQuiz} cards.`
-                    );
+				if (cards.length == 0) {
+                    $window.alert("Collection has no cards.");
+					$location.path(`/collections/${self.collectionId}/details`);
                     return;
-                }
+				}
+				self.cardsPerQuiz = Math.min(self.cardsPerQuiz, cards.length);
+				self.cardsLeft = self.cardsPerQuiz;
                 advance();
             } else {
                 throw Error(resp.errorMsg);
             }
         })
         .catch(err => {
-            alert(
-                `Cannot fetch cards of collection with id '${$routeParams.collectionId}': ${err}`
+            $window.alert(
+                `Cannot fetch cards of collection with id '${self.collectionId}': ${err}`
             );
         });
 
@@ -157,6 +159,8 @@ angular.module("quiz").component("quiz", {
     templateUrl: "app/quiz/quiz.html",
     controller: [
         "$scope",
+        "$window",
+        "$location",
         "$routeParams",
         "Utils",
         "Card",

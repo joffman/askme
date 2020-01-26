@@ -16,6 +16,8 @@
     <div ng-if="!$ctrl.quizIsOver">
         <h2>Quiz</h2>
 
+		<p>{{$ctrl.cardsLeft}} card(s) left.</p>
+
         <h4>Title</h4>
         <p>{{$ctrl.currentCard.title}}</p>
 
@@ -81,6 +83,7 @@
             question(s) correctly.
         </p>
         <p ng-class="$ctrl.results.class">{{$ctrl.results.text}}</p>
+		<p><a ng-href="#!/collections/{{$ctrl.collectionId}}/details">Go back to collection-details.</a></p>
     </div>
     <!-- quizIsOver -->
 </section>
