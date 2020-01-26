@@ -52,7 +52,7 @@ db.serialize(function() {
     db.run(
         "CREATE TABLE IF NOT EXISTS card (\n" +
             "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
-            "\ttitle TEXT UNIQUE NOT NULL,\n" +
+            "\ttitle TEXT NOT NULL,\n" +
             "\tquestion TEXT,\n" +
             "\tanswer TEXT,\n" +
             "\tcollectionId INTEGER NOT NULL,\n" +
