@@ -93,10 +93,10 @@ function QuizCtrl($scope, $window, $location, $routeParams, Utils, Card, Attachm
         const percentageCorrect = self.numCorrectAnswers / self.cardsPerQuiz;
         if (percentageCorrect < 0.4) {
             self.results.class = "failure";
-            self.results.text = "That is bad. Work harder!";
+            self.results.text = "This is bad. Work harder!";
         } else if (percentageCorrect < 0.8) {
             self.results.class = "mediocre";
-            self.results.text = "That was mediocre. Keep going!";
+            self.results.text = "This is mediocre. Keep going!";
         } else {
             self.results.class = "success";
             self.results.text = "Well done!";

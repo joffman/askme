@@ -1,43 +1,26 @@
 <section id="collections-section">
-    <h2>Collections</h2>
+	<h2>Collections</h2>
 
-    <a href="#!/collections/0/details" class="btn btn-success"
-        >Add Collection</a
-    >
+	<div>
+		<label>Search
+			<input ng-model="$ctrl.query" />
+		</label>
+	</div>
 
-    <!-- TODO: Search field (search for category). -->
+	<div>
+		<a href="#!/collections/0/details" class="btn btn-success"
+									 >Add Collection</a
+								 >
+	</div>
+
+    <!-- TODO: Select-item for category. -->
 
     <ul>
-        <li ng-repeat="coll in $ctrl.collections">
+        <li ng-repeat="coll in $ctrl.collections | filter: $ctrl.query">
             <collection-tile
                 collection="coll"
                 on-remove="$ctrl.removeCollection"
             ></collection-tile>
         </li>
     </ul>
-
-    <!--
-	<table id="collection-table" class="table table-striped table-hover">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Number Cards</th>
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="coll in $ctrl.collections">
-				<td><a href="#!/collections/{{coll.id}}/cards">{{coll.name}}</a></td>
-				<td>{{coll.numCards}}</td>
-				<td>
-					<a class="btn btn-warning" href="#!/collections/{{coll.id}}">
-						Edit</a>
-					<button type="button" class="btn btn-danger"
-						   ng-click="$ctrl.remove(coll.id)">Remove</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<a href="#!/collections/0" class="btn btn-success">Add Collection</a>
-	-->
 </section>
