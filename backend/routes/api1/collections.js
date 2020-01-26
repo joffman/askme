@@ -1,21 +1,27 @@
 const express = require("express");
 const router = express.Router();
 
+const winston_logger = require("../../config/winston.js");
 const Database = require("../../database.js");
 
 var database = new Database();
 
 //TODO: Check that collections and cards can only
-//	be updated & deleted by their authors.
+//	be updated & deleted by their authors/owners.
 
 router.get("/", async function(req, res) {
     try {
         // Set database filter.
         const filterStr = req.query.filter;
         var filter = null;
-        if (filterStr == "me") filter = { userId: req.user.id };
-        else if (filterStr == "public") filter = { public: 1 };
-        else throw Error("Invalid or missing 'filter' query-parameter.");
+        if (filterStr == "me") {
+		   	filter = { userId: req.user.id };
+		} else if (filterStr == "public") {
+		   	filter = { public: 1 };
+		} else {
+			winston_logger.warn(`CollectionRoutes.getCollections: Invalid filter parameter: ${filterStr}`);
+			throw Error("Invalid or missing 'filter' query-parameter.");
+		}
 
         // Fetch and return collections.
         var collectionsData = await database.getCollections(filter);
@@ -27,10 +33,11 @@ router.get("/", async function(req, res) {
                 ].categoryNames.split(",");
             else collectionsData[i].categoryNames = [];
         }
-        res.json({ success: true, collections: collectionsData });
+        return res.json({ success: true, collections: collectionsData });
     } catch (err) {
+		winston_logger.warn("CollectionRoutes.getCollections: Error: %o", err);
         res.statusCode = 500;
-        res.json({
+        return res.json({
             success: false,
             errorMsg: err.message
         });
@@ -38,20 +45,23 @@ router.get("/", async function(req, res) {
 });
 
 router.get("/:id", async function(req, res) {
+	const collId = req.params.id;
     try {
         var collectionData = await database.getCollection(req.params.id);
         if (collectionData) {
             res.json({ success: true, collection: collectionData });
         } else {
+			winston_logger.warn(`CollectionRoutes.getCollection (id: ${collId}): No collection with given id.`);
             res.statusCode = 400;
-            res.json({
+            return res.json({
                 success: false,
                 errorMsg: "No collection with given id."
             });
         }
     } catch (err) {
+		winston_logger.error(`CollectionRoutes.getCollection (id: ${collId}): Error: %o`, err);
         res.statusCode = 500;
-        res.json({
+        return res.json({
             success: false,
             errorMsg: err.message
         });
@@ -61,14 +71,15 @@ router.get("/:id", async function(req, res) {
 router.post("/", async function(req, res) {
     const collection = req.body;
     const userId = req.user.id;
+	winston_logger.debug(`CollectionRoutes.addCollection: Entered with user-id ${userId} and body: %o`, req.body);
     try {
         var collectionId = await database.addCollection(collection, userId);
-        res.json({ success: true, id: collectionId });
+        return res.json({ success: true, id: collectionId });
     } catch (err) {
         // TODO Check for invalid input and send 400.
-        console.log("Error:", err);
+		winston_logger.warn(`CollectionRoutes.addCollection: Error: %o`, err);
         res.statusCode = 500;
-        res.json({
+        return res.json({
             success: false,
             errorMsg: err.message
         });
@@ -83,12 +94,12 @@ router.post("/:id/publish", async function(req, res) {
     const userId = req.user.id;
     try {
         await database.publishCollection(collectionId, userId);
-        res.json({ success: true });
+        return res.json({ success: true });
     } catch (err) {
         // TODO Check for invalid input and send 400.
-        console.log("Error:", err);
+		winston_logger.warn(`CollectionRoutes.publishCollection (collection-id: ${collectionId}): Error: %o`, err);
         res.statusCode = 500;
-        res.json({
+        return res.json({
             success: false,
             errorMsg: err.message
         });
@@ -99,17 +110,19 @@ router.put("/:id", async function(req, res) {
     const collection = req.body;
     const collId = req.params.id;
     const userId = req.user.id;
+	winston_logger.debug(`CollectionRoutes.updateCollection (collection-id: ${collId}): Entered with body: %o`, req.body);
     try {
         var changes = await database.updateCollection(
             collId,
             collection,
             userId
         );
-        res.json({ success: true });
+        return res.json({ success: true });
     } catch (err) {
         // todo: Check for invalid input and send 400.
+		winston_logger.warn(`CollectionRoutes.updateCollection (collection-id: ${collId}): Error: %o`, err);
         res.statusCode = 500;
-        res.json({
+        return res.json({
             success: false,
             errorMsg: err.message
         });
@@ -117,18 +130,24 @@ router.put("/:id", async function(req, res) {
 });
 
 router.delete("/:id", async function(req, res) {
+	const collId = req.params.id;
     try {
-        var changes = await database.deleteCollection(req.params.id);
-        if (changes === 1) res.json({ success: true });
-        else res.statusCode = 400;
-        res.json({
-            success: false,
-            errorMsg: `Collection with id ${id} does not exist.`
-        });
+        var changes = await database.deleteCollection(collId);
+        if (changes === 1) {
+			return res.json({ success: true });
+		} else {
+			winston_logger.warn(`CollectionRoutes.deleteCollection (collection-id: ${collId}): Collection does not exist.`);
+			res.statusCode = 400;
+			return res.json({
+				success: false,
+				errorMsg: `Collection with id ${id} does not exist.`
+			});
+		}
     } catch (err) {
+		winston_logger.warn(`CollectionRoutes.deleteCollection (collection-id: ${collId}): Error: %o`, err);
         if (err.code == "SQLITE_CONSTRAINT") {
             res.statusCode = 400;
-            res.json({
+            return res.json({
                 success: false,
                 errorMsg:
                     "SQL constraint failed." +
@@ -137,7 +156,7 @@ router.delete("/:id", async function(req, res) {
             });
         } else {
             res.statusCode = 500;
-            res.json({
+            return res.json({
                 success: false,
                 errorMsg: err.message
             });

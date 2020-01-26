@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const winston_logger = require("../../config/winston.js");
 const Database = require("../../database.js");
 
 var database = new Database();
@@ -26,28 +27,27 @@ router.get("/", async function(req, res) {
     try {
         // Get database filter.
         const collectionId = parseInt(req.query.collectionId);
-        console.log(
-            "Got request for collection-ratings with collection-id:",
-            collectionId
-        );
-        if (isNaN(collectionId))
+        if (isNaN(collectionId)) {
+			winston_logger.warn(`CollectionRatingRoutes.getRatings (collection-id: ${collectionId}): Invalid collection-id.`);
             return invalidInput(res, "Invalid or missing collectionId filter.");
+		}
 
         // Fetch and return ratings.
         const ratingsData = await database.getCollectionRatings(collectionId);
         return res.json({ success: true, ratings: ratingsData });
     } catch (err) {
+		winston_logger.warn(`CollectionRatingRoutes.getRatings (collection-id: ${collectionId}): Error: %o`, err);
         return serverError(res, err.message);
     }
 });
 
 router.post("/", async function(req, res) {
-    console.log("Received post to collectionRatings...");
-    console.log("Body:", req.body);
+	winston_logger.debug("CollectionRatingRoutes.addRating: Entered with request-body: %o", req.body);
     const rating = req.body.rating;
     const collectionId = parseInt(req.body.collectionId);
     const userId = req.user.id;
     if (isNaN(collectionId))
+		winston_logger.warn("CollectionRatingRoutes.addRating: Missing or invalid collectionId field in body.");
         return invalidInput(
             res,
             "Missing or invalid collectionId field in body."
@@ -57,27 +57,24 @@ router.post("/", async function(req, res) {
             collectionId,
             userId
         );
-        console.log("Result of findRating:", findResult);
+		winston_logger.debug("CollectionRatingRoutes.addRating: Result of findRating: %o", findResult);
         if (findResult.found) {
-            console.log("Rating already exists. Updating rating...");
             var ret = await database.updateCollectionRating(
                 rating,
                 collectionId,
                 userId
             );
-            console.log("Return value:", ret);
         } else {
-            console.log("Rating does not exist. Creating new rating...");
             var ratingId = await database.addCollectionRating(
                 rating,
                 collectionId,
                 userId
             );
-            console.log("Return value (id):", ratingId);
         }
         res.json({ success: true });
     } catch (err) {
         // TODO: Send 400 for invalid inputs (e.g. collection does not exist).
+		winston_logger.warn("CollectionRatingRoutes.addRating: Error: %o", err);
         return serverError(res, err.message);
     }
 });

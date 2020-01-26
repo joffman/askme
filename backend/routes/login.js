@@ -3,42 +3,40 @@ const express = require("express");
 const passport = require("passport");
 const router = express.Router();
 
+const winston_logger = require("../config/winston.js");
 const Database = require("../database.js");
 var database = new Database();
 
 router.get("/", function(req, res) {
-    console.log("GET-request to login.");
-    console.log("User:", req.user);
     res.render("../../apps/login.ejs");
 });
 
 router.post("/", function(req, res, next) {
-    console.log("Checking authentication...");
     passport.authenticate("local", function(err, user, info) {
         if (err) {
-            console.log("Error on authentication.");
+			winston_logger.error(`Error on authentication: ${err.message}`);
             return next(err);
         }
 
         if (!user) {
-            console.log("User no authenticated. Redirect to login...");
+            winston_logger.info("User authentication failed. Redirecting to login...");
             return res.redirect("/login");
             // TODO Set flash message.
         }
 
         // Establish a session.
-        console.log("Establishing session...");
+        winston_logger.debug(`Establishing session for user ${user}...`);
         req.login(user, function(err) {
             if (err) {
-                console.log("...error.");
+				winston_logger.error(`Error on establishing session for user ${user}.`);
                 return next(err);
             }
 
             if (user.isAdmin) {
-                console.log("Redirecting admin...");
+				winston_logger.debug(`Redirecting admin ${user} to admin-app...`);
                 return res.redirect("/adminApp/index.html");
             } else {
-                console.log("Redirecting user...");
+				winston_logger.error(`Redirecting user ${user} to user-app...`);
                 return res.redirect("/userApp/index.html");
             }
         });

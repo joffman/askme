@@ -1,6 +1,6 @@
 backend/node_modules
 backend/askme.db
-backend/package-lock.json
+backend/logs/*.log*
 
 apps/userApp/uploads/cards/*
 !apps/userApp/uploads/cards/.gitkeep

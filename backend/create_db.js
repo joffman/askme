@@ -5,6 +5,7 @@ var db = new sqlite3.Database("askme.db");
 db.serialize(function() {
     db.run("PRAGMA foreign_keys = ON");
 
+	console.log("Creating user table...");
     db.run(
         "CREATE TABLE IF NOT EXISTS user (\n" +
             "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
@@ -16,6 +17,7 @@ db.serialize(function() {
         //	The user has to activate his account, clicking a link in email.
     );
 
+	console.log("Creating category table...");
     db.run(
         "CREATE TABLE IF NOT EXISTS category (\n" +
             "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
@@ -23,6 +25,7 @@ db.serialize(function() {
             ")"
     );
 
+	console.log("Creating collection table...");
     db.run(
         "CREATE TABLE IF NOT EXISTS collection (\n" +
             "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
@@ -34,6 +37,7 @@ db.serialize(function() {
             ")"
     );
 
+	console.log("Creating collectionCategory table...");
     db.run(
         "CREATE TABLE IF NOT EXISTS collectionCategory (\n" +
             "\tcollectionId INTEGER NOT NULL,\n" +
@@ -44,6 +48,7 @@ db.serialize(function() {
             ")"
     );
 
+	console.log("Creating card table...");
     db.run(
         "CREATE TABLE IF NOT EXISTS card (\n" +
             "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
@@ -57,6 +62,7 @@ db.serialize(function() {
             ")"
     );
 
+	console.log("Creating attachment table...");
     db.run(
         "CREATE TABLE IF NOT EXISTS attachment (\n" +
             "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
@@ -67,6 +73,7 @@ db.serialize(function() {
             ")"
     );
 
+	console.log("Creating collectionRating table...");
     db.run(
         "CREATE TABLE IF NOT EXISTS collectionRating (\n" +
             "\tid INTEGER PRIMARY KEY NOT NULL,\n" +
@@ -81,6 +88,7 @@ db.serialize(function() {
             ")"
     );
 
+	console.log("Closing database connection...");
     db.close(function(err) {
         if (err) console.log("Error when closing db-connection:", err);
     });
