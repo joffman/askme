@@ -1,4 +1,4 @@
-const createError = require('http-errors');
+const createError = require("http-errors");
 const express = require("express");
 const flash = require("express-flash");
 const passport = require("passport");
@@ -95,7 +95,7 @@ app.use(
 app.use((req, res, next) => {
     if (
         req.isAuthenticated() ||
-        req.path.startsWith("/css/") ||	// what is with /css/../...? is this safe?
+        req.path.startsWith("/css/") || // what is with /css/../...? is this safe?
         req.path === "/favicon.ico"
     )
         return next();
@@ -105,24 +105,23 @@ app.use(express.static(path.join(__dirname, "/../apps")));
 
 // Catch 404 and forward to error handler.
 app.use(function(req, res, next) {
-	next(createError(404));
+    next(createError(404));
 });
 
 // Error handler.
 app.use(function(err, req, res, next) {
-	// Log the error.
-	const logMsg = `${err.status} - ${err.message} - ${req.method} - ${req.originalUrl} - ${req.ip}`;
-	if (err.status == 500) {
-		winston_logger.error(logMsg);
-	} else {
-		winston_logger.error(logMsg);
-	}
-	next();
+    // Log the error.
+    const logMsg = `${err.status} - ${err.message} - ${req.method} - ${req.originalUrl} - ${req.ip}`;
+    if (err.status == 500) {
+        winston_logger.error(logMsg);
+    } else {
+        winston_logger.error(logMsg);
+    }
+    next();
 });
-
 
 // Listen to requests.
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, function() {
-	winston_logger.info(`Server listening on port ${PORT}`);
+    winston_logger.info(`Server listening on port ${PORT}`);
 });

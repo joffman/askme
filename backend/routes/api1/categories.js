@@ -12,7 +12,7 @@ router.get("/", async function(req, res) {
         var categoriesData = await database.getCategories();
         res.json({ success: true, categories: categoriesData });
     } catch (err) {
-		winston_logger.error("CategoryRoutes.getCategories: Error: %o", err);
+        winston_logger.error("CategoryRoutes.getCategories: Error: %o", err);
         res.statusCode = 500;
         res.json({
             success: false,
@@ -28,7 +28,7 @@ router.post("/", async function(req, res) {
             var categoryId = await database.addCategory(category);
             res.json({ success: true, id: categoryId });
         } catch (err) {
-			winston_logger.warn("CategoryRoutes.addCategory: Error: %o", err);
+            winston_logger.warn("CategoryRoutes.addCategory: Error: %o", err);
             res.statusCode = 500;
             res.json({
                 success: false,
@@ -36,7 +36,7 @@ router.post("/", async function(req, res) {
             });
         }
     } else {
-		winston_logger.warn("CategoryRoutes.addCategory: Name missing.");
+        winston_logger.warn("CategoryRoutes.addCategory: Name missing.");
         res.statusCode = 400;
         res.json({
             success: false,
@@ -46,21 +46,26 @@ router.post("/", async function(req, res) {
 });
 
 router.delete("/:id", async function(req, res) {
-	const catId = req.params.id;
+    const catId = req.params.id;
     try {
         var changes = await database.deleteCategory(catId);
         if (changes === 1) {
-		   	res.json({ success: true });
-		} else {
-			winston_logger.warn(`CategoryRoutes.deleteCategory (category-id: ${catId}): Category does not exist.`);
-			res.statusCode = 400;
+            res.json({ success: true });
+        } else {
+            winston_logger.warn(
+                `CategoryRoutes.deleteCategory (category-id: ${catId}): Category does not exist.`
+            );
+            res.statusCode = 400;
             res.json({
                 success: false,
                 errorMsg: `category with id ${catId} does not exist`
             });
-		}
+        }
     } catch (err) {
-		winston_logger.error(`CategoryRoutes.deleteCategory (category-id: ${catId}): Error: %o.`, err);
+        winston_logger.error(
+            `CategoryRoutes.deleteCategory (category-id: ${catId}): Error: %o.`,
+            err
+        );
         res.statusCode = 500;
         res.json({
             success: false,

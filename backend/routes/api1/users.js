@@ -12,7 +12,7 @@ router.get("/", async function(req, res) {
         var usersData = await database.getUsers();
         return res.json({ success: true, users: usersData });
     } catch (err) {
-		winston_logger("UserRoutes.getUsers: Error: %o", err);
+        winston_logger("UserRoutes.getUsers: Error: %o", err);
         res.statusCode = 500;
         return res.json({
             success: false,
@@ -28,7 +28,10 @@ router.get("/me", async function(req, res) {
         delete userData.password;
         return res.json({ success: true, user: userData });
     } catch (err) {
-		winston_logger("UserRoutes.getMe (user-id: ${req.user.id}): Error: %o", err);
+        winston_logger(
+            "UserRoutes.getMe (user-id: ${req.user.id}): Error: %o",
+            err
+        );
         res.statusCode = 500;
         res.json({
             success: false,

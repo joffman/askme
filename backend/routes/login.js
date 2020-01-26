@@ -14,12 +14,14 @@ router.get("/", function(req, res) {
 router.post("/", function(req, res, next) {
     passport.authenticate("local", function(err, user, info) {
         if (err) {
-			winston_logger.error(`Error on authentication: ${err.message}`);
+            winston_logger.error(`Error on authentication: ${err.message}`);
             return next(err);
         }
 
         if (!user) {
-            winston_logger.info("User authentication failed. Redirecting to login...");
+            winston_logger.info(
+                "User authentication failed. Redirecting to login..."
+            );
             return res.redirect("/login");
             // TODO Set flash message.
         }
@@ -28,15 +30,19 @@ router.post("/", function(req, res, next) {
         winston_logger.debug(`Establishing session for user ${user}...`);
         req.login(user, function(err) {
             if (err) {
-				winston_logger.error(`Error on establishing session for user ${user}.`);
+                winston_logger.error(
+                    `Error on establishing session for user ${user}.`
+                );
                 return next(err);
             }
 
             if (user.isAdmin) {
-				winston_logger.debug(`Redirecting admin ${user} to admin-app...`);
+                winston_logger.debug(
+                    `Redirecting admin ${user} to admin-app...`
+                );
                 return res.redirect("/adminApp/index.html");
             } else {
-				winston_logger.error(`Redirecting user ${user} to user-app...`);
+                winston_logger.error(`Redirecting user ${user} to user-app...`);
                 return res.redirect("/userApp/index.html");
             }
         });
