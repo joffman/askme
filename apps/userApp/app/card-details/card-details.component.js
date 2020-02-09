@@ -1,4 +1,4 @@
-function CardDetailsCtrl(Utils, Card, Collection) {
+function CardDetailsCtrl($window, Utils, Card, Collection) {
     var self = this;
 
     //////////////////////////////////////////////////
@@ -41,7 +41,7 @@ function CardDetailsCtrl(Utils, Card, Collection) {
             // new card
             Card.save(self.card)
                 .$promise.then(response => {
-                    alert("Successfully added card.");
+                    $window.alert("Successfully added card.");
                     self.card.id = response.id;
                     // TODO Update url.
                 })
@@ -52,7 +52,7 @@ function CardDetailsCtrl(Utils, Card, Collection) {
             // existing card
             Card.update(self.card)
                 .$promise.then(response => {
-                    alert("Successfully updated card.");
+                    $window.alert("Successfully updated card.");
                 })
                 .catch(err => {
                     Utils.handleApiError(err);
@@ -63,7 +63,7 @@ function CardDetailsCtrl(Utils, Card, Collection) {
 
 angular.module("cardDetails").component("cardDetails", {
     templateUrl: "app/card-details/card-details.html",
-    controller: ["Utils", "Card", "Collection", CardDetailsCtrl],
+    controller: ["$window", "Utils", "Card", "Collection", CardDetailsCtrl],
     bindings: {
         collectionId: "@",
         cardId: "@"
