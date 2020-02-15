@@ -32,9 +32,11 @@ askMeApp.config(function($routeProvider) {
                 );
             }
         })
-        .when("/collections/:collectionId/cards", {
-            template: "<card-list></card-list>"
-        })
+		.when("/collections/:collectionId/cards", {
+			template: function(params) {
+				return `<card-list collection-id="${params.collectionId}"></card-list>`;
+			}
+		})
         .when("/collections/:collectionId/quiz", {
             template: "<quiz></quiz>"
         })

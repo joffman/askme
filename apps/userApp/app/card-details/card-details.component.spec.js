@@ -73,7 +73,7 @@ describe("cardDetails", function() {
 			ctrl.$onInit();
 			expect(ctrl.card).toEqual({});
 
-			// Flush backend and check successful receipt of card.
+			// Flush backend and check successful reception of card.
 			$httpBackend.flush();
 			expect(ctrl.card).toEqual(testCard);
 		});
@@ -114,7 +114,31 @@ describe("cardDetails", function() {
 			expect($window.alert).toHaveBeenCalledWith("Successfully added card.");
 		});
 
-		// it("should update an existing card on submit", function() {...});
+		it("should update an existing card on submit", function() {
+			// Init controller.
+			var ctrl = $componentController("cardDetails");
+			ctrl.card = {
+				id: 3,		// this means that this is an existing card
+				collectionId: 4,
+				title: "test title",
+				question: "test question",
+				answer: "test answer",
+				userId: 77
+			};
+
+			// Setup http-backend.
+			const testResponse = {
+				success: true
+			};
+			$httpBackend.expectPUT("/api1/cards/" + ctrl.card.id, ctrl.card).respond(testResponse);
+
+			// Update card.
+			ctrl.onSubmit();
+			$httpBackend.flush();
+
+			// Check expectations.
+			expect($window.alert).toHaveBeenCalledWith("Successfully updated card.");
+		});
 	});
 
 });

@@ -1,20 +1,12 @@
-function CardListCtrl($window, $routeParams, Utils, Card) {
+function CardListCtrl($window, Utils, Card) {
     var self = this;
-
-    //////////////////////////////////////////////////
-    // Scope variables.
-    //////////////////////////////////////////////////
-
-    self.collectionId = $routeParams.collectionId;
-    self.collectionName = self.collectionId; // todo: get name from backend
-    self.cards = [];
 
     //////////////////////////////////////////////////
     // General functions.
     //////////////////////////////////////////////////
 
     function fetchCards() {
-        Card.query({ collectionId: $routeParams.collectionId })
+        Card.query({ collectionId: self.collectionId })
             .$promise.then(function(respData) {
                 self.cards = respData.cards;
             })
@@ -28,7 +20,7 @@ function CardListCtrl($window, $routeParams, Utils, Card) {
     //////////////////////////////////////////////////
 
     self.remove = function(cardId) {
-        if ($window.confirm("Do you really want to remove " + "this card?")) {
+        if ($window.confirm("Do you really want to remove this card?")) {
             Card.remove({ id: cardId })
                 .$promise.then(function(respData) {
                     fetchCards();
@@ -44,10 +36,19 @@ function CardListCtrl($window, $routeParams, Utils, Card) {
     // Initialization.
     //////////////////////////////////////////////////
 
-    fetchCards();
+    self.$onInit = function() {
+		// Init data members.
+		self.collectionName = self.collectionId; // todo: get name from backend
+		self.cards = [];
+
+		fetchCards();
+	};
 }
 
 angular.module("cardList").component("cardList", {
     templateUrl: "app/card-list/card-list.html",
-    controller: ["$window", "$routeParams", "Utils", "Card", CardListCtrl]
+    bindings: {
+        collectionId: "@"
+    },
+    controller: ["$window", "Utils", "Card", CardListCtrl]
 });
