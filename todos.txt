@@ -1,7 +1,21 @@
+General:
+- Add e2e testing.
+- Use "lectures" instead of "collections".
+  A lecture can include a long text with multiple chapters and
+  images and videos. The cards/quizzes should just be a part of
+  the lectures.
+- Add user management.
+
 Frontend:
-- ...
+- Complete the unit tests.
+- Add submenu that is specific to the view.
+  E.g. for the collection-list it would include the search field.
+- Add help and info tooltips/buttons.
+- Use caching to reduce the number of API-calls.
 
 Backend:
+- Add https and put the site online.
+- Add tests.
 - Get rid of the nodejs warnings.
 - Understand express-flash and -session and passport modules.
 - What happens in login.js when the user is already logged in?
