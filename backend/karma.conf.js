@@ -19,6 +19,7 @@ module.exports = function(config) {
       '../apps/thirdparty/angular-route.js',
       '../apps/thirdparty/angular-resource.js',
       '../apps/thirdparty/angular-mocks.js',
+      '../apps/thirdparty/ng-file-upload.js',
       '../apps/!(thirdparty)/**/*.module.js',
       '../apps/!(thirdparty)/**/*!(.module|.spec).js',
       '../apps/!(thirdparty)/**/*.spec.js',
